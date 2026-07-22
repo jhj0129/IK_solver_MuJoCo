@@ -156,7 +156,7 @@ int main(int argc, char ** argv)
 
     std::cout
       << std::fixed
-      << std::setprecision(9);
+      << std::setprecision(15);
 
     std::cout
       << "========================================\n"

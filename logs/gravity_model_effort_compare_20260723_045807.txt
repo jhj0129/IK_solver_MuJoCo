@@ -1,0 +1,60 @@
+/joint_states와 /mujoco_robot_description을 기다리는 중...
+
+===== 중력 모델과 실제 effort 비교 =====
+
+bias는 중력과 속도 관련 항입니다. 현재 qvel=0이므로 주로 중력 토크입니다.
+
+JOINT1
+  q                    = -0.166851682000 rad
+  measured effort      = +0.000000000001 Nm
+  model qfrc_bias      = +0.000000000000 Nm
+  model passive        = +0.000000000000 Nm
+  model constraint     = -0.016009312280 Nm
+  frictionloss limit   = +0.300000000000 Nm
+  bias - measured      = -0.000000000001 Nm
+
+JOINT2
+  q                    = +0.322961051069 rad
+  measured effort      = +3.249747419136 Nm
+  model qfrc_bias      = +3.249747419137 Nm
+  model passive        = +0.000000000000 Nm
+  model constraint     = +0.300000000000 Nm
+  frictionloss limit   = +0.300000000000 Nm
+  bias - measured      = +0.000000000001 Nm
+
+JOINT3
+  q                    = +0.473951854686 rad
+  measured effort      = +3.735725311401 Nm
+  model qfrc_bias      = +3.735725311399 Nm
+  model passive        = +0.000000000000 Nm
+  model constraint     = +0.300000000000 Nm
+  frictionloss limit   = +0.300000000000 Nm
+  bias - measured      = -0.000000000002 Nm
+
+JOINT4
+  q                    = +0.134102777643 rad
+  measured effort      = -0.065457866625 Nm
+  model qfrc_bias      = -0.065457866625 Nm
+  model passive        = +0.000000000000 Nm
+  model constraint     = +0.001503596807 Nm
+  frictionloss limit   = +0.300000000000 Nm
+  bias - measured      = +0.000000000000 Nm
+
+JOINT5
+  q                    = +0.104544336091 rad
+  measured effort      = -0.092711189113 Nm
+  model qfrc_bias      = -0.092711189113 Nm
+  model passive        = +0.000000000000 Nm
+  model constraint     = +0.014908785237 Nm
+  frictionloss limit   = +0.300000000000 Nm
+  bias - measured      = +0.000000000000 Nm
+
+JOINT6
+  q                    = -0.209750989678 rad
+  measured effort      = -0.000386378447 Nm
+  model qfrc_bias      = -0.000386378447 Nm
+  model passive        = +0.000000000000 Nm
+  model constraint     = +0.001007720806 Nm
+  frictionloss limit   = +0.300000000000 Nm
+  bias - measured      = +0.000000000000 Nm
+
