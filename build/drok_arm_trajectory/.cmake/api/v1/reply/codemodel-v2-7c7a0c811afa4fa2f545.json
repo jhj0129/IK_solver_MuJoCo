@@ -1,0 +1,88 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-3a03475ed5a7337d5721.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.12"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "drok_arm_trajectory",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "drok_arm_trajectory::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-drok_arm_trajectory-544f1bc7ad972db7b010.json",
+					"name" : "drok_arm_trajectory",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "drok_arm_trajectory_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-drok_arm_trajectory_uninstall-44ce5ce5a97a1cc6fa20.json",
+					"name" : "drok_arm_trajectory_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_poly5::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_poly5-b8f2114fbb8bdaf1dc3b.json",
+					"name" : "test_poly5",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-caa80e1bd30281808f5e.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/hgui/IK_solver_MuJoCo/build/drok_arm_trajectory",
+		"source" : "/home/hgui/IK_solver_MuJoCo/src/drok_arm_trajectory"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

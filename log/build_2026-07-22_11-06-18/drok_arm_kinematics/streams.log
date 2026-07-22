@@ -1,0 +1,49 @@
+[0.006s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics
+[0.046s] -- The C compiler identification is GNU 11.4.0
+[0.084s] -- The CXX compiler identification is GNU 11.4.0
+[0.090s] -- Detecting C compiler ABI info
+[0.145s] -- Detecting C compiler ABI info - done
+[0.151s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.151s] -- Detecting C compile features
+[0.151s] -- Detecting C compile features - done
+[0.153s] -- Detecting CXX compiler ABI info
+[0.214s] -- Detecting CXX compiler ABI info - done
+[0.219s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.219s] -- Detecting CXX compile features
+[0.219s] -- Detecting CXX compile features - done
+[0.221s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.334s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.377s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.412s] -- tinyxml2 include: /usr/include
+[0.412s] -- tinyxml2 library: /usr/lib/x86_64-linux-gnu/libtinyxml2.so
+[0.475s] -- Configuring done
+[0.478s] -- Generating done
+[0.478s] -- Build files have been written to: /home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics
+[0.485s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics
+[0.485s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics -- -j18 -l18
+[0.523s] [ 50%] [32mBuilding CXX object CMakeFiles/urdf_geometry_exporter.dir/src/urdf_geometry_exporter.cpp.o[0m
+[1.449s] [100%] [32m[1mLinking CXX executable urdf_geometry_exporter[0m
+[1.506s] [100%] Built target urdf_geometry_exporter
+[1.515s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics -- -j18 -l18
+[1.522s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics
+[1.526s] -- Install configuration: ""
+[1.526s] -- Execute custom install script
+[1.526s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/lib/drok_arm_kinematics/urdf_geometry_exporter
+[1.534s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/include/drok_arm_kinematics/robot_model.hpp
+[1.542s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/config/robot_geometry.yaml
+[1.549s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/ament_index/resource_index/package_run_dependencies/drok_arm_kinematics
+[1.554s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/ament_index/resource_index/parent_prefix_path/drok_arm_kinematics
+[1.560s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/environment/ament_prefix_path.sh
+[1.566s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/environment/ament_prefix_path.dsv
+[1.572s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/environment/path.sh
+[1.577s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/environment/path.dsv
+[1.584s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/local_setup.bash
+[1.589s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/local_setup.sh
+[1.595s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/local_setup.zsh
+[1.601s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/local_setup.dsv
+[1.607s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/package.dsv
+[1.613s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/ament_index/resource_index/packages/drok_arm_kinematics
+[1.618s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/cmake/drok_arm_kinematicsConfig.cmake
+[1.625s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/cmake/drok_arm_kinematicsConfig-version.cmake
+[1.632s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/package.xml
+[1.639s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics

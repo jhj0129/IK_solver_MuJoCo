@@ -1,0 +1,23 @@
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/launch/__pycache__/drok_arm_mujoco.launch.cpython-310.pyc
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/launch/drok_arm_mujoco.launch.py
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/controllers.yaml
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/mujoco_inputs.xml
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/model/scene.xml
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/ament_index/resource_index/package_run_dependencies/drok_arm_mujoco
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/ament_index/resource_index/parent_prefix_path/drok_arm_mujoco
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/path.sh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/path.dsv
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.bash
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.sh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.zsh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.dsv
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/package.dsv
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/ament_index/resource_index/packages/drok_arm_mujoco
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/cmake/drok_arm_mujocoConfig.cmake
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/cmake/drok_arm_mujocoConfig-version.cmake
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/package.xml

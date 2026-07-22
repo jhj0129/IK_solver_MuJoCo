@@ -1,0 +1,4 @@
+source;share/drok_arm_control/local_setup.bash
+source;share/drok_arm_control/local_setup.dsv
+source;share/drok_arm_control/local_setup.sh
+source;share/drok_arm_control/local_setup.zsh

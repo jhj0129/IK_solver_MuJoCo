@@ -1,0 +1,57 @@
+[0.008s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/hgui/IK_solver_MuJoCo/src/drok_arm_description -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hgui/IK_solver_MuJoCo/install/drok_arm_description
+[0.047s] -- The C compiler identification is GNU 11.4.0
+[0.084s] -- The CXX compiler identification is GNU 11.4.0
+[0.088s] -- Detecting C compiler ABI info
+[0.138s] -- Detecting C compiler ABI info - done
+[0.143s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.143s] -- Detecting C compile features
+[0.143s] -- Detecting C compile features - done
+[0.145s] -- Detecting CXX compiler ABI info
+[0.199s] -- Detecting CXX compiler ABI info - done
+[0.203s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.204s] -- Detecting CXX compile features
+[0.204s] -- Detecting CXX compile features - done
+[0.205s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.323s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.365s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.449s] -- Configuring done
+[0.451s] -- Generating done
+[0.451s] -- Build files have been written to: /home/hgui/IK_solver_MuJoCo/build/drok_arm_description
+[0.456s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/hgui/IK_solver_MuJoCo/src/drok_arm_description -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hgui/IK_solver_MuJoCo/install/drok_arm_description
+[0.457s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_description -- -j18 -l18
+[0.490s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_description -- -j18 -l18
+[0.498s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_description
+[0.504s] -- Install configuration: ""
+[0.505s] -- Execute custom install script
+[0.505s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf
+[0.513s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_arm_base_collision_test
+[0.520s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_base_link1_collision_test
+[0.529s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_link1_collision_test
+[0.538s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/ARM_BASE_LINK.STL
+[0.545s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_BASE.STL
+[0.554s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_LEFT.STL
+[0.561s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_RIGH.STL
+[0.568s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK1.STL
+[0.576s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK2.STL
+[0.584s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK3.STL
+[0.592s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK4.STL
+[0.598s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK5.STL
+[0.607s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK6.STL
+[0.616s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/launch/display.launch.py
+[0.624s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/rviz/drok_arm.rviz
+[0.633s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/package_run_dependencies/drok_arm_description
+[0.641s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/parent_prefix_path/drok_arm_description
+[0.649s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/ament_prefix_path.sh
+[0.656s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/ament_prefix_path.dsv
+[0.662s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/path.sh
+[0.668s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/path.dsv
+[0.675s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.bash
+[0.682s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.sh
+[0.689s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.zsh
+[0.697s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.dsv
+[0.706s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/package.dsv
+[0.716s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/packages/drok_arm_description
+[0.726s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/cmake/drok_arm_descriptionConfig.cmake
+[0.733s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/cmake/drok_arm_descriptionConfig-version.cmake
+[0.741s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/package.xml
+[0.750s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_description

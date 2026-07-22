@@ -1,0 +1,32 @@
+[0.009s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco': CMAKE_PREFIX_PATH=/home/hgui/IK_solver_MuJoCo/install/drok_arm_control:/home/hgui/IK_solver_MuJoCo/install/drok_arm_trajectory:/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics:/home/hgui/IK_solver_MuJoCo/install/drok_arm_description:/home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco -- -j18 -l18
+[0.040s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco' returned '0': CMAKE_PREFIX_PATH=/home/hgui/IK_solver_MuJoCo/install/drok_arm_control:/home/hgui/IK_solver_MuJoCo/install/drok_arm_trajectory:/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics:/home/hgui/IK_solver_MuJoCo/install/drok_arm_description:/home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco -- -j18 -l18
+[0.041s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco': CMAKE_PREFIX_PATH=/home/hgui/IK_solver_MuJoCo/install/drok_arm_control:/home/hgui/IK_solver_MuJoCo/install/drok_arm_trajectory:/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics:/home/hgui/IK_solver_MuJoCo/install/drok_arm_description:/home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco
+[0.047s] -- Install configuration: ""
+[0.047s] -- Execute custom install script
+[0.048s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/launch/__pycache__/drok_arm_mujoco.launch.cpython-310.pyc
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/launch/drok_arm_mujoco.launch.py
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/arm_controller.yaml
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/arm_controller.yaml.before_collision_tolerance_test
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/controllers.yaml
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/mujoco_inputs.xml
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/mujoco_inputs.xml.before_collision_test
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/mujoco_inputs.xml.before_gravity_test
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/config/mujoco_inputs.xml.before_kp_tuning
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/model/scene.xml
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/ament_index/resource_index/package_run_dependencies/drok_arm_mujoco
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/ament_index/resource_index/parent_prefix_path/drok_arm_mujoco
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/ament_prefix_path.sh
+[0.054s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/ament_prefix_path.dsv
+[0.055s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/path.sh
+[0.055s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/environment/path.dsv
+[0.055s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.bash
+[0.055s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.sh
+[0.055s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.zsh
+[0.055s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/local_setup.dsv
+[0.055s] -- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/package.dsv
+[0.061s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/ament_index/resource_index/packages/drok_arm_mujoco
+[0.061s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/cmake/drok_arm_mujocoConfig.cmake
+[0.061s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/cmake/drok_arm_mujocoConfig-version.cmake
+[0.061s] -- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco/share/drok_arm_mujoco/package.xml
+[0.063s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco' returned '0': CMAKE_PREFIX_PATH=/home/hgui/IK_solver_MuJoCo/install/drok_arm_control:/home/hgui/IK_solver_MuJoCo/install/drok_arm_trajectory:/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics:/home/hgui/IK_solver_MuJoCo/install/drok_arm_description:/home/hgui/IK_solver_MuJoCo/install/drok_arm_mujoco:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco

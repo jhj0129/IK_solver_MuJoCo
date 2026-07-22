@@ -1,0 +1,24 @@
+[0.006s] Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics
+[0.051s] -- The C compiler identification is GNU 11.4.0
+[0.090s] -- The CXX compiler identification is GNU 11.4.0
+[0.095s] -- Detecting C compiler ABI info
+[0.147s] -- Detecting C compiler ABI info - done
+[0.152s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.152s] -- Detecting C compile features
+[0.152s] -- Detecting C compile features - done
+[0.154s] -- Detecting CXX compiler ABI info
+[0.210s] -- Detecting CXX compiler ABI info - done
+[0.216s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.217s] -- Detecting CXX compile features
+[0.217s] -- Detecting CXX compile features - done
+[0.219s] -- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.323s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.360s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.386s] [31mCMake Error at CMakeLists.txt:129 (target_link_libraries):
+[0.386s]   Cannot specify link libraries for target "test_ik" which is not built by
+[0.386s]   this project.
+[0.386s] 
+[0.386s] [0m
+[0.386s] -- Configuring incomplete, errors occurred!
+[0.386s] See also "/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics/CMakeFiles/CMakeOutput.log".
+[0.390s] Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_kinematics' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics

@@ -1,0 +1,48 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.14 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Override CMake install command with custom implementation using symlinks instead of copying resources
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/hgui/IK_solver_MuJoCo/build/drok_arm_description
+-- Install configuration: ""
+-- Execute custom install script
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/ARM_BASE_LINK.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_BASE.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_LEFT.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_RIGH.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK1.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK2.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK3.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK4.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK5.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK6.STL
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/launch/display.launch.py
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/rviz/drok_arm.rviz
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/package_run_dependencies/drok_arm_description
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/parent_prefix_path/drok_arm_description
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/ament_prefix_path.sh
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/ament_prefix_path.dsv
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/path.sh
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/path.dsv
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.bash
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.sh
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.zsh
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.dsv
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/package.dsv
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/packages/drok_arm_description
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/cmake/drok_arm_descriptionConfig.cmake
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/cmake/drok_arm_descriptionConfig-version.cmake
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/package.xml

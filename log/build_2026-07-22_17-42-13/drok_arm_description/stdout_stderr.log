@@ -1,0 +1,31 @@
+-- Install configuration: ""
+-- Execute custom install script
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_arm_base_collision_test
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/ARM_BASE_LINK.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_BASE.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_LEFT.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_RIGH.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK1.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK2.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK3.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK4.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK5.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/LINK6.STL
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/launch/display.launch.py
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/rviz/drok_arm.rviz
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/package_run_dependencies/drok_arm_description
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/parent_prefix_path/drok_arm_description
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/path.sh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/environment/path.dsv
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.bash
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.sh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.zsh
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/local_setup.dsv
+-- Symlinking: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/package.dsv
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/ament_index/resource_index/packages/drok_arm_description
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/cmake/drok_arm_descriptionConfig.cmake
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/cmake/drok_arm_descriptionConfig-version.cmake
+-- Up-to-date symlink: /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/package.xml

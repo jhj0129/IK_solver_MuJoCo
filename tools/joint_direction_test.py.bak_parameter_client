@@ -1,0 +1,476 @@
+#!/usr/bin/env python3
+
+import csv
+import math
+import time
+from datetime import datetime
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+import rclpy
+from builtin_interfaces.msg import Duration
+from rclpy.node import Node
+from rclpy.parameter_client import AsyncParametersClient
+from rclpy.qos import (
+    DurabilityPolicy,
+    QoSProfile,
+    ReliabilityPolicy,
+)
+from sensor_msgs.msg import JointState
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+
+
+JOINT_NAMES = [
+    "JOINT1",
+    "JOINT2",
+    "JOINT3",
+    "JOINT4",
+    "JOINT5",
+    "JOINT6",
+]
+
+TEST_JOINTS = [
+    "JOINT2",
+    "JOINT3",
+    "JOINT4",
+    "JOINT5",
+    "JOINT6",
+]
+
+EXPECTED_DIRECTIONS = {
+    "JOINT1": "+Yaw",
+    "JOINT2": "+Pitch",
+    "JOINT3": "-Pitch",
+    "JOINT4": "+Roll",
+    "JOINT5": "+Yaw",
+    "JOINT6": "-Roll",
+}
+
+TEST_DELTA_RAD = math.radians(3.0)
+MOVE_TIME_SEC = 2.0
+POSITION_TOLERANCE_RAD = math.radians(0.5)
+
+
+class JointDirectionTester(Node):
+    def __init__(self):
+        super().__init__("joint_direction_tester")
+
+        joint_state_qos = QoSProfile(
+            depth=10,
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            durability=DurabilityPolicy.VOLATILE,
+        )
+
+        self.positions = {}
+
+        self.create_subscription(
+            JointState,
+            "/joint_states",
+            self.joint_state_callback,
+            joint_state_qos,
+        )
+
+        self.trajectory_pub = self.create_publisher(
+            JointTrajectory,
+            "/arm_controller/joint_trajectory",
+            10,
+        )
+
+    def joint_state_callback(self, msg):
+        for name, position in zip(msg.name, msg.position):
+            self.positions[name] = float(position)
+
+    def wait_for_joint_states(self, timeout_sec=10.0):
+        start = time.monotonic()
+
+        while rclpy.ok():
+            rclpy.spin_once(self, timeout_sec=0.1)
+
+            if all(name in self.positions for name in JOINT_NAMES):
+                return True
+
+            if time.monotonic() - start > timeout_sec:
+                return False
+
+        return False
+
+    def wait_for_controller(self, timeout_sec=5.0):
+        start = time.monotonic()
+
+        while rclpy.ok():
+            if self.trajectory_pub.get_subscription_count() > 0:
+                return True
+
+            rclpy.spin_once(self, timeout_sec=0.1)
+
+            if time.monotonic() - start > timeout_sec:
+                return False
+
+        return False
+
+    def get_position_vector(self):
+        return [self.positions[name] for name in JOINT_NAMES]
+
+    def send_positions(self, positions, duration_sec=MOVE_TIME_SEC):
+        msg = JointTrajectory()
+        msg.joint_names = JOINT_NAMES
+
+        point = JointTrajectoryPoint()
+        point.positions = [float(value) for value in positions]
+        point.velocities = [0.0] * len(JOINT_NAMES)
+
+        sec = int(duration_sec)
+        nanosec = int((duration_sec - sec) * 1_000_000_000)
+
+        point.time_from_start = Duration(
+            sec=sec,
+            nanosec=nanosec,
+        )
+
+        msg.points = [point]
+        self.trajectory_pub.publish(msg)
+
+    def wait_until_target(self, target, timeout_sec=5.0):
+        start = time.monotonic()
+
+        while rclpy.ok():
+            rclpy.spin_once(self, timeout_sec=0.05)
+
+            if all(name in self.positions for name in JOINT_NAMES):
+                current = self.get_position_vector()
+
+                max_error = max(
+                    abs(current_value - target_value)
+                    for current_value, target_value
+                    in zip(current, target)
+                )
+
+                if max_error <= POSITION_TOLERANCE_RAD:
+                    return True, current, max_error
+
+            if time.monotonic() - start > timeout_sec:
+                current = self.get_position_vector()
+                max_error = max(
+                    abs(current_value - target_value)
+                    for current_value, target_value
+                    in zip(current, target)
+                )
+                return False, current, max_error
+
+        return False, self.get_position_vector(), float("inf")
+
+    def read_joint_limits(self):
+        limits = {}
+
+        client = AsyncParametersClient(
+            self,
+            "/robot_state_publisher",
+        )
+
+        if not client.wait_for_service(timeout_sec=3.0):
+            self.get_logger().warning(
+                "robot_state_publisher parameter service를 찾지 못했습니다."
+            )
+            return limits
+
+        future = client.get_parameters(["robot_description"])
+        rclpy.spin_until_future_complete(
+            self,
+            future,
+            timeout_sec=5.0,
+        )
+
+        if not future.done() or future.result() is None:
+            self.get_logger().warning(
+                "robot_description을 읽지 못했습니다."
+            )
+            return limits
+
+        values = future.result().values
+
+        if not values:
+            return limits
+
+        robot_description = values[0].string_value
+
+        if not robot_description:
+            return limits
+
+        root = ET.fromstring(robot_description)
+
+        for joint in root.findall("joint"):
+            name = joint.get("name")
+
+            if name not in JOINT_NAMES:
+                continue
+
+            limit = joint.find("limit")
+
+            if limit is None:
+                continue
+
+            lower = limit.get("lower")
+            upper = limit.get("upper")
+
+            if lower is None or upper is None:
+                continue
+
+            limits[name] = (
+                float(lower),
+                float(upper),
+            )
+
+        return limits
+
+
+def choose_test_target(joint_name, initial, limits):
+    index = JOINT_NAMES.index(joint_name)
+    target = initial.copy()
+
+    current = initial[index]
+    lower, upper = limits.get(
+        joint_name,
+        (-float("inf"), float("inf")),
+    )
+
+    margin = math.radians(1.0)
+
+    if current + TEST_DELTA_RAD <= upper - margin:
+        command_delta = TEST_DELTA_RAD
+    elif current - TEST_DELTA_RAD >= lower + margin:
+        command_delta = -TEST_DELTA_RAD
+    else:
+        raise RuntimeError(
+            f"{joint_name}이 관절 제한 근처에 있어 "
+            "3도 시험을 수행할 수 없습니다."
+        )
+
+    target[index] = current + command_delta
+
+    return target, command_delta, lower, upper
+
+
+def save_results(results):
+    project_root = Path.home() / "IK_solver_MuJoCo"
+    log_dir = project_root / "logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output = log_dir / f"joint_direction_test_{timestamp}.csv"
+
+    fieldnames = [
+        "joint",
+        "expected_direction",
+        "command_delta_deg",
+        "initial_rad",
+        "target_rad",
+        "measured_rad",
+        "measured_delta_deg",
+        "reached_target",
+        "result",
+        "note",
+    ]
+
+    with output.open(
+        "w",
+        newline="",
+        encoding="utf-8-sig",
+    ) as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=fieldnames,
+        )
+        writer.writeheader()
+        writer.writerows(results)
+
+    return output
+
+
+def main():
+    rclpy.init()
+    node = JointDirectionTester()
+
+    original_pose = None
+    results = []
+
+    try:
+        print("JOINT1~JOINT6 상태 수신을 기다리는 중...")
+
+        if not node.wait_for_joint_states():
+            raise RuntimeError(
+                "/joint_states에서 JOINT1~JOINT6을 받지 못했습니다."
+            )
+
+        if not node.wait_for_controller():
+            raise RuntimeError(
+                "/arm_controller/joint_trajectory의 "
+                "구독자를 찾지 못했습니다."
+            )
+
+        original_pose = node.get_position_vector()
+        limits = node.read_joint_limits()
+
+        print("\n===== 시작 관절 위치 =====")
+        for name, value in zip(JOINT_NAMES, original_pose):
+            print(
+                f"{name}: {value:+.6f} rad "
+                f"({math.degrees(value):+.2f} deg)"
+            )
+
+        print("\n===== 읽은 관절 제한 =====")
+        for name in JOINT_NAMES:
+            if name in limits:
+                lower, upper = limits[name]
+                print(
+                    f"{name}: "
+                    f"{math.degrees(lower):+.2f} ~ "
+                    f"{math.degrees(upper):+.2f} deg"
+                )
+            else:
+                print(f"{name}: 제한값을 읽지 못함")
+
+        for joint_name in TEST_JOINTS:
+            current_pose = node.get_position_vector()
+
+            target, command_delta, lower, upper = choose_test_target(
+                joint_name,
+                current_pose,
+                limits,
+            )
+
+            index = JOINT_NAMES.index(joint_name)
+
+            print("\n" + "=" * 60)
+            print(f"시험 관절: {joint_name}")
+            print(
+                f"예상 방향: "
+                f"{EXPECTED_DIRECTIONS[joint_name]}"
+            )
+            print(
+                f"명령 변화량: "
+                f"{math.degrees(command_delta):+.2f} deg"
+            )
+            print(
+                f"현재값: {current_pose[index]:+.6f} rad"
+            )
+            print(
+                f"목표값: {target[index]:+.6f} rad"
+            )
+
+            command = input(
+                "\nEnter: 시험 시작 / s: 건너뛰기 / q: 종료\n> "
+            ).strip().lower()
+
+            if command == "q":
+                break
+
+            if command == "s":
+                continue
+
+            node.send_positions(target)
+
+            reached, measured, max_error = node.wait_until_target(
+                target,
+                timeout_sec=5.0,
+            )
+
+            measured_delta = measured[index] - current_pose[index]
+
+            print("\n===== 이동 결과 =====")
+            print(f"목표 도달 여부: {reached}")
+            print(
+                f"실제 변화량: "
+                f"{math.degrees(measured_delta):+.3f} deg"
+            )
+            print(
+                f"최대 관절 오차: "
+                f"{math.degrees(max_error):.3f} deg"
+            )
+
+            result = input(
+                "\n화면 판단 입력\n"
+                "1: 정상 / 2: 방향 반대 / 3: 다른 관절 움직임\n"
+                "4: 이상 진동·충돌 / 5: 판단 보류\n> "
+            ).strip()
+
+            result_map = {
+                "1": "정상",
+                "2": "방향 반대",
+                "3": "다른 관절 움직임",
+                "4": "이상 진동 또는 충돌",
+                "5": "판단 보류",
+            }
+
+            result_text = result_map.get(
+                result,
+                result if result else "미입력",
+            )
+
+            note = input("추가 메모(없으면 Enter)\n> ").strip()
+
+            print(f"\n{joint_name} 원래 위치로 복귀합니다.")
+            node.send_positions(current_pose)
+
+            returned, return_measured, return_error = (
+                node.wait_until_target(
+                    current_pose,
+                    timeout_sec=5.0,
+                )
+            )
+
+            print(
+                f"복귀 성공: {returned}, "
+                f"복귀 최대 오차: "
+                f"{math.degrees(return_error):.3f} deg"
+            )
+
+            results.append({
+                "joint": joint_name,
+                "expected_direction": (
+                    EXPECTED_DIRECTIONS[joint_name]
+                ),
+                "command_delta_deg": (
+                    math.degrees(command_delta)
+                ),
+                "initial_rad": current_pose[index],
+                "target_rad": target[index],
+                "measured_rad": measured[index],
+                "measured_delta_deg": (
+                    math.degrees(measured_delta)
+                ),
+                "reached_target": reached,
+                "result": result_text,
+                "note": note,
+            })
+
+        if original_pose is not None:
+            print("\n전체 시작 자세로 복귀합니다.")
+            node.send_positions(original_pose)
+            node.wait_until_target(
+                original_pose,
+                timeout_sec=5.0,
+            )
+
+        output = save_results(results)
+
+        print("\n===== 시험 완료 =====")
+        print(f"결과 저장: {output}")
+
+    except KeyboardInterrupt:
+        print("\n사용자가 시험을 중단했습니다.")
+
+        if original_pose is not None:
+            print("전체 시작 자세로 복귀를 시도합니다.")
+            node.send_positions(original_pose)
+            node.wait_until_target(
+                original_pose,
+                timeout_sec=5.0,
+            )
+
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,3 @@
+/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/lib/libdrok_arm_kinematics.a
+/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/cmake/export_drok_arm_kinematicsExport.cmake
+/home/hgui/IK_solver_MuJoCo/install/drok_arm_kinematics/share/drok_arm_kinematics/cmake/export_drok_arm_kinematicsExport-noconfig.cmake

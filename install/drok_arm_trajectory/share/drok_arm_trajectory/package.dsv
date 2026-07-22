@@ -1,0 +1,8 @@
+source;share/drok_arm_trajectory/hook/cmake_prefix_path.ps1
+source;share/drok_arm_trajectory/hook/cmake_prefix_path.dsv
+source;share/drok_arm_trajectory/hook/cmake_prefix_path.sh
+source;share/drok_arm_trajectory/local_setup.bash
+source;share/drok_arm_trajectory/local_setup.dsv
+source;share/drok_arm_trajectory/local_setup.ps1
+source;share/drok_arm_trajectory/local_setup.sh
+source;share/drok_arm_trajectory/local_setup.zsh
