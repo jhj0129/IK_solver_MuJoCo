@@ -290,21 +290,74 @@ def run_cpp_fk(joint_positions):
     return np.array(rows, dtype=float)
 
 
+def project_to_rotation_matrix(rotation):
+    """
+    반올림 오차가 포함된 3x3 행렬을 가장 가까운
+    정상 회전행렬 SO(3)로 투영한다.
+    """
+    u, _, vt = np.linalg.svd(rotation)
+
+    projected = u @ vt
+
+    # 반사행렬 det=-1이 만들어지는 경우를 방지한다.
+    if np.linalg.det(projected) < 0.0:
+        u = u.copy()
+        u[:, -1] *= -1.0
+        projected = u @ vt
+
+    return projected
+
+
 def rotation_error_angle(rotation_a, rotation_b):
+    """
+    두 회전행렬의 상대 회전각을 수치적으로 안정적으로 계산한다.
+    """
+    rotation_a = project_to_rotation_matrix(
+        rotation_a
+    )
+    rotation_b = project_to_rotation_matrix(
+        rotation_b
+    )
+
     relative_rotation = (
         rotation_a.T
         @ rotation_b
     )
 
-    cosine = (
+    relative_rotation = project_to_rotation_matrix(
+        relative_rotation
+    )
+
+    cosine = 0.5 * (
         np.trace(relative_rotation) - 1.0
-    ) / 2.0
+    )
 
     cosine = float(
         np.clip(cosine, -1.0, 1.0)
     )
 
-    return math.acos(cosine)
+    skew_vector = np.array(
+        [
+            relative_rotation[2, 1]
+            - relative_rotation[1, 2],
+
+            relative_rotation[0, 2]
+            - relative_rotation[2, 0],
+
+            relative_rotation[1, 0]
+            - relative_rotation[0, 1],
+        ],
+        dtype=float,
+    )
+
+    sine = 0.5 * float(
+        np.linalg.norm(skew_vector)
+    )
+
+    return math.atan2(
+        sine,
+        cosine,
+    )
 
 
 def matrix_to_rpy(rotation):

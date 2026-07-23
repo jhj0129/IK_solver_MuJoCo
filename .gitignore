@@ -1,0 +1,5 @@
+
+# Local generated files
+__pycache__/
+*.pyc
+manual_mujoco/
