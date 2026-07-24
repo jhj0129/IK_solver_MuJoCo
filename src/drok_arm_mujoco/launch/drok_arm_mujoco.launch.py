@@ -73,7 +73,7 @@ def launch_setup(context, *args, **kwargs):
                 "--convert_stl_to_obj",
                 "--no-fuse",
                 "--publish_topic",
-                "/mujoco_robot_description",
+                "/mujoco_robot_description_raw",
             ],
         )
     )
@@ -95,7 +95,6 @@ def launch_setup(context, *args, **kwargs):
         Node(
             package="mujoco_ros2_control",
             executable="ros2_control_node",
-            name="controller_manager",
             output="both",
             emulate_tty=True,
             parameters=[
@@ -123,6 +122,12 @@ def launch_setup(context, *args, **kwargs):
         package_share
         / "config"
         / "arm_controller.yaml"
+    )
+
+    gripper_controller_path = (
+        package_share
+        / "config"
+        / "gripper_controller.yaml"
     )
 
     nodes.append(
@@ -160,6 +165,25 @@ def launch_setup(context, *args, **kwargs):
     )
 
 
+    nodes.append(
+        Node(
+            package="controller_manager",
+            executable="spawner",
+            name="spawn_gripper_controller",
+            output="both",
+            arguments=[
+                "gripper_controller",
+                "--controller-manager",
+                "/controller_manager",
+                "--param-file",
+                str(gripper_controller_path),
+                "--controller-manager-timeout",
+                "180",
+            ],
+        )
+    )
+
+
     # External control API:
     #   /arm_controller/joint_trajectory
     #
@@ -189,8 +213,17 @@ def launch_setup(context, *args, **kwargs):
 
 
 def generate_launch_description():
+
+    gripper_collision_patcher = Node(
+        package="drok_arm_mujoco",
+        executable="patch_mjcf_gripper_collision.py",
+        name="drok_gripper_collision_patcher",
+        output="screen",
+    )
+
     return LaunchDescription(
         [
+            gripper_collision_patcher,
             DeclareLaunchArgument(
                 "headless",
                 default_value="false",

@@ -13,4 +13,10 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+
+install(PROGRAMS
+  scripts/patch_mjcf_gripper_collision.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()

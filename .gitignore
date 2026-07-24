@@ -3,3 +3,14 @@
 __pycache__/
 *.pyc
 manual_mujoco/
+
+# Local ROS 2 build outputs
+build/
+install/
+log/
+
+# Local modification backups
+*.before_*
+*.bak
+*.backup
+*~

@@ -65,6 +65,7 @@ CMAKE_BINARY_DIR = /home/hgui/IK_solver_MuJoCo/build/drok_arm_control
 # The main recursive "all" target.
 all: CMakeFiles/pose_motion_node.dir/all
 all: CMakeFiles/pose_joint_trajectory_node.dir/all
+all: CMakeFiles/pick_place_task_node.dir/all
 all: CMakeFiles/trajectory_bridge.dir/all
 .PHONY : all
 
@@ -77,6 +78,7 @@ clean: CMakeFiles/uninstall.dir/clean
 clean: CMakeFiles/drok_arm_control_uninstall.dir/clean
 clean: CMakeFiles/pose_motion_node.dir/clean
 clean: CMakeFiles/pose_joint_trajectory_node.dir/clean
+clean: CMakeFiles/pick_place_task_node.dir/clean
 clean: CMakeFiles/trajectory_bridge.dir/clean
 .PHONY : clean
 
@@ -139,7 +141,7 @@ CMakeFiles/drok_arm_control_uninstall.dir/clean:
 CMakeFiles/pose_motion_node.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pose_motion_node.dir/build.make CMakeFiles/pose_motion_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pose_motion_node.dir/build.make CMakeFiles/pose_motion_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=3,4 "Built target pose_motion_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=5,6 "Built target pose_motion_node"
 .PHONY : CMakeFiles/pose_motion_node.dir/all
 
 # Build rule for subdir invocation for target.
@@ -165,7 +167,7 @@ CMakeFiles/pose_motion_node.dir/clean:
 CMakeFiles/pose_joint_trajectory_node.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pose_joint_trajectory_node.dir/build.make CMakeFiles/pose_joint_trajectory_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/pose_joint_trajectory_node.dir/build.make CMakeFiles/pose_joint_trajectory_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=1,2 "Built target pose_joint_trajectory_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=3,4 "Built target pose_joint_trajectory_node"
 .PHONY : CMakeFiles/pose_joint_trajectory_node.dir/all
 
 # Build rule for subdir invocation for target.
@@ -185,13 +187,39 @@ CMakeFiles/pose_joint_trajectory_node.dir/clean:
 .PHONY : CMakeFiles/pose_joint_trajectory_node.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/pick_place_task_node.dir
+
+# All Build rule for target.
+CMakeFiles/pick_place_task_node.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pick_place_task_node.dir/build.make CMakeFiles/pick_place_task_node.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pick_place_task_node.dir/build.make CMakeFiles/pick_place_task_node.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=1,2 "Built target pick_place_task_node"
+.PHONY : CMakeFiles/pick_place_task_node.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/pick_place_task_node.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/pick_place_task_node.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles 0
+.PHONY : CMakeFiles/pick_place_task_node.dir/rule
+
+# Convenience name for target.
+pick_place_task_node: CMakeFiles/pick_place_task_node.dir/rule
+.PHONY : pick_place_task_node
+
+# clean rule for target.
+CMakeFiles/pick_place_task_node.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pick_place_task_node.dir/build.make CMakeFiles/pick_place_task_node.dir/clean
+.PHONY : CMakeFiles/pick_place_task_node.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/trajectory_bridge.dir
 
 # All Build rule for target.
 CMakeFiles/trajectory_bridge.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/trajectory_bridge.dir/build.make CMakeFiles/trajectory_bridge.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/trajectory_bridge.dir/build.make CMakeFiles/trajectory_bridge.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=5,6 "Built target trajectory_bridge"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=7,8 "Built target trajectory_bridge"
 .PHONY : CMakeFiles/trajectory_bridge.dir/all
 
 # Build rule for subdir invocation for target.

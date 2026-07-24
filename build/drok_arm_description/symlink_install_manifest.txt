@@ -1,7 +1,10 @@
 /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf
 /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_arm_base_collision_test
 /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_base_link1_collision_test
+/home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_collision_isolation_20260723_234055
+/home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_gripper_box_collision_20260723_232724
 /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_link1_collision_test
+/home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/urdf/drok_arm.urdf.before_small_contact_pad_20260723_235631
 /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/ARM_BASE_LINK.STL
 /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_BASE.STL
 /home/hgui/IK_solver_MuJoCo/install/drok_arm_description/share/drok_arm_description/meshes/GRIPPER_LEFT.STL

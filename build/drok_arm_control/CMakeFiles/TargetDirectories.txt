@@ -2,6 +2,7 @@
 /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles/drok_arm_control_uninstall.dir
 /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles/pose_motion_node.dir
 /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles/pose_joint_trajectory_node.dir
+/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles/pick_place_task_node.dir
 /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles/trajectory_bridge.dir
 /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles/test.dir
 /home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles/edit_cache.dir

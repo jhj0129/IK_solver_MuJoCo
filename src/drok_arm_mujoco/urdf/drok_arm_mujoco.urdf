@@ -204,12 +204,6 @@
         <color rgba="0.69804 0.69804 0.69804 1" />
       </material>
     </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://drok_arm_description/meshes/GRIPPER_BASE.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint name="LINK6_TO_GRIPPER_BASE_FIXED" type="fixed">
     <origin xyz="0.08 0 0" rpy="0 0 0" />
@@ -233,16 +227,20 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0.0015 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://drok_arm_description/meshes/GRIPPER_LEFT.STL" />
+        <box size="0.040 0.003 0.040" />
       </geometry>
     </collision>
   </link>
-  <joint name="JOINT7" type="fixed">
+  <joint name="JOINT7" type="prismatic">
     <origin xyz="0.0594 0.078 0" rpy="0 0 0" />
     <parent link="GRIPPER_BASE" />
     <child link="GRIPPER_LEFT" />
+    <axis xyz="0 -1 0" />
+    <limit lower="0.0" upper="0.04"
+           effort="100.0" velocity="0.05" />
+    <dynamics damping="1.0" friction="0.1" />
   </joint>
   <link name="GRIPPER_RIGH">
     <inertial>
@@ -260,16 +258,20 @@
       </material>
     </visual>
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 -0.0015 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://drok_arm_description/meshes/GRIPPER_RIGH.STL" />
+        <box size="0.040 0.003 0.040" />
       </geometry>
     </collision>
   </link>
-  <joint name="GRIPPER_RIGHT_JOINT" type="fixed">
+  <joint name="GRIPPER_RIGHT_JOINT" type="prismatic">
     <origin xyz="0.0594 -0.078 0" rpy="0 0 0" />
     <parent link="GRIPPER_BASE" />
     <child link="GRIPPER_RIGH" />
+    <axis xyz="0 -1 0" />
+    <limit lower="-0.04" upper="0.0"
+           effort="100.0" velocity="0.05" />
+    <dynamics damping="1.0" friction="0.1" />
   </joint>
   <link name="gripper_center" />
   <joint name="GRIPPER_CENTER_FIXED_JOINT" type="fixed">
@@ -343,5 +345,25 @@
       <state_interface name="effort" />
       <state_interface name="torque" />
     </joint>
-  </ros2_control>
+  
+    <joint name="JOINT7">
+      <command_interface name="position" />
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
+      <state_interface name="torque" />
+    </joint>
+
+    <joint name="GRIPPER_RIGHT_JOINT">
+      <command_interface name="position" />
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
+      <state_interface name="torque" />
+    </joint>
+</ros2_control>
 </robot>

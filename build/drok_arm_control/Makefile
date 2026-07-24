@@ -224,6 +224,19 @@ pose_joint_trajectory_node/fast:
 .PHONY : pose_joint_trajectory_node/fast
 
 #=============================================================================
+# Target rules for targets named pick_place_task_node
+
+# Build rule for target.
+pick_place_task_node: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pick_place_task_node
+.PHONY : pick_place_task_node
+
+# fast build rule for target.
+pick_place_task_node/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pick_place_task_node.dir/build.make CMakeFiles/pick_place_task_node.dir/build
+.PHONY : pick_place_task_node/fast
+
+#=============================================================================
 # Target rules for targets named trajectory_bridge
 
 # Build rule for target.
@@ -235,6 +248,30 @@ trajectory_bridge: cmake_check_build_system
 trajectory_bridge/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/trajectory_bridge.dir/build.make CMakeFiles/trajectory_bridge.dir/build
 .PHONY : trajectory_bridge/fast
+
+src/pick_place_task_node.o: src/pick_place_task_node.cpp.o
+.PHONY : src/pick_place_task_node.o
+
+# target to build an object file
+src/pick_place_task_node.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pick_place_task_node.dir/build.make CMakeFiles/pick_place_task_node.dir/src/pick_place_task_node.cpp.o
+.PHONY : src/pick_place_task_node.cpp.o
+
+src/pick_place_task_node.i: src/pick_place_task_node.cpp.i
+.PHONY : src/pick_place_task_node.i
+
+# target to preprocess a source file
+src/pick_place_task_node.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pick_place_task_node.dir/build.make CMakeFiles/pick_place_task_node.dir/src/pick_place_task_node.cpp.i
+.PHONY : src/pick_place_task_node.cpp.i
+
+src/pick_place_task_node.s: src/pick_place_task_node.cpp.s
+.PHONY : src/pick_place_task_node.s
+
+# target to generate assembly for a file
+src/pick_place_task_node.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/pick_place_task_node.dir/build.make CMakeFiles/pick_place_task_node.dir/src/pick_place_task_node.cpp.s
+.PHONY : src/pick_place_task_node.cpp.s
 
 src/pose_joint_trajectory_node.o: src/pose_joint_trajectory_node.cpp.o
 .PHONY : src/pose_joint_trajectory_node.o
@@ -323,9 +360,13 @@ help:
 	@echo "... test"
 	@echo "... drok_arm_control_uninstall"
 	@echo "... uninstall"
+	@echo "... pick_place_task_node"
 	@echo "... pose_joint_trajectory_node"
 	@echo "... pose_motion_node"
 	@echo "... trajectory_bridge"
+	@echo "... src/pick_place_task_node.o"
+	@echo "... src/pick_place_task_node.i"
+	@echo "... src/pick_place_task_node.s"
 	@echo "... src/pose_joint_trajectory_node.o"
 	@echo "... src/pose_joint_trajectory_node.i"
 	@echo "... src/pose_joint_trajectory_node.s"

@@ -318,6 +318,9 @@ message(STATUS "Execute custom install script")
 # install(DIRECTORY "launch" "config" "model" "urdf" "DESTINATION" "share/drok_arm_mujoco")
 ament_cmake_symlink_install_directory("/home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco" DIRECTORY "launch" "config" "model" "urdf" "DESTINATION" "share/drok_arm_mujoco")
 
+# install(PROGRAMS "scripts/patch_mjcf_gripper_collision.py" "DESTINATION" "lib/drok_arm_mujoco")
+ament_cmake_symlink_install_programs("/home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco" PROGRAMS "scripts/patch_mjcf_gripper_collision.py" "DESTINATION" "lib/drok_arm_mujoco")
+
 # install(FILES "/home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/drok_arm_mujoco" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 ament_cmake_symlink_install_files("/home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco" FILES "/home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/drok_arm_mujoco" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 

@@ -315,11 +315,14 @@ message(STATUS "Execute custom install script")
 
 # begin of custom install code
 
-# install("TARGETS" "pose_motion_node" "pose_joint_trajectory_node" "trajectory_bridge" "DESTINATION" "lib/drok_arm_control")
+# install("TARGETS" "pose_motion_node" "pose_joint_trajectory_node" "pick_place_task_node" "trajectory_bridge" "DESTINATION" "lib/drok_arm_control")
 include("/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/ament_cmake_symlink_install_targets_0_${CMAKE_INSTALL_CONFIG_NAME}.cmake")
 
 # install(DIRECTORY "include/" "DESTINATION" "include")
 ament_cmake_symlink_install_directory("/home/hgui/IK_solver_MuJoCo/src/drok_arm_control" DIRECTORY "include/" "DESTINATION" "include")
+
+# install(DIRECTORY "config" "DESTINATION" "share/drok_arm_control")
+ament_cmake_symlink_install_directory("/home/hgui/IK_solver_MuJoCo/src/drok_arm_control" DIRECTORY "config" "DESTINATION" "share/drok_arm_control")
 
 # install(FILES "/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/drok_arm_control" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 ament_cmake_symlink_install_files("/home/hgui/IK_solver_MuJoCo/src/drok_arm_control" FILES "/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/drok_arm_control" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")

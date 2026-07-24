@@ -205,12 +205,6 @@
         <color rgba="0.69804 0.69804 0.69804 1" />
       </material>
     </visual>
-    <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <geometry>
-        <mesh filename="package://drok_arm_description/meshes/GRIPPER_BASE.STL" />
-      </geometry>
-    </collision>
   </link>
   <joint name="LINK6_TO_GRIPPER_BASE_FIXED" type="fixed">
     <origin xyz="0.08 0 0" rpy="0 0 0" />
@@ -233,13 +227,25 @@
         <color rgba="0.69804 0.69804 0.69804 1" />
       </material>
     </visual>
+
+  
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 0.0015 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://drok_arm_description/meshes/GRIPPER_LEFT.STL" />
+        <box size="0.040 0.003 0.040" />
       </geometry>
     </collision>
-  </link>
+
+    <visual name="collision_debug">
+      <origin xyz="0 0.0015 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.040 0.003 0.040" />
+      </geometry>
+      <material name="collision_debug_red">
+        <color rgba="1.0 0.0 0.0 0.55" />
+      </material>
+    </visual>
+</link>
   <joint name="GRIPPER_LEFT_JOINT" type="prismatic">
     <origin xyz="0.0594 0.078 0" rpy="0 0 0" />
     <parent link="GRIPPER_BASE" />
@@ -262,13 +268,25 @@
         <color rgba="0.69804 0.69804 0.69804 1" />
       </material>
     </visual>
+
+  
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0" />
+      <origin xyz="0 -0.0015 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://drok_arm_description/meshes/GRIPPER_RIGH.STL" />
+        <box size="0.040 0.003 0.040" />
       </geometry>
     </collision>
-  </link>
+
+    <visual name="collision_debug">
+      <origin xyz="0 -0.0015 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.040 0.003 0.040" />
+      </geometry>
+      <material name="collision_debug_red">
+        <color rgba="1.0 0.0 0.0 0.55" />
+      </material>
+    </visual>
+</link>
   <joint name="GRIPPER_RIGHT_JOINT" type="prismatic">
     <origin xyz="0.0594 -0.078 0" rpy="0 0 0" />
     <parent link="GRIPPER_BASE" />

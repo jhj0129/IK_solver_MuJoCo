@@ -180,6 +180,7 @@ pose_joint_trajectory_node: /opt/ros/humble/lib/librcpputils.so
 pose_joint_trajectory_node: /opt/ros/humble/lib/librosidl_runtime_c.so
 pose_joint_trajectory_node: /opt/ros/humble/lib/librcutils.so
 pose_joint_trajectory_node: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+pose_joint_trajectory_node: /usr/lib/x86_64-linux-gnu/libyaml-cpp.so.0.7.0
 pose_joint_trajectory_node: CMakeFiles/pose_joint_trajectory_node.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hgui/IK_solver_MuJoCo/build/drok_arm_control/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable pose_joint_trajectory_node"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/pose_joint_trajectory_node.dir/link.txt --verbose=$(VERBOSE)

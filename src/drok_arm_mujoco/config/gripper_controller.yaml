@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+    joints:
+      - JOINT7
+      - GRIPPER_RIGHT_JOINT
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    allow_partial_joints_goal: false
