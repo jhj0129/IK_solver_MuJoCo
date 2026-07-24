@@ -1,4 +1,0 @@
-Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_description -- -j18 -l18
-Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/hgui/IK_solver_MuJoCo/build/drok_arm_description -- -j18 -l18
-Invoking command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_description
-Invoked command in '/home/hgui/IK_solver_MuJoCo/build/drok_arm_description' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/hgui/IK_solver_MuJoCo/build/drok_arm_description

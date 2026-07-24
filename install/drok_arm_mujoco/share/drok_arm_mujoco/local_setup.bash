@@ -1,1 +1,0 @@
-/home/hgui/IK_solver_MuJoCo/build/drok_arm_mujoco/ament_cmake_environment_hooks/local_setup.bash

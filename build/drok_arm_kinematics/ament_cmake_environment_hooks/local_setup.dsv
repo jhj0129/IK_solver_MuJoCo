@@ -1,3 +1,0 @@
-source;share/drok_arm_kinematics/environment/ament_prefix_path.sh
-source;share/drok_arm_kinematics/environment/library_path.sh
-source;share/drok_arm_kinematics/environment/path.sh

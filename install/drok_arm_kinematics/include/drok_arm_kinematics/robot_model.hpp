@@ -1,1 +1,0 @@
-/home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics/include/drok_arm_kinematics/robot_model.hpp

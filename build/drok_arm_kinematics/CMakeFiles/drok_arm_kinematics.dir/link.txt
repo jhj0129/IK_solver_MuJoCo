@@ -1,2 +1,0 @@
-/usr/bin/ar qc libdrok_arm_kinematics.a CMakeFiles/drok_arm_kinematics.dir/src/robot_model_loader.cpp.o CMakeFiles/drok_arm_kinematics.dir/src/transform.cpp.o CMakeFiles/drok_arm_kinematics.dir/src/forward_kinematics.cpp.o CMakeFiles/drok_arm_kinematics.dir/src/inverse_kinematics.cpp.o
-/usr/bin/ranlib libdrok_arm_kinematics.a

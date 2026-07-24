@@ -1,2 +1,0 @@
-/usr/bin/ar qc libdrok_arm_trajectory.a CMakeFiles/drok_arm_trajectory.dir/src/poly5_trajectory.cpp.o
-/usr/bin/ranlib libdrok_arm_trajectory.a

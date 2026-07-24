@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/test_poly5.dir/src/test_poly5.cpp.o -o test_poly5  libdrok_arm_trajectory.a 

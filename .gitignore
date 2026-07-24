@@ -14,3 +14,7 @@ log/
 *.bak
 *.backup
 *~
+# ROS 2 generated files
+# Python generated files
+*.py[cod]
+# Local backup files

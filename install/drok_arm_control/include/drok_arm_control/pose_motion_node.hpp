@@ -1,1 +1,0 @@
-/home/hgui/IK_solver_MuJoCo/src/drok_arm_control/include/drok_arm_control/pose_motion_node.hpp

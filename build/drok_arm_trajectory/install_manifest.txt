@@ -1,3 +1,0 @@
-/home/hgui/IK_solver_MuJoCo/install/drok_arm_trajectory/lib/libdrok_arm_trajectory.a
-/home/hgui/IK_solver_MuJoCo/install/drok_arm_trajectory/share/drok_arm_trajectory/cmake/export_drok_arm_trajectoryExport.cmake
-/home/hgui/IK_solver_MuJoCo/install/drok_arm_trajectory/share/drok_arm_trajectory/cmake/export_drok_arm_trajectoryExport-noconfig.cmake

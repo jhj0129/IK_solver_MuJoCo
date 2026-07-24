@@ -1,1 +1,0 @@
-/home/hgui/IK_solver_MuJoCo/build/drok_arm_description/ament_cmake_core/drok_arm_descriptionConfig.cmake
