@@ -1,0 +1,792 @@
+mode: place_face_aligned_workspace_search
+robot_execution: false
+place_center:
+- 0.45
+- -0.18
+- 0.274
+cube_half_size_m: 0.04
+target_retreat_m: 0.08
+maximum_retreat_m: 0.12
+step_m: 0.005
+results:
+- side: NEGATIVE_X_SIDE
+  roll_deg: 0.0
+  yaw_deg: 0.0
+  success: false
+  release_success: true
+  target_retreat_reached: false
+  last_success_x: 0.405
+  retreat_distance_m: 0.044999999999999984
+  clearance_beyond_cube_face_m: 0.004999999999999984
+  largest_step_deg: 0.7642615847272382
+  alignment_step_deg: 81.90121487774412
+  failed_x: 0.4
+  waypoints:
+  - name: PLACE_RELEASE
+    position:
+    - 0.45
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.664034059
+    - 1.546809389
+    - 0.804865399
+    - 0.71224762
+    - -0.951429384
+    - 0.560002988
+    maximum_delta_deg: 81.90121487774412
+  - name: RETREAT_01
+    position:
+    - 0.445
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.67473957
+    - 1.535426801
+    - 0.793876296
+    - 0.701171556
+    - -0.95717652
+    - 0.553354882
+    maximum_delta_deg: 0.6521742523362583
+  - name: RETREAT_02
+    position:
+    - 0.44
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.68574013
+    - 1.524067796
+    - 0.783060674
+    - 0.689812507
+    - -0.963057841
+    - 0.546499474
+    maximum_delta_deg: 0.650825566982302
+  - name: RETREAT_03
+    position:
+    - 0.435
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.69704454
+    - 1.512735823
+    - 0.772420266
+    - 0.678170758
+    - -0.969087087
+    - 0.539439695
+    maximum_delta_deg: 0.6670230838506422
+  - name: RETREAT_04
+    position:
+    - 0.43
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.708662548
+    - 1.501434729
+    - 0.761957288
+    - 0.666245839
+    - -0.975278873
+    - 0.532178181
+    maximum_delta_deg: 0.6832475297353681
+  - name: RETREAT_05
+    position:
+    - 0.425
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.720604113
+    - 1.490168772
+    - 0.751674078
+    - 0.654037832
+    - -0.981648445
+    - 0.524718337
+    maximum_delta_deg: 0.6994672773661668
+  - name: RETREAT_06
+    position:
+    - 0.42000000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.732879384
+    - 1.478942647
+    - 0.741573101
+    - 0.641547415
+    - -0.988211667
+    - 0.517064412
+    maximum_delta_deg: 0.7156481784584537
+  - name: RETREAT_07
+    position:
+    - 0.41500000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.745498683
+    - 1.46776151
+    - 0.731656947
+    - 0.628775921
+    - -0.99498501
+    - 0.509221568
+    maximum_delta_deg: 0.7317527042766535
+  - name: RETREAT_08
+    position:
+    - 0.41000000000000003
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.758472479
+    - 1.456630996
+    - 0.721928322
+    - 0.615725381
+    - -1.001985524
+    - 0.501195952
+    maximum_delta_deg: 0.7477408623666645
+  - name: RETREAT_09
+    position:
+    - 0.405
+    - -0.18
+    - 0.274
+    rpy:
+    - 0.0
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.77181136
+    - 1.445557248
+    - 0.712390052
+    - 0.602398576
+    - -1.009230807
+    - 0.492994772
+    maximum_delta_deg: 0.7642615847272382
+- side: NEGATIVE_X_SIDE
+  roll_deg: 90.0
+  yaw_deg: 0.0
+  success: false
+  release_success: true
+  target_retreat_reached: false
+  last_success_x: 0.405
+  retreat_distance_m: 0.044999999999999984
+  clearance_beyond_cube_face_m: 0.004999999999999984
+  largest_step_deg: 0.7642615847272382
+  alignment_step_deg: 81.90123155081595
+  failed_x: 0.4
+  waypoints:
+  - name: PLACE_RELEASE
+    position:
+    - 0.45
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.664033928
+    - 1.546809427
+    - 0.804865303
+    - 0.712247911
+    - -0.951429409
+    - -1.010793067
+    maximum_delta_deg: 81.90123155081595
+  - name: RETREAT_01
+    position:
+    - 0.445
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.67473957
+    - 1.535426801
+    - 0.793876296
+    - 0.701171556
+    - -0.95717652
+    - -1.017441444
+    maximum_delta_deg: 0.6521764295758691
+  - name: RETREAT_02
+    position:
+    - 0.44
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.68574013
+    - 1.524067796
+    - 0.783060674
+    - 0.689812507
+    - -0.963057841
+    - -1.024296853
+    maximum_delta_deg: 0.650825566982302
+  - name: RETREAT_03
+    position:
+    - 0.435
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.69704454
+    - 1.512735823
+    - 0.772420266
+    - 0.678170758
+    - -0.969087087
+    - -1.031356632
+    maximum_delta_deg: 0.6670230838506422
+  - name: RETREAT_04
+    position:
+    - 0.43
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.708662548
+    - 1.501434729
+    - 0.761957288
+    - 0.666245839
+    - -0.975278873
+    - -1.038618146
+    maximum_delta_deg: 0.6832475297353681
+  - name: RETREAT_05
+    position:
+    - 0.425
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.720604113
+    - 1.490168772
+    - 0.751674078
+    - 0.654037832
+    - -0.981648445
+    - -1.046077989
+    maximum_delta_deg: 0.6994672773661668
+  - name: RETREAT_06
+    position:
+    - 0.42000000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.732879384
+    - 1.478942647
+    - 0.741573101
+    - 0.641547415
+    - -0.988211667
+    - -1.053731914
+    maximum_delta_deg: 0.7156481784584537
+  - name: RETREAT_07
+    position:
+    - 0.41500000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.745498683
+    - 1.46776151
+    - 0.731656947
+    - 0.628775921
+    - -0.99498501
+    - -1.061574759
+    maximum_delta_deg: 0.7317527042766535
+  - name: RETREAT_08
+    position:
+    - 0.41000000000000003
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.758472479
+    - 1.456630996
+    - 0.721928322
+    - 0.615725381
+    - -1.001985524
+    - -1.069600375
+    maximum_delta_deg: 0.7477408623666645
+  - name: RETREAT_09
+    position:
+    - 0.405
+    - -0.18
+    - 0.274
+    rpy:
+    - 1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.77181136
+    - 1.445557248
+    - 0.712390052
+    - 0.602398576
+    - -1.009230807
+    - -1.077801555
+    maximum_delta_deg: 0.7642615847272382
+- side: NEGATIVE_X_SIDE
+  roll_deg: -90.0
+  yaw_deg: 0.0
+  success: false
+  release_success: true
+  target_retreat_reached: false
+  last_success_x: 0.405
+  retreat_distance_m: 0.044999999999999984
+  clearance_beyond_cube_face_m: 0.004999999999999984
+  largest_step_deg: 0.7642615847272382
+  alignment_step_deg: 98.09879969888699
+  failed_x: 0.4
+  waypoints:
+  - name: PLACE_RELEASE
+    position:
+    - 0.45
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.664034227
+    - 1.546809295
+    - 0.804865351
+    - -2.429345288
+    - 0.951429464
+    - -1.010793545
+    maximum_delta_deg: 98.09879969888699
+  - name: RETREAT_01
+    position:
+    - 0.445
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.67473957
+    - 1.535426801
+    - 0.793876296
+    - -2.440421098
+    - 0.95717652
+    - -1.017441444
+    maximum_delta_deg: 0.6521688665329837
+  - name: RETREAT_02
+    position:
+    - 0.44
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.68574013
+    - 1.524067796
+    - 0.783060674
+    - -2.451780146
+    - 0.963057841
+    - -1.024296853
+    maximum_delta_deg: 0.6508255096865241
+  - name: RETREAT_03
+    position:
+    - 0.435
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.69704454
+    - 1.512735823
+    - 0.772420267
+    - -2.463421896
+    - 0.969087087
+    - -1.031356632
+    maximum_delta_deg: 0.6670231411464201
+  - name: RETREAT_04
+    position:
+    - 0.43
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.708662548
+    - 1.501434729
+    - 0.761957288
+    - -2.475346814
+    - 0.975278873
+    - -1.038618146
+    maximum_delta_deg: 0.6832474724395902
+  - name: RETREAT_05
+    position:
+    - 0.425
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.720604113
+    - 1.490168772
+    - 0.751674078
+    - -2.487554822
+    - 0.981648445
+    - -1.046077989
+    maximum_delta_deg: 0.6994673346619447
+  - name: RETREAT_06
+    position:
+    - 0.42000000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.732879384
+    - 1.478942647
+    - 0.741573101
+    - -2.500045239
+    - 0.988211667
+    - -1.053731914
+    maximum_delta_deg: 0.7156481784584537
+  - name: RETREAT_07
+    position:
+    - 0.41500000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.745498683
+    - 1.46776151
+    - 0.731656947
+    - -2.512816733
+    - 0.99498501
+    - -1.061574759
+    maximum_delta_deg: 0.7317527042766726
+  - name: RETREAT_08
+    position:
+    - 0.41000000000000003
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.758472479
+    - 1.456630996
+    - 0.721928322
+    - -2.525867273
+    - 1.001985524
+    - -1.069600374
+    maximum_delta_deg: 0.7477408623666391
+  - name: RETREAT_09
+    position:
+    - 0.405
+    - -0.18
+    - 0.274
+    rpy:
+    - -1.5707963267948966
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.77181136
+    - 1.445557248
+    - 0.712390052
+    - -2.539194078
+    - 1.009230807
+    - -1.077801555
+    maximum_delta_deg: 0.7642615847272382
+- side: NEGATIVE_X_SIDE
+  roll_deg: 180.0
+  yaw_deg: 0.0
+  success: false
+  release_success: true
+  target_retreat_reached: false
+  last_success_x: 0.405
+  retreat_distance_m: 0.044999999999999984
+  clearance_beyond_cube_face_m: 0.004999999999999984
+  largest_step_deg: 0.7642615847272382
+  alignment_step_deg: 98.09881471038122
+  failed_x: 0.4
+  waypoints:
+  - name: PLACE_RELEASE
+    position:
+    - 0.45
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.664034525
+    - 1.546809521
+    - 0.804865383
+    - -2.42934555
+    - 0.951429879
+    - 0.560002767
+    maximum_delta_deg: 98.09881471038122
+  - name: RETREAT_01
+    position:
+    - 0.445
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.67473957
+    - 1.535426801
+    - 0.793876296
+    - -2.440421098
+    - 0.95717652
+    - 0.553354882
+    maximum_delta_deg: 0.6521818153791437
+  - name: RETREAT_02
+    position:
+    - 0.44
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.68574013
+    - 1.524067796
+    - 0.783060674
+    - -2.451780146
+    - 0.963057841
+    - 0.546499474
+    maximum_delta_deg: 0.6508255096865241
+  - name: RETREAT_03
+    position:
+    - 0.435
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.69704454
+    - 1.512735823
+    - 0.772420267
+    - -2.463421896
+    - 0.969087087
+    - 0.539439695
+    maximum_delta_deg: 0.6670231411464201
+  - name: RETREAT_04
+    position:
+    - 0.43
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.708662548
+    - 1.501434729
+    - 0.761957288
+    - -2.475346814
+    - 0.975278873
+    - 0.532178181
+    maximum_delta_deg: 0.6832474724395902
+  - name: RETREAT_05
+    position:
+    - 0.425
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.720604113
+    - 1.490168772
+    - 0.751674078
+    - -2.487554822
+    - 0.981648445
+    - 0.524718337
+    maximum_delta_deg: 0.6994673346619447
+  - name: RETREAT_06
+    position:
+    - 0.42000000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.732879384
+    - 1.478942647
+    - 0.741573101
+    - -2.500045239
+    - 0.988211667
+    - 0.517064412
+    maximum_delta_deg: 0.7156481784584537
+  - name: RETREAT_07
+    position:
+    - 0.41500000000000004
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.745498683
+    - 1.46776151
+    - 0.731656947
+    - -2.512816733
+    - 0.99498501
+    - 0.509221568
+    maximum_delta_deg: 0.7317527042766726
+  - name: RETREAT_08
+    position:
+    - 0.41000000000000003
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.758472479
+    - 1.456630996
+    - 0.721928322
+    - -2.525867273
+    - 1.001985524
+    - 0.501195952
+    maximum_delta_deg: 0.7477408623666391
+  - name: RETREAT_09
+    position:
+    - 0.405
+    - -0.18
+    - 0.274
+    rpy:
+    - 3.141592653589793
+    - 0.0
+    - 0.0
+    selected_q:
+    - -0.77181136
+    - 1.445557248
+    - 0.712390052
+    - -2.539194078
+    - 1.009230807
+    - 0.492994772
+    maximum_delta_deg: 0.7642615847272382
+- side: POSITIVE_X_SIDE
+  roll_deg: 0.0
+  yaw_deg: 180.0
+  success: false
+  release_success: false
+  target_retreat_reached: false
+  last_success_x: null
+  retreat_distance_m: 0.0
+  clearance_beyond_cube_face_m: 0.0
+  largest_step_deg: 0.0
+  failed_x: 0.45
+  waypoints: []
+- side: POSITIVE_X_SIDE
+  roll_deg: 90.0
+  yaw_deg: 180.0
+  success: false
+  release_success: false
+  target_retreat_reached: false
+  last_success_x: null
+  retreat_distance_m: 0.0
+  clearance_beyond_cube_face_m: 0.0
+  largest_step_deg: 0.0
+  failed_x: 0.45
+  waypoints: []
+- side: POSITIVE_X_SIDE
+  roll_deg: -90.0
+  yaw_deg: 180.0
+  success: false
+  release_success: false
+  target_retreat_reached: false
+  last_success_x: null
+  retreat_distance_m: 0.0
+  clearance_beyond_cube_face_m: 0.0
+  largest_step_deg: 0.0
+  failed_x: 0.45
+  waypoints: []
+- side: POSITIVE_X_SIDE
+  roll_deg: 180.0
+  yaw_deg: 180.0
+  success: false
+  release_success: false
+  target_retreat_reached: false
+  last_success_x: null
+  retreat_distance_m: 0.0
+  clearance_beyond_cube_face_m: 0.0
+  largest_step_deg: 0.0
+  failed_x: 0.45
+  waypoints: []
+best_result: null

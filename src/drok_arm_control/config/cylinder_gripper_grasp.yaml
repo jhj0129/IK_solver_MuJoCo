@@ -1,0 +1,20 @@
+version: 1
+joint_names:
+- JOINT7
+- GRIPPER_RIGHT_JOINT
+geometry:
+  fully_open_gap_m: 0.156
+  cylinder_diameter_m: 0.06
+  gap_equation: gap = 0.156 - (JOINT7 - GRIPPER_RIGHT_JOINT)
+positions:
+  open:
+  - 0.0
+  - 0.0
+  geometric_touch:
+  - 0.048
+  - -0.048
+  initial_grasp:
+  - 0.0488
+  - -0.0488
+motion:
+  close_duration_sec: 4.0

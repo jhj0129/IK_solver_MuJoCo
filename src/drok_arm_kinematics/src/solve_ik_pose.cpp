@@ -6,6 +6,7 @@
 #include <Eigen/Geometry>
 
 #include <cmath>
+#include <cstdlib>
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
@@ -161,18 +162,52 @@ int main(int argc, char ** argv)
 
     drok_arm_kinematics::IkOptions options;
 
+    const char * ik_mode_environment =
+      std::getenv("DROK_IK_MODE");
+
+    const std::string ik_mode =
+      ik_mode_environment == nullptr ?
+      "position" :
+      std::string(ik_mode_environment);
+
+    if (
+      ik_mode != "position" &&
+      ik_mode != "full")
+    {
+      throw std::runtime_error(
+              "DROK_IK_MODE must be "
+              "'position' or 'full'.");
+    }
+
     options.max_iterations = 1500;
 
     options.position_tolerance = 1.0e-5;
-    options.orientation_tolerance = 1.0e-5;
-
     options.damping = 1.0e-2;
     options.numerical_delta = 1.0e-6;
-
     options.position_weight = 1.0;
-    options.orientation_weight = 0.5;
-
     options.maximum_joint_step = 0.05;
+
+    if (ik_mode == "full") {
+      // Exact full-pose IK:
+      // used for cube-face alignment and X-axis approach.
+      options.orientation_tolerance = 1.0e-5;
+      options.orientation_weight = 0.5;
+
+      // A six-axis full-pose task generally leaves almost
+      // no null space, so the nearest solution is selected
+      // outside the solver by comparing multiple IK results.
+      options.seed_continuity_gain = 0.0;
+      options.seed_continuity_activation_error = 0.05;
+
+    } else {
+      // Position-only IK:
+      // used only for unconstrained free-space movement.
+      options.orientation_tolerance = 4.0;
+      options.orientation_weight = 0.0;
+
+      options.seed_continuity_gain = 0.20;
+      options.seed_continuity_activation_error = 0.05;
+    }
 
     const drok_arm_kinematics::InverseKinematics
       inverse_kinematics(
@@ -199,6 +234,8 @@ int main(int argc, char ** argv)
       << "========================================\n"
       << " DROK TCP Pose IK Solver\n"
       << "========================================\n"
+      << "IK mode: " << ik_mode << '\n'
+      << "----------------------------------------\n"
       << "Target position [m]\n"
       << "x = " << target_x << '\n'
       << "y = " << target_y << '\n'

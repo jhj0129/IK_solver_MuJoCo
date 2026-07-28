@@ -18,3 +18,13 @@ log/
 # Python generated files
 *.py[cod]
 # Local backup files
+# ROS 2 build outputs
+# Runtime outputs
+run_logs/
+*.log
+# Python cache
+.pytest_cache/
+# Temporary and generated files
+manual_pose_runtime/generated/
+# Backups and generated files
+backups/

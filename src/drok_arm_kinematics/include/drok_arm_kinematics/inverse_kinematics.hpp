@@ -27,6 +27,17 @@ struct IkOptions
   double orientation_weight{0.5};
 
   double maximum_joint_step{0.10};
+
+  // Initial seed continuity.
+  //
+  // Zero preserves the original solver behavior.
+  // A positive value biases the numerical IK toward the supplied
+  // initial joint configuration through the damped null space.
+  double seed_continuity_gain{0.0};
+
+  // The seed-continuity term is gradually reduced as task error
+  // approaches zero so exact pose convergence remains possible.
+  double seed_continuity_activation_error{0.25};
 };
 
 struct IkResult

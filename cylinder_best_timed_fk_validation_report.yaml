@@ -1,0 +1,74 @@
+version: 1
+source_files:
+  timed_path: cylinder_best_timed_joint_path_segmented.yaml
+  cartesian_path: cylinder_best_full_cartesian_ik_path.yaml
+  geometry: src/drok_arm_kinematics/config/robot_geometry.yaml
+blocks:
+  - name: MOTION_BLOCK_1_PICK_APPROACH
+    source_segment: PICK_APPROACH
+    sample_count: 162
+    maximum_cross_track_error_m: 2.2090510399361096e-06
+    maximum_cross_track_sample: 21
+    start_endpoint_error_m: 2.3423391496745275e-07
+    goal_endpoint_error_m: 2.7548950618268987e-08
+    maximum_longitudinal_overshoot_m: 1.4724749652017725e-07
+    maximum_longitudinal_backtrack_m: 0
+    maximum_orientation_error_rad: 3.2431171496105568e-06
+    maximum_orientation_sample: 21
+    pass: true
+  - name: MOTION_BLOCK_2_PICK_LIFT
+    source_segment: PICK_LIFT
+    sample_count: 138
+    maximum_cross_track_error_m: 1.7413583826870614e-06
+    maximum_cross_track_sample: 117
+    start_endpoint_error_m: 2.7548950618268987e-08
+    goal_endpoint_error_m: 2.3288019417690179e-07
+    maximum_longitudinal_overshoot_m: 2.1660954585556169e-08
+    maximum_longitudinal_backtrack_m: 0
+    maximum_orientation_error_rad: 5.286952150951222e-06
+    maximum_orientation_sample: 117
+    pass: true
+  - name: MOTION_BLOCK_3_TRANSFER
+    source_segment: TRANSFER
+    sample_count: 364
+    maximum_cross_track_error_m: 1.1004354937327185e-05
+    maximum_cross_track_sample: 322
+    start_endpoint_error_m: 2.3288019421691004e-07
+    goal_endpoint_error_m: 1.0830270389834237e-05
+    maximum_longitudinal_overshoot_m: 1.171386203235869e-06
+    maximum_longitudinal_backtrack_m: 0
+    maximum_orientation_error_rad: 1.1032898640879218e-06
+    maximum_orientation_sample: 217
+    pass: true
+  - name: MOTION_BLOCK_4_PLACE_DESCEND
+    source_segment: PLACE_DESCEND
+    sample_count: 139
+    maximum_cross_track_error_m: 1.6087025839030866e-05
+    maximum_cross_track_sample: 106
+    start_endpoint_error_m: 1.0830270389834237e-05
+    goal_endpoint_error_m: 1.9314254051054816e-05
+    maximum_longitudinal_overshoot_m: 0
+    maximum_longitudinal_backtrack_m: 0
+    maximum_orientation_error_rad: 1.5070342249842827e-05
+    maximum_orientation_sample: 31
+    pass: true
+  - name: MOTION_BLOCK_5_PLACE_RETREAT
+    source_segment: PLACE_RETREAT
+    sample_count: 162
+    maximum_cross_track_error_m: 1.1181462820219293e-05
+    maximum_cross_track_sample: 0
+    start_endpoint_error_m: 1.9314254051054816e-05
+    goal_endpoint_error_m: 5.0325649257980554e-07
+    maximum_longitudinal_overshoot_m: 0
+    maximum_longitudinal_backtrack_m: 0
+    maximum_orientation_error_rad: 1.2610679372176372e-05
+    maximum_orientation_sample: 0
+    pass: true
+summary:
+  sample_count: 965
+  maximum_cross_track_error_m: 1.6087025839030866e-05
+  maximum_endpoint_error_m: 1.9314254051054816e-05
+  maximum_longitudinal_overshoot_m: 1.171386203235869e-06
+  maximum_longitudinal_backtrack_m: 0
+  maximum_orientation_error_rad: 1.5070342249842827e-05
+  pass: true
