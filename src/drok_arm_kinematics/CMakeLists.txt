@@ -118,6 +118,19 @@ target_link_libraries(
     ${PROJECT_NAME}
 )
 
+
+add_executable(
+  solve_ik_upright
+  src/solve_ik_upright.cpp
+)
+
+target_link_libraries(
+  solve_ik_upright
+  PRIVATE
+    ${PROJECT_NAME}
+)
+
+
 install(
   TARGETS
     ${PROJECT_NAME}
@@ -153,6 +166,40 @@ ament_export_targets(
 
 ament_export_dependencies(
   Eigen3
+)
+
+
+install(
+  TARGETS
+    solve_ik_upright
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
+
+
+add_executable(
+  validate_timed_cylinder_fk
+  src/validate_timed_cylinder_fk.cpp
+)
+
+target_link_libraries(
+  validate_timed_cylinder_fk
+  PRIVATE
+    ${PROJECT_NAME}
+    yaml-cpp
+)
+
+target_compile_options(
+  validate_timed_cylinder_fk
+  PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+)
+
+install(
+  TARGETS
+    validate_timed_cylinder_fk
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_package()

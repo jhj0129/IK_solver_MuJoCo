@@ -238,7 +238,7 @@
     <parent link="GRIPPER_BASE" />
     <child link="GRIPPER_LEFT" />
     <axis xyz="0 -1 0" />
-    <limit lower="0.0" upper="0.04"
+    <limit lower="0.0" upper="0.05"
            effort="100.0" velocity="0.05" />
     <dynamics damping="1.0" friction="0.1" />
   </joint>
@@ -269,7 +269,7 @@
     <parent link="GRIPPER_BASE" />
     <child link="GRIPPER_RIGH" />
     <axis xyz="0 -1 0" />
-    <limit lower="-0.04" upper="0.0"
+    <limit lower="-0.05" upper="0.0"
            effort="100.0" velocity="0.05" />
     <dynamics damping="1.0" friction="0.1" />
   </joint>

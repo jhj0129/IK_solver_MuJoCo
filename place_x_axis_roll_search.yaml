@@ -1,0 +1,66 @@
+mode: place_x_axis_roll_search
+robot_execution: false
+approach_axis: world_positive_x
+place_y: -0.18
+place_z: 0.274
+x_values:
+- 0.36
+- 0.37
+- 0.38
+- 0.39
+- 0.4
+- 0.41
+- 0.42
+- 0.43
+- 0.44
+- 0.45
+roll_candidates_deg:
+- 0.0
+- 90.0
+- -90.0
+- 180.0
+initial_reference_q:
+- -0.227273665
+- 1.384080621
+- 0.983443985
+- -0.717198241
+- 0.459893863
+- -1.4129e-05
+results:
+- roll_deg: 0.0
+  success: false
+  failed_x: 0.36
+  alignment_step_rad: 0.0
+  alignment_step_deg: 0.0
+  largest_approach_step_rad: 0.0
+  largest_approach_step_deg: 0.0
+  total_joint_travel_rad: 0.0
+  waypoints: []
+- roll_deg: 90.0
+  success: false
+  failed_x: 0.36
+  alignment_step_rad: 0.0
+  alignment_step_deg: 0.0
+  largest_approach_step_rad: 0.0
+  largest_approach_step_deg: 0.0
+  total_joint_travel_rad: 0.0
+  waypoints: []
+- roll_deg: -90.0
+  success: false
+  failed_x: 0.36
+  alignment_step_rad: 0.0
+  alignment_step_deg: 0.0
+  largest_approach_step_rad: 0.0
+  largest_approach_step_deg: 0.0
+  total_joint_travel_rad: 0.0
+  waypoints: []
+- roll_deg: 180.0
+  success: false
+  failed_x: 0.36
+  alignment_step_rad: 0.0
+  alignment_step_deg: 0.0
+  largest_approach_step_rad: 0.0
+  largest_approach_step_deg: 0.0
+  total_joint_travel_rad: 0.0
+  waypoints: []
+best_result: null

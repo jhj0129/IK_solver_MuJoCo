@@ -1,0 +1,33 @@
+version: 1
+source_hybrid_path: /home/hgui/IK_solver_MuJoCo/cylinder_best_hybrid_path.yaml
+candidate_index: 21
+place_grasp_tcp_xyz:
+- 0.45
+- -0.18
+- 0.28200000000000003
+place_grasp_joint_positions:
+- -0.488046145
+- 1.463294588
+- 0.754155669
+- 1.212134221
+- -0.741768113
+- 0.882249444
+final_tcp_yaw_rad: -0.248617401
+final_tcp_yaw_deg: -14.244727790811572
+approach_direction_world:
+- 0.9692535559916733
+- -0.2460641058697839
+- 0.0
+retreat_direction_world:
+- -0.9692535559916733
+- 0.2460641058697839
+- 0.0
+retreat_distance: 0.08
+place_retreat_tcp_xyz:
+- 0.37245971552066615
+- -0.1603148715304173
+- 0.28200000000000003
+retreat_target_rpy_rad:
+- 0.0
+- 0.0
+- -0.248617401

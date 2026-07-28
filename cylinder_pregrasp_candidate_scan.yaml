@@ -1,0 +1,274 @@
+version: 1
+candidate_file: /home/hgui/IK_solver_MuJoCo/cylinder_grasp_candidates.yaml
+initial_joint_positions:
+- 5.727627449777199e-05
+- 0.296959786457614
+- 0.29628690718734624
+- -7.050169460684542e-05
+- -0.0003747359496047482
+- 1.720496392381753e-05
+tested_candidate_count: 36
+successful_candidate_count: 5
+best_candidate: &id002
+  candidate_index: 21
+  phi_deg: 210.00000000000003
+  pregrasp_tcp_xyz:
+  - 0.3807179676972449
+  - 0.13999999999999999
+  - 0.28200000000000003
+  target_rpy_rad:
+  - 0.0
+  - -0.0
+  - 0.523598775598299
+  best_solution: &id001
+    seed_source: position_only_solution
+    joint_positions:
+    - 0.157001015
+    - 1.213850764
+    - 0.56932425
+    - 1.002157498
+    - -0.728359811
+    - 0.706917418
+    maximum_change_rad: 1.0022279996946069
+    maximum_change_deg: 57.42343449233973
+    minimum_limit_margin_rad: 0.56932425
+    minimum_limit_margin_deg: 32.619876699450955
+    squared_distance: 2.974000936452398
+    position_error: 2.34e-07
+    orientation_error: 3.34e-07
+  all_solutions:
+  - *id001
+  - seed_source: previous_phi_solution
+    joint_positions:
+    - 0.157001104
+    - 1.21385163
+    - 0.569324553
+    - 1.002157896
+    - -0.728360407
+    - 0.706917896
+    maximum_change_rad: 1.0022283976946067
+    maximum_change_deg: 57.42345729605997
+    minimum_limit_margin_rad: 0.569324553
+    minimum_limit_margin_deg: 32.61989406007215
+    squared_distance: 2.974005059234078
+    position_error: 1.58e-07
+    orientation_error: 2.16e-07
+  - seed_source: current_joint_state
+    joint_positions:
+    - 0.157001243
+    - 1.21385179
+    - 0.569324377
+    - 1.002158403
+    - -0.728360705
+    - 0.706918415
+    maximum_change_rad: 1.0022289046946067
+    maximum_change_deg: 57.42348634502018
+    minimum_limit_margin_rad: 0.569324377
+    minimum_limit_margin_deg: 32.61988397601496
+    squared_distance: 2.974007484063265
+    position_error: 1.97e-07
+    orientation_error: 2.89e-07
+successful_candidates:
+- *id002
+- candidate_index: 22
+  phi_deg: 219.99999999999997
+  pregrasp_tcp_xyz:
+  - 0.38871644455048177
+  - 0.12857699122507688
+  - 0.28200000000000003
+  target_rpy_rad:
+  - 0.0
+  - -0.0
+  - 0.6981317007977313
+  best_solution: &id003
+    seed_source: previous_phi_solution
+    joint_positions:
+    - -0.058342975
+    - 1.311820555
+    - 0.634017145
+    - 0.586465912
+    - -0.968542951
+    - 0.445922342
+    maximum_change_rad: 1.0148607685423858
+    maximum_change_deg: 58.14723883088181
+    minimum_limit_margin_rad: 0.553207049
+    minimum_limit_margin_deg: 31.696429104586926
+    squared_distance: 2.627620730867119
+    position_error: 1.43e-07
+    orientation_error: 1.82e-07
+  all_solutions:
+  - *id003
+  - seed_source: position_only_solution
+    joint_positions:
+    - -0.0583424
+    - 1.311820732
+    - 0.634016989
+    - 0.58646685
+    - -0.968542772
+    - 0.445923157
+    maximum_change_rad: 1.0148609455423858
+    maximum_change_deg: 58.147248972234785
+    minimum_limit_margin_rad: 0.5532072279999999
+    minimum_limit_margin_deg: 31.696439360531453
+    squared_distance: 2.6276223981611353
+    position_error: 3.4e-08
+    orientation_error: 3.4e-08
+  - seed_source: current_joint_state
+    joint_positions:
+    - -0.058341036
+    - 1.311821429
+    - 0.634014882
+    - 0.586471102
+    - -0.968543783
+    - 0.445927861
+    maximum_change_rad: 1.0148616425423862
+    maximum_change_deg: 58.147288907393126
+    minimum_limit_margin_rad: 0.553206217
+    minimum_limit_margin_deg: 31.69638143449837
+    squared_distance: 2.627633371049032
+    position_error: 6.13e-07
+    orientation_error: 1.251e-06
+- candidate_index: 23
+  phi_deg: 230.0
+  pregrasp_tcp_xyz:
+  - 0.39857699122507684
+  - 0.11871644455048176
+  - 0.28200000000000003
+  target_rpy_rad:
+  - 0.0
+  - -0.0
+  - 0.8726646259971645
+  best_solution: &id004
+    seed_source: position_only_solution
+    joint_positions:
+    - -0.191714001
+    - 1.445015708
+    - 0.738278854
+    - 0.345717172
+    - -1.19299898
+    - 0.354589989
+    maximum_change_rad: 1.1926242440503954
+    maximum_change_deg: 68.33233572906794
+    minimum_limit_margin_rad: 0.3287510199999999
+    minimum_limit_margin_deg: 18.83604595662091
+    squared_distance: 3.2178090647782676
+    position_error: 2.336e-06
+    orientation_error: 7.39e-06
+  all_solutions:
+  - *id004
+  - seed_source: previous_phi_solution
+    joint_positions:
+    - -0.191718023
+    - 1.445024313
+    - 0.738284359
+    - 0.345707504
+    - -1.193006178
+    - 0.354590434
+    maximum_change_rad: 1.1926314420503954
+    maximum_change_deg: 68.33274814408887
+    minimum_limit_margin_rad: 0.32874382199999985
+    minimum_limit_margin_deg: 18.83563354159997
+    squared_distance: 3.2178460304641097
+    position_error: 1.124e-06
+    orientation_error: 1.596e-06
+  - seed_source: current_joint_state
+    joint_positions:
+    - -0.191710112
+    - 1.44502143
+    - 0.738271955
+    - -2.795874729
+    - 1.193000365
+    - -2.786989274
+    maximum_change_rad: 2.795804227305393
+    maximum_change_deg: 160.1877825694333
+    minimum_limit_margin_rad: 0.09030072599999972
+    minimum_limit_margin_deg: 5.173850486767244
+    squared_distance: 18.558241573840895
+    position_error: 4.018e-06
+    orientation_error: 2.964e-06
+- candidate_index: 24
+  phi_deg: 239.99999999999997
+  pregrasp_tcp_xyz:
+  - 0.41
+  - 0.11071796769724492
+  - 0.28200000000000003
+  target_rpy_rad:
+  - 0.0
+  - -0.0
+  - 1.0471975511965972
+  best_solution: &id005
+    seed_source: position_only_solution
+    joint_positions:
+    - -0.2604424
+    - 1.588036249
+    - 0.872400503
+    - 0.174948376
+    - -1.373199406
+    - 0.314140778
+    maximum_change_rad: 1.3728246700503952
+    maximum_change_deg: 78.65705960532743
+    minimum_limit_margin_rad: 0.14855059400000004
+    minimum_limit_margin_deg: 8.511322080361412
+    squared_distance: 4.080598190135673
+    position_error: 5.4e-08
+    orientation_error: 5.0e-08
+  all_solutions:
+  - *id005
+  - seed_source: previous_phi_solution
+    joint_positions:
+    - -0.26044342
+    - 1.588035893
+    - 0.872400085
+    - 0.174947653
+    - -1.373200493
+    - 0.314140488
+    maximum_change_rad: 1.3728257570503952
+    maximum_change_deg: 78.65712188583977
+    minimum_limit_margin_rad: 0.14854950700000003
+    minimum_limit_margin_deg: 8.51125979984908
+    squared_distance: 4.080599869932598
+    position_error: 4.06e-07
+    orientation_error: 3.97e-07
+- candidate_index: 20
+  phi_deg: 200.0
+  pregrasp_tcp_xyz:
+  - 0.37482459033712734
+  - 0.1526383885339465
+  - 0.28200000000000003
+  target_rpy_rad:
+  - 0.0
+  - -0.0
+  - 0.34906585039886584
+  best_solution: &id006
+    seed_source: position_only_solution
+    joint_positions:
+    - 0.433023512
+    - 1.186405987
+    - 0.552919282
+    - 1.712015008
+    - -0.638266709
+    - 1.265601001
+    maximum_change_rad: 1.7120855096946068
+    maximum_change_deg: 98.09527387100536
+    minimum_limit_margin_rad: 0.04589899900000005
+    minimum_limit_margin_deg: 2.629818926575189
+    squared_distance: 5.984279787317033
+    position_error: 2.82e-07
+    orientation_error: 4.03e-07
+  all_solutions:
+  - *id006
+  - seed_source: current_joint_state
+    joint_positions:
+    - 0.433053941
+    - 1.186405225
+    - 0.552908009
+    - 1.712070121
+    - -0.63827837
+    - 1.265643504
+    maximum_change_rad: 1.7121406226946068
+    maximum_change_deg: 98.09843161330166
+    minimum_limit_margin_rad: 0.04585649600000008
+    minimum_limit_margin_deg: 2.6273836840585463
+    squared_distance: 5.984610176730338
+    position_error: 6.57e-06
+    orientation_error: 4.835e-06

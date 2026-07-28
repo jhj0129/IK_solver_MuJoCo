@@ -19,11 +19,13 @@
       <position name="JOINT6" joint="JOINT6" kp="50" dampratio="1.0" ctrlrange="-2.87729 1.31150" />
       <position name="JOINT7" joint="JOINT7"
                 kp="3000" dampratio="1.0"
-                ctrlrange="0.0 0.04" />
+                ctrlrange="0 0.05"
+                ctrllimited="true" />
       <position name="GRIPPER_RIGHT_JOINT"
                 joint="GRIPPER_RIGHT_JOINT"
                 kp="3000" dampratio="1.0"
-                ctrlrange="-0.04 0.0" />
+                ctrlrange="-0.05 0"
+                ctrllimited="true" />
     </actuator>
     <contact>
       <exclude name="exclude_base_link1" body1="ARM_BASE_LINK" body2="LINK1" />

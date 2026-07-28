@@ -40,6 +40,20 @@ InverseKinematics::InverseKinematics(
     throw std::runtime_error(
             "IK maximum_joint_step must be greater than zero.");
   }
+
+  if (options_.seed_continuity_gain < 0.0) {
+    throw std::runtime_error(
+            "IK seed_continuity_gain must be non-negative.");
+  }
+
+  if (
+    options_.seed_continuity_activation_error <=
+    0.0)
+  {
+    throw std::runtime_error(
+            "IK seed_continuity_activation_error "
+            "must be greater than zero.");
+  }
 }
 
 std::vector<const JointModel *>
@@ -259,6 +273,12 @@ IkResult InverseKinematics::solve(
 
   applyJointLimits(joint_positions);
 
+  // Keep the supplied initial posture as the continuity reference.
+  // This reference remains fixed for one solve() call.
+  const std::vector<double>
+    reference_joint_positions =
+    joint_positions;
+
   for (std::size_t iteration = 0;
     iteration < options_.max_iterations;
     ++iteration)
@@ -312,14 +332,97 @@ IkResult InverseKinematics::solve(
       current_transform);
 
     const Eigen::Matrix<double, 6, 6>
+      task_identity =
+      Eigen::Matrix<double, 6, 6>::Identity();
+
+    const Eigen::Matrix<double, 6, 6>
       regularized_matrix =
       jacobian * jacobian.transpose() +
       std::pow(options_.damping, 2.0) *
-      Eigen::Matrix<double, 6, 6>::Identity();
+      task_identity;
+
+    const Eigen::LDLT<
+      Eigen::Matrix<double, 6, 6>>
+      decomposition(regularized_matrix);
+
+    if (
+      decomposition.info() !=
+      Eigen::Success)
+    {
+      result.message =
+        "IK regularized matrix decomposition failed.";
+
+      result.joint_positions =
+        joint_positions;
+
+      return result;
+    }
+
+    // Damped least-squares pseudoinverse:
+    //
+    // J# = J^T (J J^T + lambda^2 I)^-1
+    const Eigen::MatrixXd
+      damped_pseudoinverse =
+      jacobian.transpose() *
+      decomposition.solve(task_identity);
 
     Eigen::VectorXd delta_joint_positions =
-      jacobian.transpose() *
-      regularized_matrix.ldlt().solve(error);
+      damped_pseudoinverse * error;
+
+    if (
+      options_.seed_continuity_gain >
+      0.0)
+    {
+      Eigen::VectorXd reference_error(
+        static_cast<Eigen::Index>(
+          joint_positions.size()));
+
+      for (std::size_t index = 0;
+        index < joint_positions.size();
+        ++index)
+      {
+        reference_error[
+          static_cast<Eigen::Index>(index)] =
+          reference_joint_positions[index] -
+          joint_positions[index];
+      }
+
+      // Damped null-space projector:
+      //
+      // N = I - J# J
+      //
+      // Near a wrist singularity this allows the solver to prefer
+      // the branch closest to the supplied seed without replacing
+      // the primary Cartesian task.
+      const Eigen::MatrixXd
+        joint_identity =
+        Eigen::MatrixXd::Identity(
+        static_cast<Eigen::Index>(
+          joint_positions.size()),
+        static_cast<Eigen::Index>(
+          joint_positions.size()));
+
+      const Eigen::MatrixXd
+        null_space_projector =
+        joint_identity -
+        damped_pseudoinverse * jacobian;
+
+      // Fade the posture term to zero near convergence.
+      // This prevents the reference posture from creating a fixed
+      // residual pose error.
+      const double continuity_scale =
+        std::min(
+        1.0,
+        error.norm() /
+        options_.
+        seed_continuity_activation_error);
+
+      delta_joint_positions +=
+        continuity_scale *
+        options_.seed_continuity_gain *
+        null_space_projector *
+        reference_error;
+    }
 
     if (!delta_joint_positions.allFinite()) {
       result.message =
