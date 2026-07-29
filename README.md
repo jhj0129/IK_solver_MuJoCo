@@ -1,136 +1,298 @@
-# Pick and Place 1 Way
+# DROK ARM MuJoCo — Stateful Multi-Box Pick and Place
 
-DROK ARM의 MuJoCo 기반 단방향 원기둥 Pick-and-Place 데모입니다.
+> README 초안입니다. 사용자가 최종 편집한 뒤 저장소의 README.md에 반영하는 용도입니다.
 
-## 구현된 동작
+## 1. 현재 목표
 
-1. HOME 상태 확인
-2. 그리퍼 완전 개방
-3. 원기둥 PICK 위치 접근
-4. 원기둥 파지
-5. 수직 50 mm 상승
-6. 반대편 받침대 상공으로 이동
-7. 수직 50 mm 하강
-8. 그리퍼 단계적 개방
-9. 원기둥으로부터 약 80 mm 후퇴
+MuJoCo에 배치된 4개의 상자 중 원기둥의 현재 위치를 관리하고,
+사용자가 목표 상자 번호만 지정하면 연속적인 Pick and Place를 수행합니다.
 
-현재 버전은 `PLACE_RETREAT` 종료점에서 끝납니다.  
-최종 HOME 복귀와 다방향 연속동작은 다음 개발 단계에서 추가합니다.
+동작 흐름:
 
-## 검증 환경
+HOME
+→ 현재 상자의 PICK_PREGRASP
+→ PICK_APPROACH
+→ GRASP
+→ PICK_LIFT
+→ TRANSFER
+→ PLACE_DESCEND
+→ RELEASE
+→ PLACE_RETREAT
+→ 안전 자세로 접기
+→ HOME 복귀
+→ 원기둥 현재 위치 자동 갱신
 
-- 운영체제: Ubuntu 22.04
-- ROS 2: Humble
-- 시뮬레이터: MuJoCo
-- 팔 제어기: `arm_controller`
-- 그리퍼 제어기: `gripper_controller`
-- 상태 broadcaster: `joint_state_broadcaster`
-- 팔 관절: `JOINT1` ~ `JOINT6`
-- 그리퍼 관절:
-  - `JOINT7`
-  - `GRIPPER_RIGHT_JOINT`
-- 원기둥 지름: 60 mm
-- 최종 그리퍼 파지 명령:
-  - `JOINT7 = +0.0488 m`
-  - `GRIPPER_RIGHT_JOINT = -0.0488 m`
+## 2. 상자 번호와 위치
 
-> 현재 그리퍼 범위와 파지값은 MuJoCo 시뮬레이션에서만 검증되었습니다.  
-> 실제 로봇 하드웨어에는 그대로 적용하지 않습니다.
+ROS/MuJoCo 좌표계 기준:
 
-## 재부팅 후 바로 실행
+- +X: 로봇 전방
+- +Y: 로봇 왼쪽
+- +Z: 위쪽
 
-컴퓨터를 껐다 켠 뒤 터미널 하나를 열고 다음 명령만 실행합니다.
+| BOX | 위치 (x, y, z) [m] | MuJoCo geom |
+|---|---:|---|
+| 1 | (0.450, +0.180, 0.116) | pickup_pedestal |
+| 2 | (0.450, -0.180, 0.116) | place_pedestal |
+| 3 | (0.350, -0.450, 0.116) | right_pick_pedestal |
+| 4 | (0.350, +0.450, 0.116) | left_place_pedestal |
+
+초기 MuJoCo 상태의 원기둥 위치는 BOX 1입니다.
+
+## 3. 현재 검증 완료된 이동
+
+2026-07-29 MuJoCo 기준:
+
+| 이동 | 결과 | 선택 후보 | 최소 관절 제한 여유 | 최대 관절 점프 | 최종 HOME 오차 |
+|---|---|---:|---:|---:|---:|
+| BOX 1 → BOX 2 | PASS | 21 | 11.337° | 0.585° | 별도 HOME 복귀 PASS |
+| BOX 2 → BOX 3 | PASS | 13 | 7.167° | 0.577° | 0.279° |
+| BOX 3 → BOX 2 | PASS | 13 | 31.842° | 0.613° | 0.279° |
+| BOX 2 → BOX 1 | PASS | 13 | 경로 생성 PASS | 경로 생성 PASS | 0.278° |
+
+검증된 공통 동작:
+
+- 그리퍼 초기 완전 개방
+- HOME 상태 검사
+- HOME → PICK_PREGRASP Poly5 진입
+- PICK_APPROACH
+- 원기둥 파지
+- PICK_LIFT
+- TRANSFER
+- PLACE_DESCEND
+- 부분 해제
+- 완전 개방
+- PLACE_RETREAT
+- JOINT1을 유지한 상태에서 JOINT2~6 접기
+- 접힌 상태에서 JOINT1을 HOME으로 복귀
+- 성공한 경우에만 원기둥 위치 상태 갱신
+
+## 4. 주요 파일
+
+### 설정
+
+- `src/drok_arm_control/config/box_layout.yaml`
+  - BOX 1~4 좌표 및 원기둥/받침대 형상 설정
+
+- `src/drok_arm_control/config/cylinder_gripper_grasp.yaml`
+  - 그리퍼 개방 및 파지 위치 설정
+
+### 경로 생성
+
+- `src/drok_arm_control/scripts/generate_box_to_box_path.py`
+  - `--from-box`, `--to-box`로 이동별 경로 생성
+  - grasp candidate 생성
+  - Hybrid IK
+  - PLACE_RETREAT target 생성
+  - PLACE_RETREAT IK
+  - 전체 Cartesian path 조립
+  - Poly5 시간 파라미터화
+
+### 실행
+
+- `src/drok_arm_control/scripts/execute_box_move.py`
+  - 지정된 BOX 간 이동을 실제 MuJoCo에서 실행
+  - 선택된 `timed_joint_path.yaml`을 읽어 블록별 실행
+  - 경로의 마지막 PLACE_RETREAT 관절값을 자동으로 사용
+  - 안전 HOME 복귀 포함
+
+- `src/drok_arm_control/scripts/execute_box_target.py`
+  - 저장된 현재 원기둥 위치를 기준으로 목표 BOX만 지정
+  - 이동 성공 시에만 현재 BOX 상태 갱신
+  - MuJoCo Reset 후 상태 초기화 지원
+
+### 상태 파일
+
+- `runtime_state/cylinder_box_state.yaml`
+  - 현재 원기둥 BOX 번호 저장
+  - Git 추적 대상에서 제외
+
+## 5. 실행 환경
+
+- Ubuntu 22.04
+- ROS 2 Humble
+- MuJoCo 3.6
+- ros2_control
+- Python 3
+- PyYAML
+
+저장소 루트:
+
+```bash
+~/IK_solver_MuJoCo
+```
+
+## 6. MuJoCo 실행
+
+### Terminal 1
 
 ```bash
 cd ~/IK_solver_MuJoCo
-./demo_pick_and_place_1_way.sh --execute
-```
-
-실행 스크립트가 자동으로 다음 작업을 수행합니다.
-
-```text
-MuJoCo 실행
-→ ROS 2 제어기 준비 대기
-→ Pick-and-Place 전체 실행
-→ PLACE_RETREAT 종료점에서 정지
-```
-
-동작이 끝난 뒤 MuJoCo는 계속 실행됩니다.  
-종료하려면 실행 터미널에서 `Ctrl+C`를 누릅니다.
-
-## 직접 실행
-
-### Terminal 1 — MuJoCo 실행
-
-```bash
-cd ~/IK_solver_MuJoCo
-
 source /opt/ros/humble/setup.bash
 source install/setup.bash
 
-ros2 launch   drok_arm_mujoco   drok_arm_mujoco.launch.py
+ros2 launch drok_arm_mujoco drok_arm_mujoco.launch.py
 ```
 
-### Terminal 2 — Pick-and-Place 실행
+## 7. BOX 배치 검증
 
 ```bash
 cd ~/IK_solver_MuJoCo
 
+python3   src/drok_arm_control/scripts/check_box_layout.py
+```
+
+정상 결과:
+
+```text
+BOX LAYOUT VALIDATION: PASS
+```
+
+## 8. BOX 간 경로 생성
+
+예시: BOX 3에서 BOX 2로 이동하는 경로 생성
+
+```bash
+cd ~/IK_solver_MuJoCo
 source /opt/ros/humble/setup.bash
 source install/setup.bash
 
-src/drok_arm_control/scripts/execute_cylinder_pick_place_full.sh   --execute   --confirmation EXECUTE_MUJOCO_CYLINDER_PICK_PLACE
+python3   src/drok_arm_control/scripts/generate_box_to_box_path.py   --from-box 3   --to-box 2   --candidate-index 13   --overwrite
 ```
 
-## 터미널 출력
+특정 후보가 실패하면 모든 grasp candidate를 검사합니다.
 
-통합 실행기는 상세 로그 대신 현재 동작만 간단하게 표시합니다.
+```bash
+python3   src/drok_arm_control/scripts/generate_box_to_box_path.py   --from-box 3   --to-box 2   --overwrite
+```
+
+생성 결과:
 
 ```text
-[시작] MuJoCo 원기둥 Pick-and-Place
-[시작 대기] 제어기 및 액션 서버 확인
-[현재 동작] 그리퍼 초기 개방
-[현재 동작] 홈 위치 및 개방 상태 확인
-[현재 동작] 원기둥 파지 위치로 접근
-[현재 동작] 원기둥 파지
-[현재 동작] 원기둥 들어 올리기
-[현재 동작] 원기둥 운반
-[현재 동작] 원기둥 내려놓기
-[현재 동작] 그리퍼 1차 해제
-[현재 동작] 그리퍼 완전 개방
-[현재 동작] 원기둥에서 후퇴
-[종료] Pick-and-Place 완료
+generated_box_paths/
+└── box_3_to_2/
+    ├── generation_report.yaml
+    ├── grasp_candidates.yaml
+    ├── grasp_geometry.yaml
+    ├── planning_scene.xml
+    ├── hybrid_path.yaml
+    ├── retreat_target.yaml
+    ├── retreat_path.yaml
+    ├── full_cartesian_path.yaml
+    └── timed_joint_path.yaml
 ```
 
-## 로그 위치
+## 9. 현재 원기둥 위치 확인
 
-전체 Pick-and-Place 실행 로그:
+```bash
+cd ~/IK_solver_MuJoCo
+
+python3   src/drok_arm_control/scripts/execute_box_target.py   --show-state
+```
+
+## 10. 현재 위치 수동 지정
+
+예시: 실제 원기둥이 BOX 3에 있는 경우
+
+```bash
+python3   src/drok_arm_control/scripts/execute_box_target.py   --set-current-box 3
+```
+
+## 11. MuJoCo Reset 후 상태 초기화
+
+MuJoCo를 Reset하거나 재실행하면 원기둥은 초기 BOX 1로 돌아갑니다.
+소프트웨어 상태도 반드시 함께 초기화해야 합니다.
+
+```bash
+python3   src/drok_arm_control/scripts/execute_box_target.py   --reset-state
+```
+
+## 12. 목표 BOX만 지정해 실행
+
+현재 저장된 위치에서 BOX 2로 이동:
+
+### Dry-run
+
+```bash
+python3   src/drok_arm_control/scripts/execute_box_target.py   --to-box 2
+```
+
+### 실제 MuJoCo 실행
+
+```bash
+python3   src/drok_arm_control/scripts/execute_box_target.py   --to-box 2   --speed-scale 0.5   --execute   --confirmation EXECUTE_MUJOCO_BOX_TARGET
+```
+
+성공하면 다음과 같이 상태가 자동 갱신됩니다.
 
 ```text
-~/IK_solver_MuJoCo/run_logs/cylinder_pick_place_full_*.log
+BOX MOVE RESULT: PASS
+BOX TARGET STATE UPDATE: PASS
+Previous state : BOX 3
+Current state  : BOX 2
 ```
 
-MuJoCo launch 로그:
+## 13. 직접 출발·도착 BOX를 지정해 실행
+
+자동 상태 관리를 사용하지 않고 직접 실행:
+
+```bash
+python3   src/drok_arm_control/scripts/execute_box_move.py   --from-box 2   --to-box 3   --speed-scale 0.5   --execute   --confirmation EXECUTE_MUJOCO_BOX_MOVE
+```
+
+## 14. JOINT1 설정
+
+MuJoCo 전용 JOINT1 범위:
 
 ```text
-~/IK_solver_MuJoCo/run_logs/pick_place_1_way_mujoco_*.log
+-6.5 rad ~ +6.5 rad
 ```
 
-## 현재 완료 상태
+적용 파일:
 
-- PICK 접근: PASS
-- 원기둥 파지: PASS
-- PICK LIFT: PASS
-- TRANSFER: PASS
-- PLACE DESCEND: PASS
-- 그리퍼 해제: PASS
-- PLACE RETREAT: PASS
-- 전체 단방향 Pick-and-Place: PASS
+- `src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf`
+- `src/drok_arm_mujoco/config/mujoco_inputs.xml`
+- `src/drok_arm_kinematics/config/robot_geometry.yaml`
 
-## 다음 개발 단계
+주의:
 
-1. 현재 동작 종료 후 HOME 복귀 추가
-2. 후반부 중복 그리퍼 개방 확인 단계 제거
-3. 좌측·우측·후방 받침대 추가
-4. JOINT1의 MuJoCo 전용 회전 범위 확장
-5. 원기둥 하나를 이용한 연속 Pick-and-Place 구현
+- 이 범위는 MuJoCo 시뮬레이션 전용입니다.
+- 실제 하드웨어에는 케이블, 커넥터, 기구 간섭 검증 없이 적용하면 안 됩니다.
+- 현재 장면에서 약 147° 부근까지 회전했을 때 받침대와 충돌한 이력이 있습니다.
+- 실제 Pick and Place는 필요한 작업 범위 안에서만 수행합니다.
+
+## 15. 현재 제한사항
+
+- 4개 BOX 간 총 12개 방향 경로가 모두 생성된 상태는 아닙니다.
+- 현재 검증된 신규 경로는 2→3, 3→2, 2→1입니다.
+- `runtime_state`는 비전 기반 위치 추정이 아니라 성공한 명령을 기준으로 저장됩니다.
+- MuJoCo Reset 또는 재실행 후 `--reset-state`가 필요합니다.
+- 실제 원기둥이 미끄러지거나 낙하했을 때 자동 감지하지 않습니다.
+- BOX 3↔4처럼 긴 좌우 이동은 별도 충돌 검증이 필요합니다.
+- 실제 로봇 하드웨어에서는 아직 검증하지 않았습니다.
+- 현재 충돌 판단은 MuJoCo 시각 확인과 궤적 검증을 함께 사용합니다.
+
+## 16. 다음 개발 항목
+
+1. 남은 BOX 이동 방향 경로 생성 및 MuJoCo 검증
+2. 모든 이동 경로의 충돌 검사 자동화
+3. BOX 3↔4 안전 clearance 경로 검증
+4. 연속 목표 목록 실행
+5. 원기둥 위치를 MuJoCo body pose 또는 카메라로 자동 확인
+6. 상태 파일과 실제 물체 위치 불일치 감지
+7. 실제 하드웨어용 JOINT1 제한 및 케이블 안전 범위 별도 구성
+
+## 17. 안전 주의사항
+
+이 프로젝트의 현재 결과는 MuJoCo 시뮬레이션 기준입니다.
+
+실제 로봇에서 실행하기 전에 반드시 다음을 별도로 검증해야 합니다.
+
+- JOINT1 케이블 꼬임 범위
+- 관절별 실제 소프트웨어 및 하드웨어 제한
+- 모터 토크와 속도
+- 그리퍼 파지력
+- 비상 정지
+- 자기 충돌
+- 받침대 및 주변 물체 충돌
+- 원기둥 낙하
