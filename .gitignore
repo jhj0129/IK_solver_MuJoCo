@@ -31,3 +31,9 @@ backups/
 runtime_state/
 generated_box_paths/*/candidate_trials/
 generated_box_paths/*/*.log
+
+# Local IK planning and analysis artifacts
+analysis_reports/
+generated_known_object_paths/
+generated_random_known_pose_moves/
+src/drok_arm_mujoco/model/scene_before_random_*.xml
