@@ -1,0 +1,65 @@
+version: 1
+
+description: >
+  기존 MuJoCo 측면 Pick-and-Place 성공 경로에서 측정한
+  LINK4 높이 및 그리퍼 수평 접근 기준.
+
+reference:
+  trajectory: generated_box_paths/box_2_to_1/timed_joint_path.yaml
+
+  object:
+    center_z: 0.272
+    grasp_z: 0.282
+
+  link4:
+    frame_name: LINK4
+
+    pick_approach_end_z: 0.306934
+    place_descend_end_z: 0.306944
+    place_retreat_end_z: 0.306481
+
+    grasp_z_offset_target: 0.0248
+
+  gripper:
+    approach_axis_local: "+X"
+    reference_tilt_from_horizontal_deg: 0.0
+
+side_interaction_constraints:
+  # 파지·배치·후퇴 시 LINK4가 기존 측면 자세와
+  # 크게 달라지지 않도록 하는 기준.
+  link4_grasp_z_offset_target: 0.0248
+
+  # 이 범위 안이면 우수한 후보로 평가.
+  preferred_offset_tolerance: 0.010
+
+  # 이 범위를 벗어나면 위에서 내려오는 형태나
+  # 과도하게 낮은 팔 자세로 판단하여 후보 제외.
+  maximum_offset_error: 0.020
+
+  # 그리퍼 접근축은 수평면 기준 ±5도 이내.
+  maximum_tcp_tilt_from_horizontal_deg: 5.0
+
+  apply_to_phases:
+    - PICK_PREGRASP
+    - PICK_APPROACH
+    - PLACE_DESCEND
+    - PLACE_RETREAT
+
+lift_and_transfer_reference:
+  # 기존 경로에서 측정된 들어 올린 상태의 LINK4 높이.
+  link4_grasp_z_offset_target: 0.0700
+
+  # Lift/Transfer는 측면 상호작용 구간보다 완화해서 사용.
+  maximum_offset_error: 0.030
+
+  apply_to_phases:
+    - PICK_LIFT
+    - TRANSFER
+
+candidate_scoring:
+  # 낮을수록 좋은 비용으로 사용할 예정.
+  weights:
+    joint_limit_margin: 1.0
+    maximum_joint_jump: 1.0
+    link4_height_error: 2.0
+    tcp_horizontal_tilt: 2.0
