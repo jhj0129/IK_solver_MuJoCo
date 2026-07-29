@@ -28,3 +28,6 @@ run_logs/
 manual_pose_runtime/generated/
 # Backups and generated files
 backups/
+runtime_state/
+generated_box_paths/*/candidate_trials/
+generated_box_paths/*/*.log

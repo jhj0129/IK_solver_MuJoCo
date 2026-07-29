@@ -1,0 +1,63 @@
+version: 1
+
+coordinate_frame:
+  frame_id: world
+  x_direction: robot_forward
+  y_direction: robot_left
+  z_direction: up
+
+geometry:
+  pedestal_half_size:
+    x: 0.120
+    y: 0.120
+    z: 0.116
+
+  pedestal_top_z: 0.232
+
+  cylinder:
+    radius: 0.030
+    height: 0.080
+    initial_center_z: 0.272
+
+  grasp:
+    cylinder_center_z: 0.282
+    lift_z: 0.332
+
+  # 좌우 끝 이동 시에는 기존 0.332 m보다 높은
+  # 안전 경로가 필요할 수 있으므로 이후 IK 검증 후 확정한다.
+  transfer_clearance_z: 0.420
+
+boxes:
+  1:
+    geom_name: pickup_pedestal
+    description: cylinder_initial_box
+    position:
+      x: 0.450
+      y: 0.180
+      z: 0.116
+
+  2:
+    geom_name: place_pedestal
+    description: front_right_inner
+    position:
+      x: 0.450
+      y: -0.180
+      z: 0.116
+
+  3:
+    geom_name: right_pick_pedestal
+    description: right_outer
+    position:
+      x: 0.350
+      y: -0.450
+      z: 0.116
+
+  4:
+    geom_name: left_place_pedestal
+    description: left_outer
+    position:
+      x: 0.350
+      y: 0.450
+      z: 0.116
+
+initial_cylinder_box: 1
