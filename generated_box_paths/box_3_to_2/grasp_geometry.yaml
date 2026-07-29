@@ -1,0 +1,29 @@
+version: 1
+frames:
+  end_effector_frame: gripper_tcp
+  approach_axis_tcp:
+  - 1.0
+  - 0.0
+  - 0.0
+  closing_axis_tcp:
+  - 0.0
+  - 1.0
+  - 0.0
+  upright_axis_tcp:
+  - 0.0
+  - 0.0
+  - 1.0
+  tcp_to_grasp_center:
+  - 0.0
+  - 0.0
+  - 0.0
+scene:
+  pickup_object_body: pickup_cube
+  pickup_pedestal_geom: right_pick_pedestal
+  place_pedestal_geom: place_pedestal
+grasp:
+  height_ratio: 0.625
+  pregrasp_surface_clearance: 0.05
+  vertical_clearance: 0.05
+search:
+  azimuth_candidate_count: 36

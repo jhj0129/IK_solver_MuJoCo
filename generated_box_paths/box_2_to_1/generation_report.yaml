@@ -1,0 +1,23 @@
+version: 1
+from_box: 2
+to_box: 1
+source_geom: place_pedestal
+target_geom: pickup_pedestal
+result: PASS
+selected_candidate: &id001
+  candidate_index: 13
+  directory: /home/hgui/IK_solver_MuJoCo/generated_box_paths/box_2_to_1/candidate_trials/candidate_13
+  minimum_joint_limit_margin_rad: 0.12509921599999996
+  minimum_joint_limit_margin_deg: 7.167657097195458
+  maximum_joint_jump_rad: 0.010073863999999988
+  maximum_joint_jump_deg: 0.5771898905887769
+successful_candidates:
+- *id001
+failed_candidates: []
+output_files:
+  grasp_candidates: grasp_candidates.yaml
+  hybrid_path: hybrid_path.yaml
+  retreat_target: retreat_target.yaml
+  retreat_path: retreat_path.yaml
+  full_cartesian_path: full_cartesian_path.yaml
+  timed_joint_path: timed_joint_path.yaml

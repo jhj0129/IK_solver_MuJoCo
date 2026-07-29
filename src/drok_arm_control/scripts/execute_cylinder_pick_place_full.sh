@@ -257,10 +257,6 @@ stage_display_name()
       ;;
 
     "STAGE 12 —"*)
-      echo "개방 상태 확인"
-      ;;
-
-    "STAGE 13 —"*)
       echo "원기둥에서 후퇴"
       ;;
 
@@ -868,12 +864,7 @@ run_step \
   2
 
 run_step \
-  "STAGE 12 — OPEN STATE CHECK" \
-  check_joint_state \
-  open
-
-run_step \
-  "STAGE 13 — PLACE RETREAT" \
+  "STAGE 12 — PLACE RETREAT" \
   python3 -u \
   "${RETREAT_SCRIPT}" \
   --execute \
