@@ -1,0 +1,58 @@
+========================================================================================
+MUJOCO GRIPPER COLLISION GAP MEASUREMENT
+========================================================================================
+Model              : /tmp/tmpw2esfdn8/mujoco_description_formatted.xml
+Left joint/body    : JOINT7 / GRIPPER_LEFT
+Right joint/body   : GRIPPER_RIGHT_JOINT / GRIPPER_RIGH
+Left geom count    : 1
+Right geom count   : 1
+Cylinder diameter  : 60.000 mm
+
+[FULLY_OPEN]
+  joint positions        : left=+0.000000000 m, right=+0.000000000 m
+  joint-origin distance  : 156.000 mm
+  minimum collision gap  : 2.912 mm
+  closest-point distance : 2.912 mm
+  closest left geom      : geom_20
+  closest right geom     : geom_22
+  closest point left     : +0.138319, -0.000146, +0.168015
+  closest point right    : +0.138319, -0.000354, +0.170919
+
+[CURRENT_MEASURED]
+  joint positions        : left=+0.019967627 m, right=-0.019967954 m
+  joint-origin distance  : 156.000 mm
+  minimum collision gap  : -15.899 mm
+  closest-point distance : 15.899 mm
+  closest left geom      : geom_20
+  closest right geom     : geom_22
+  closest point left     : +0.139872, -0.000818, +0.177396
+  closest point right    : +0.139872, +0.000319, +0.161538
+
+[SYMMETRIC_20MM]
+  joint positions        : left=+0.020000000 m, right=-0.020000000 m
+  joint-origin distance  : 156.000 mm
+  minimum collision gap  : -15.929 mm
+  closest-point distance : 15.929 mm
+  closest left geom      : geom_20
+  closest right geom     : geom_22
+  closest point left     : +0.139875, -0.000820, +0.177411
+  closest point right    : +0.139875, +0.000320, +0.161523
+
+[URDF_MAX_CLOSE]
+  joint positions        : left=+0.040000000 m, right=-0.040000000 m
+  joint-origin distance  : 156.000 mm
+  minimum collision gap  : -34.771 mm
+  closest-point distance : 34.771 mm
+  closest left geom      : geom_20
+  closest right geom     : geom_22
+  closest point left     : +0.141431, -0.001493, +0.186808
+  closest point right    : +0.141431, +0.000993, +0.152126
+
+========================================================================================
+60 mm CYLINDER RESULT
+========================================================================================
+Fitted gap model   : gap = 0.002912023 -0.942067225 * q
+Estimated touch q  : left=-0.060598624 m, right=+0.060598624 m
+Estimated 1mm preload q: left=-0.059537129 m, right=+0.059537129 m
+Gap at URDF limit : -34.771 mm
+60 mm feasibility : NOT POSSIBLE WITH CURRENT LIMITS

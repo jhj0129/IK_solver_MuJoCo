@@ -1,0 +1,23 @@
+========================================================================================
+CYLINDER PLACE RETREAT ONLY
+========================================================================================
+Timed path      : /home/hgui/IK_solver_MuJoCo/cylinder_best_timed_joint_path_segmented.yaml
+Block           : MOTION_BLOCK_5_PLACE_RETREAT
+Speed scale     : 0.500
+Lift duration   : 3.220 s
+Expected motion : 그리퍼를 원기둥에서 약 80 mm 수평 후퇴
+Gripper command : 전송하지 않음
+
+Arm start error : 0.118651 deg
+JOINT7                  : -0.000033211 m (error=0.033 mm)
+GRIPPER_RIGHT_JOINT     : -0.000026676 m (error=0.027 mm)
+[INFO] [1785236677.474433931] [cylinder_place_retreat_only_executor]: PLACE_RETREAT_ONLY: 161 points 전송
+[INFO] [1785236677.476315680] [cylinder_place_retreat_only_executor]: PLACE_RETREAT_ONLY: goal accepted
+[INFO] [1785236680.726374476] [cylinder_place_retreat_only_executor]: PLACE_RETREAT_ONLY: completed
+Arm goal error  : 0.343539 deg
+Final JOINT7            : +0.000031228 m (error=0.031 mm)
+Final GRIPPER_RIGHT_JOINT: -0.000027557 m (error=0.028 mm)
+
+========================================================================================
+PLACE RETREAT RESULT: PASS
+========================================================================================

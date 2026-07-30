@@ -1,0 +1,864 @@
+============================================================
+BOX PATH GENERATOR STRUCTURE
+============================================================
+
+===== CURRENT BRANCH =====
+feature/continuous-pick-place
+
+===== RELEVANT SCRIPT FILES =====
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py
+src/drok_arm_control/scripts/execute_cylinder_pick_place_full.sh
+src/drok_arm_control/scripts/execute_cylinder_pick_place_full.sh.before_precheck_fix
+src/drok_arm_control/scripts/execute_cylinder_pick_place_full.sh.before_quiet_output
+src/drok_arm_control/scripts/execute_cylinder_pick_place_full.sh.before_remove_open_check_20260728_215017
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py
+src/drok_arm_control/scripts/execute_cylinder_timed_arm_path.py
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py.before_height_fix_20260728_033803
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py
+src/drok_arm_control/scripts/play_baseline_ik_plan.py
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py.before_cbrt_fix_20260728_031931
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py.before_segment_blocks_20260728_032234
+
+===== FIXED PICK/PLACE COORDINATES =====
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:42:PLACE_Y = -0.180
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:35:            "position": [0.450, 0.180, 0.360],
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:41:            "position": [0.450, 0.180, 0.272],
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:47:            "position": [0.450, 0.180, 0.360],
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:53:    start_y = 0.180
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:54:    goal_y = -0.180
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:75:                    0.450,
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:89:                    0.450,
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:90:                    -0.180,
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:99:                    0.450,
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:100:                    -0.180,
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:53:        "position": [0.450, 0.180, 0.360],
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:58:        "position": [0.450, 0.180, 0.272],
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:63:        "position": [0.450, 0.180, 0.360],
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:68:        "position": [0.450, -0.180, 0.360],
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:73:        "position": [0.450, -0.180, 0.274],
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:78:        "position": [0.450, -0.180, 0.360],
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:27:PICK_GRASP = [0.450, 0.180, 0.272]
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:28:PICK_SAFE = [0.450, 0.180, 0.360]
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:30:PLACE_RELEASE = [0.450, -0.180, 0.274]
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:31:PLACE_SAFE = [0.450, -0.180, 0.360]
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:35:PLACE_CENTER_X = 0.450
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:36:PLACE_Y = -0.180
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:88:    0.450,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:89:    0.180,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:90:    0.272,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:94:    0.450,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:95:    0.180,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:100:    0.450,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:101:    -0.180,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:106:    0.450,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:107:    -0.180,
+src/drok_arm_control/scripts/test_cube_x_axis_full_pose.py:276:        y=0.180,
+src/drok_arm_control/scripts/test_cube_x_axis_full_pose.py:277:        z=0.272,
+src/drok_arm_control/scripts/test_cube_x_axis_full_pose.py:283:        y=-0.180,
+src/drok_arm_control/config/pick_place_task.yaml:23:  object_center: [0.450, 0.180, 0.272]
+src/drok_arm_control/config/pick_place_task.yaml:34:  position: [0.450, -0.180, 0.272]
+src/drok_arm_control/config/box_layout.yaml:20:    initial_center_z: 0.272
+src/drok_arm_control/config/box_layout.yaml:23:    cylinder_center_z: 0.282
+src/drok_arm_control/config/box_layout.yaml:24:    lift_z: 0.332
+src/drok_arm_control/config/box_layout.yaml:26:  # 좌우 끝 이동 시에는 기존 0.332 m보다 높은
+src/drok_arm_control/config/box_layout.yaml:28:  transfer_clearance_z: 0.420
+src/drok_arm_control/config/box_layout.yaml:35:      x: 0.450
+src/drok_arm_control/config/box_layout.yaml:36:      y: 0.180
+src/drok_arm_control/config/box_layout.yaml:43:      x: 0.450
+src/drok_arm_control/config/box_layout.yaml:44:      y: -0.180
+src/drok_arm_control/config/box_layout.yaml:51:      x: 0.350
+src/drok_arm_control/config/box_layout.yaml:52:      y: -0.450
+src/drok_arm_control/config/box_layout.yaml:59:      x: 0.350
+src/drok_arm_control/config/box_layout.yaml:60:      y: 0.450
+
+===== PICK/PLACE VARIABLE DEFINITIONS =====
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:32:    / "place_x_axis_roll_search.yaml"
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:42:PLACE_Y = -0.180
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:43:PLACE_Z = 0.274
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:75:        if waypoint["name"] == "PLACE_ABOVE":
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:84:        "PLACE_ABOVE를 찾지 못했습니다."
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:354:            "PLACE_PREPLACE"
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:357:                "PLACE_RELEASE"
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:359:                else f"PLACE_APPROACH_{index:02d}"
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:365:            PLACE_Y,
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:366:            PLACE_Z,
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:387:            f"{PLACE_Y:+.3f}, "
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:388:            f"{PLACE_Z:+.3f}]",
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:612:        "mode": "place_x_axis_roll_search",
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:615:        "place_y": PLACE_Y,
+src/drok_arm_control/scripts/search_place_x_axis_roll.py:616:        "place_z": PLACE_Z,
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:82:            / "cylinder_pregrasp_candidate_scan.yaml"
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:183:    print("CYLINDER PREGRASP CANDIDATE SCAN")
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:221:            candidate["pickup"][
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:222:                "pregrasp_tcp_xyz"
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:405:            "pregrasp_tcp_xyz": (
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:473:        print("OVERALL RESULT: NO FEASIBLE PREGRASP")
+src/drok_arm_control/scripts/execute_cylinder_timed_arm_path.py:850:            "PICK_PREGRASP q  : "
+src/drok_arm_control/scripts/execute_cylinder_timed_arm_path.py:869:            "ENTRY_TO_PICK_PREGRASP",
+src/drok_arm_control/scripts/record_manual_arm_pose.py:186:        default="PICK_GRASP_SAMPLE",
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:610:    pickup = selected["pickup"]
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:613:    pickup_pregrasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:614:        pickup["pregrasp_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:618:    pickup_grasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:619:        pickup["grasp_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:623:    pickup_lift = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:624:        pickup["lift_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:628:    place_lift = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:633:    place_grasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:638:    place_pregrasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:639:        place["pregrasp_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:696:        "solve at PICK_PREGRASP"
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:701:        pickup_pregrasp,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:733:        pickup_pregrasp,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:751:            "segment": "PICK_PREGRASP",
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:754:                pickup_pregrasp.tolist()
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:779:    # PLACE_RETREAT은 여기서 계산하지 않는다.
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:780:    # PLACE_GRASP에서 결정된 최종 yaw를 읽은 뒤,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:784:            "PICK_APPROACH",
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:785:            pickup_pregrasp,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:786:            pickup_grasp,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:790:            "PICK_LIFT",
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:791:            pickup_grasp,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:792:            pickup_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:796:            "TRANSFER",
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:797:            pickup_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:798:            place_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:802:            "PLACE_DESCEND",
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:803:            place_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:804:            place_grasp,
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:22:TRANSFER_SEGMENTS = 18
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:34:            "name": "PICK_ABOVE",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:40:            "name": "PICK_DOWN",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:46:            "name": "PICK_RETREAT",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:58:        TRANSFER_SEGMENTS + 1,
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:60:        ratio = index / TRANSFER_SEGMENTS
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:70:                    f"TRANSFER_{index:02d}"
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:71:                    if index < TRANSFER_SEGMENTS
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:72:                    else "PLACE_ABOVE"
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:80:                "phase": "transfer",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:87:                "name": "PLACE_DOWN",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:97:                "name": "PLACE_RETREAT",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:137:        f"Transfer segments : {TRANSFER_SEGMENTS}"
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:140:        "Transfer interval : "
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:141:        f"{360.0 / TRANSFER_SEGMENTS:.1f} mm"
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:192:        largest_transfer_step = 0.0
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:193:        largest_transfer_name = ""
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:293:                phase == "transfer"
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:295:                > largest_transfer_step
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:297:                largest_transfer_step = (
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:300:                largest_transfer_name = name
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:351:            "transfer_segments": (
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:352:                TRANSFER_SEGMENTS
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:354:            "transfer_interval_m": (
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:355:                0.360 / TRANSFER_SEGMENTS
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:381:            "largest_transfer_step": {
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:383:                    largest_transfer_name
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:386:                    largest_transfer_step
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:390:                        largest_transfer_step
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:431:            "Largest transfer step:",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:432:            f"{math.degrees(largest_transfer_step):.3f}°",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:433:            f"at {largest_transfer_name}",
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:441:            largest_transfer_step
+src/drok_arm_control/scripts/baseline_incremental_nearest_ik_dry_run.py:446:                "RESULT: WARNING — transfer 중 "
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:52:        "name": "PICK_ABOVE",
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:57:        "name": "PICK_DOWN",
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:62:        "name": "PICK_RETREAT",
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:67:        "name": "PLACE_ABOVE",
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:72:        "name": "PLACE_DOWN",
+src/drok_arm_control/scripts/baseline_nearest_ik_dry_run.py:77:        "name": "PLACE_RETREAT",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:39:        "--retreat-path",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:42:            / "cylinder_place_retreat_full_path.yaml"
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:231:    retreat_path = Path(
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:232:        arguments.retreat_path
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:247:    retreat = load_yaml(
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:248:        retreat_path
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:256:    retreat_records = retreat.get("path", [])
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:263:    if len(retreat_records) < 2:
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:265:            "Retreat path sample이 부족합니다."
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:269:    retreat_first = retreat_records[0]
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:276:    retreat_first_position = as_vector(
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:277:        retreat_first,
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:284:            - retreat_first_position
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:290:        retreat_first["joint_positions"],
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:296:            "PLACE_DESCEND와 PLACE_RETREAT의 "
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:323:    # retreat record 0은 PLACE_GRASP와 중복이므로 제거한다.
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:324:    for record in retreat_records[1:]:
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:328:                segment="PLACE_RETREAT",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:406:        "PICK_PREGRASP",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:407:        "PICK_APPROACH",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:408:        "PICK_LIFT",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:409:        "TRANSFER",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:410:        "PLACE_DESCEND",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:411:        "PLACE_RETREAT",
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:427:        "PICK_APPROACH"
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:431:        "PLACE_DESCEND"
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:441:                "PICK_APPROACH가 완료된 후 "
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:451:                "PLACE_DESCEND가 완료된 후 "
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:464:    pregrasp_joint_positions = [
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:474:            pregrasp_joint_positions,
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:491:            "retreat_path": str(
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:492:                retreat_path
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:503:                pregrasp_joint_positions
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:539:            "place_connection_position_gap_m": (
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:542:            "place_connection_joint_gap_rad": (
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:545:            "place_connection_joint_gap_deg": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:146:            "pickup object 내부에서 "
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:239:    pickup_body = find_named_element(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:242:        scene_config["pickup_object_body"],
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:245:    pickup_pedestal = find_named_element(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:248:        scene_config["pickup_pedestal_geom"],
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:251:    place_pedestal = find_named_element(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:254:        scene_config["place_pedestal_geom"],
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:258:        pickup_object_center,
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:262:        pickup_body
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:265:    pickup_pedestal_position = parse_vector(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:266:        pickup_pedestal.attrib.get("pos"),
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:271:    place_pedestal_position = parse_vector(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:272:        place_pedestal.attrib.get("pos"),
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:277:    pickup_top_z = read_box_top_z(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:278:        pickup_pedestal
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:281:    place_top_z = read_box_top_z(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:282:        place_pedestal
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:285:    place_object_center = np.array(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:287:            place_pedestal_position[0],
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:288:            place_pedestal_position[1],
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:289:            place_top_z
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:382:            "pregrasp_surface_clearance"
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:407:    pickup_grasp_center = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:408:        pickup_object_center
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:413:    place_grasp_center = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:414:        place_object_center
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:422:            pickup_top_z,
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:423:            place_top_z,
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:436:    pregrasp_distance = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:516:        pickup_grasp_tcp = make_tcp_position(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:517:            pickup_grasp_center,
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:522:        pickup_pregrasp_tcp = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:523:            pickup_grasp_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:524:            - pregrasp_distance
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:528:        pickup_lift_center = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:529:            pickup_grasp_center.copy()
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:532:        pickup_lift_center[2] = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:536:        pickup_lift_tcp = make_tcp_position(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:537:            pickup_lift_center,
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:542:        place_grasp_tcp = make_tcp_position(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:543:            place_grasp_center,
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:548:        place_pregrasp_tcp = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:549:            place_grasp_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:550:            - pregrasp_distance
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:554:        place_lift_center = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:555:            place_grasp_center.copy()
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:558:        place_lift_center[2] = (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:562:        place_lift_tcp = make_tcp_position(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:563:            place_lift_center,
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:591:                "pickup": {
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:594:                            pickup_grasp_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:597:                    "pregrasp_tcp_xyz": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:599:                            pickup_pregrasp_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:604:                            pickup_lift_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:611:                            place_grasp_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:614:                    "pregrasp_tcp_xyz": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:616:                            place_pregrasp_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:621:                            place_lift_tcp
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:641:            "pickup_object_center": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:643:                    pickup_object_center
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:646:            "place_object_center": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:648:                    place_object_center
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:651:            "pickup_pedestal_top_z": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:652:                pickup_top_z
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:654:            "place_pedestal_top_z": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:655:                place_top_z
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:669:            "pregrasp_distance": (
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:670:                pregrasp_distance
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:711:        "Pickup center   : "
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:712:        f"{pickup_object_center.tolist()}"
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:717:        f"{place_object_center.tolist()}"
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:741:        "Pregrasp travel : "
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:742:        f"{pregrasp_distance:.6f} m"
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:787:        "  pickup pregrasp TCP : "
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:788:        f"{first['pickup']['pregrasp_tcp_xyz']}"
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:792:        "  pickup grasp TCP    : "
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:793:        f"{first['pickup']['grasp_tcp_xyz']}"
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:556:    pickup = selected["pickup"]
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:559:    pickup_pregrasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:560:        pickup["pregrasp_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:564:    pickup_grasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:565:        pickup["grasp_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:569:    pickup_lift = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:570:        pickup["lift_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:574:    place_lift = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:579:    place_grasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:584:    place_pregrasp = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:585:        place["pregrasp_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:642:        "solve at PICK_PREGRASP"
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:647:        pickup_pregrasp,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:679:        pickup_pregrasp,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:697:            "segment": "PICK_PREGRASP",
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:700:                pickup_pregrasp.tolist()
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:723:            "PICK_APPROACH",
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:724:            pickup_pregrasp,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:725:            pickup_grasp,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:728:            "PICK_LIFT",
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:729:            pickup_grasp,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:730:            pickup_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:733:            "TRANSFER",
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:734:            pickup_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:735:            place_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:738:            "PLACE_DESCEND",
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:739:            place_lift,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:740:            place_grasp,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:743:            "PLACE_RETREAT",
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:744:            place_grasp,
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:745:            place_pregrasp,
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:41:CONFIRMATION_TEXT = "EXECUTE_PICK_LIFT_ONLY"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:141:            "cylinder_pick_lift_only_executor"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:261:            f"PICK_LIFT_ONLY: "
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:289:                "PICK_LIFT goal rejected"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:293:            "PICK_LIFT_ONLY: goal accepted"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:318:                "PICK_LIFT action result timeout"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:335:                "PICK_LIFT controller 오류: "
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:341:            "PICK_LIFT_ONLY: completed"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:356:            "PICK_LIFT point가 부족합니다."
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:364:    # 첫 point는 현재 PICK_GRASP 경계점이므로
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:436:        == "PICK_LIFT"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:441:            "PICK_LIFT block을 정확히 "
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:528:        "PICK_GRASP에서 수직 50 mm 상승"
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:613:                "현재 팔이 PICK_LIFT 시작점과 "
+src/drok_arm_control/scripts/execute_cylinder_pick_lift_only.py:643:                "PICK_LIFT 종료 관절 오차가 "
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:27:PICK_GRASP = [0.450, 0.180, 0.272]
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:28:PICK_SAFE = [0.450, 0.180, 0.360]
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:30:PLACE_RELEASE = [0.450, -0.180, 0.274]
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:31:PLACE_SAFE = [0.450, -0.180, 0.360]
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:51:KNOWN_PICK_GRASP_Q = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:60:KNOWN_PICK_SAFE_Q = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:69:KNOWN_PLACE_RELEASE_Q = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:78:KNOWN_PLACE_SAFE_Q = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:111:PICK_SEEDS = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:113:    KNOWN_PICK_GRASP_Q,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:114:    KNOWN_PICK_SAFE_Q,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:115:    neutralized_seed(KNOWN_PICK_GRASP_Q),
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:116:    neutralized_seed(KNOWN_PICK_SAFE_Q),
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:119:PLACE_SEEDS = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:121:    KNOWN_PLACE_RELEASE_Q,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:122:    KNOWN_PLACE_SAFE_Q,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:123:    neutralized_seed(KNOWN_PLACE_RELEASE_Q),
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:124:    neutralized_seed(KNOWN_PLACE_SAFE_Q),
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:319:        for seed in PICK_SEEDS:
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:321:                PICK_GRASP,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:335:                PICK_SAFE,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:373:        for seed in PLACE_SEEDS:
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:375:                PLACE_SAFE,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:389:                PLACE_RELEASE,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:519:    pick_results = search_pick()
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:520:    place_results = search_place()
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:524:        pick_results,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:529:        place_results,
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:532:    pick_soft = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:534:        for result in pick_results
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:538:    place_soft = [
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:540:        for result in place_results
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:551:        len(pick_soft),
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:556:        len(place_soft),
+src/drok_arm_control/scripts/search_cable_safe_task_orientations.py:559:    if pick_soft and place_soft:
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:32:    / "place_face_aligned_workspace_search.yaml"
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:35:PLACE_CENTER_X = 0.450
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:36:PLACE_Y = -0.180
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:37:PLACE_Z = 0.274
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:43:TARGET_RETREAT_M = 0.080
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:44:MAX_RETREAT_M = 0.120
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:54:# 기존 roll=0, yaw=0의 성공한 PLACE_RELEASE 해
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:55:KNOWN_PLACE_RELEASE_Q = [
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:79:        if waypoint["name"] == "PLACE_ABOVE":
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:86:        "PLACE_ABOVE를 찾지 못했습니다."
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:193:        KNOWN_PLACE_RELEASE_Q,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:205:        KNOWN_PLACE_RELEASE_Q,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:369:        PLACE_CENTER_X,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:370:        PLACE_Y,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:371:        PLACE_Z,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:439:    retreat_sign: float,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:469:        "PLACE_RELEASE candidates:",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:474:        print("PLACE_RELEASE IK FAIL")
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:482:            "target_retreat_reached": False,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:484:            "retreat_distance_m": 0.0,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:487:            "failed_x": PLACE_CENTER_X,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:502:        "PLACE_RELEASE q:",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:513:            "name": "PLACE_RELEASE",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:515:                PLACE_CENTER_X,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:516:                PLACE_Y,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:517:                PLACE_Z,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:534:    last_success_x = PLACE_CENTER_X
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:539:        round(MAX_RETREAT_M / STEP_M)
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:546:        retreat_distance = index * STEP_M
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:549:            PLACE_CENTER_X
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:550:            + retreat_sign * retreat_distance
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:555:            PLACE_Y,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:556:            PLACE_Z,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:569:            f"retreat={retreat_distance * 1000:.0f} mm",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:602:                    f"RETREAT_{index:02d}"
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:625:    retreat_distance_m = abs(
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:626:        last_success_x - PLACE_CENTER_X
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:631:        retreat_distance_m - CUBE_HALF_SIZE,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:635:        retreat_distance_m
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:636:        >= TARGET_RETREAT_M - 1.0e-9
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:656:        "Maximum retreat:",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:657:        f"{retreat_distance_m * 1000:.1f} mm",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:681:        "target_retreat_reached": bool(
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:687:        "retreat_distance_m": float(
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:688:            retreat_distance_m
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:711:        -float(result["retreat_distance_m"]),
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:741:        "Target retreat  :",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:742:        f"{TARGET_RETREAT_M * 1000:.0f} mm",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:747:        f"{MAX_RETREAT_M * 1000:.0f} mm",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:767:                retreat_sign=-1.0,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:782:                retreat_sign=1.0,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:810:            f"retreat="
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:811:            f"{result['retreat_distance_m'] * 1000:6.1f} mm "
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:826:            "place_face_aligned_workspace_search"
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:829:        "place_center": [
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:830:            PLACE_CENTER_X,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:831:            PLACE_Y,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:832:            PLACE_Z,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:835:        "target_retreat_m": TARGET_RETREAT_M,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:836:        "maximum_retreat_m": MAX_RETREAT_M,
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:888:        "BEST RETREAT:",
+src/drok_arm_control/scripts/search_place_face_aligned_workspace.py:889:        f"{best['retreat_distance_m'] * 1000:.1f} mm",
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:36:EXPECTED_RETREAT_Q = [
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:56:RETREAT_START_TOLERANCE_RAD = 0.060
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:244:        maximum_retreat_error = max(
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:248:                EXPECTED_RETREAT_Q,
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:260:            "[상태 확인] RETREAT 시작 오차: "
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:261:            f"{math.degrees(maximum_retreat_error):.3f}°"
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:270:            maximum_retreat_error
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:271:            > RETREAT_START_TOLERANCE_RAD
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:274:                "현재 팔 자세가 PLACE_RETREAT 종료점에서 "
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:534:            "PLACE_RETREAT 종료점에서 "
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:604:            "PLACE_RETREAT"
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:635:            "[시작 대기] PLACE_RETREAT 및 "
+src/drok_arm_control/scripts/execute_cylinder_return_home_only.py:654:            "[종료] PLACE_RETREAT → HOME 복귀 PASS"
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:50:PICK_LOW_Q = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:59:PICK_SAFE_Q = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:69:PLACE_LOW_Q = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:78:PLACE_SAFE_Q = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:87:PICK_LOW_POSITION = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:93:PICK_SAFE_POSITION = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:99:PLACE_LOW_POSITION = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:105:PLACE_SAFE_POSITION = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:160:PICK_SEEDS = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:161:    PICK_LOW_Q,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:162:    PICK_SAFE_Q,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:163:    neutralized_seed(PICK_LOW_Q),
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:167:PLACE_SEEDS = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:168:    PLACE_SAFE_Q,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:169:    PLACE_LOW_Q,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:170:    neutralized_seed(PLACE_SAFE_Q),
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:438:        for seed in PICK_SEEDS:
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:440:                PICK_LOW_POSITION,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:450:                PICK_SAFE_POSITION,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:507:        for seed in PLACE_SEEDS:
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:509:                PLACE_SAFE_POSITION,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:519:                PLACE_LOW_POSITION,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:694:    pick_results = search_pick()
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:695:    place_results = search_place()
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:699:        pick_results,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:704:        place_results,
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:707:    pick_soft_safe = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:709:        for item in pick_results
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:713:    place_soft_safe = [
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:715:        for item in place_results
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:726:        len(pick_soft_safe),
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:731:        len(place_soft_safe),
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:734:    if pick_soft_safe:
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:735:        pick_soft_safe.sort(
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:739:        best = pick_soft_safe[0]
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:748:    if place_soft_safe:
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:749:        place_soft_safe.sort(
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:753:        best = place_soft_safe[0]
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:762:        pick_soft_safe
+src/drok_arm_control/scripts/search_cable_safe_pitch_refinement.py:763:        and place_soft_safe
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:44:            / "cylinder_place_retreat_target.yaml"
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:88:            / "cylinder_place_retreat_full_path.yaml"
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:126:        target["place_grasp_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:131:        target["place_retreat_tcp_xyz"],
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:136:        target["retreat_target_rpy_rad"],
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:143:            "place_grasp_joint_positions"
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:147:    expected_retreat_direction = np.asarray(
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:148:        target["retreat_direction_world"],
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:165:    actual_retreat_direction = (
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:171:            actual_retreat_direction
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:172:            - expected_retreat_direction
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:191:    print("CYLINDER PLACE RETREAT FULL-POSE IK")
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:211:        "Retreat direction: "
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:214:            for value in actual_retreat_direction
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:232:        "[ALIGN] PLACE_GRASP에서 최종 yaw를 "
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:246:        print("[FAIL] PLACE_GRASP full-pose alignment")
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:309:        f"[PLACE_RETREAT] samples={len(positions)}, "
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:409:        "segment": "PLACE_RETREAT",
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:417:        "retreat_direction_world": (
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py:418:            actual_retreat_direction.tolist()
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py:527:      PICK_APPROACH : 0   -> 27
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py:528:      PICK_LIFT     : 27  -> 44
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py:529:      TRANSFER      : 44  -> 164
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py:530:      PLACE_DESCEND : 164 -> 181
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py:531:      PLACE_RETREAT : 181 -> 208
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py:583:    # 최초 PICK_PREGRASP index가 block 시작점이다.
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py:613:        # PICK_PREGRASP처럼 waypoint가 하나뿐인
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:41:CONFIRMATION_TEXT = "EXECUTE_PLACE_RETREAT_ONLY"
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:134:class TransferExecutor(Node):
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:141:            "cylinder_place_retreat_only_executor"
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:261:            f"PLACE_RETREAT_ONLY: "
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:289:                "TRANSFER goal rejected"
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:293:            "PLACE_RETREAT_ONLY: goal accepted"
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:318:                "TRANSFER action result timeout"
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:335:                "TRANSFER controller 오류: "
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:341:            "PLACE_RETREAT_ONLY: completed"
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:345:def create_transfer_trajectory(
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:356:            "TRANSFER point가 부족합니다."
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:364:    # 첫 point는 현재 PICK_GRASP 경계점이므로
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:436:        == "PLACE_RETREAT"
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:441:            "TRANSFER block을 정확히 "
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:483:    trajectory = create_transfer_trajectory(
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:507:    print("CYLINDER PLACE RETREAT ONLY")
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:557:    node = TransferExecutor(
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:613:                "현재 팔이 TRANSFER 시작점과 "
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:643:                "TRANSFER 종료 관절 오차가 "
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py:669:        print("PLACE RETREAT RESULT: PASS")
+src/drok_arm_control/scripts/manual_mujoco_pose_editor.py:54:        default="PICK_GRASP_SAMPLE",
+src/drok_arm_control/scripts/manual_mujoco_pose_editor.py:200:        "position_xyz_m": position,
+src/drok_arm_control/scripts/manual_mujoco_pose_editor.py:428:            "pickup_cube": read_body_pose(
+src/drok_arm_control/scripts/manual_mujoco_pose_editor.py:431:                "pickup_cube",
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:41:CONFIRMATION_TEXT = "EXECUTE_TRANSFER_ONLY"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:134:class TransferExecutor(Node):
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:141:            "cylinder_transfer_only_executor"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:261:            f"TRANSFER_ONLY: "
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:289:                "TRANSFER goal rejected"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:293:            "TRANSFER_ONLY: goal accepted"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:318:                "TRANSFER action result timeout"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:335:                "TRANSFER controller 오류: "
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:341:            "TRANSFER_ONLY: completed"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:345:def create_transfer_trajectory(
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:356:            "TRANSFER point가 부족합니다."
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:364:    # 첫 point는 현재 PICK_GRASP 경계점이므로
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:436:        == "TRANSFER"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:441:            "TRANSFER block을 정확히 "
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:483:    trajectory = create_transfer_trajectory(
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:507:    print("CYLINDER TRANSFER ONLY")
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:528:        "PICK_LIFT 종료점에서 PLACE 상공까지 수평 이동"
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:557:    node = TransferExecutor(
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:613:                "현재 팔이 TRANSFER 시작점과 "
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:643:                "TRANSFER 종료 관절 오차가 "
+src/drok_arm_control/scripts/execute_cylinder_transfer_only.py:669:        print("TRANSFER RESULT: PASS")
+src/drok_arm_control/scripts/check_v4_cable_limits.py:154:        / "src/drok_arm_control/config/pick_place_task.yaml"
+src/drok_arm_control/scripts/check_v4_cable_limits.py:173:            "pick_place_task.yaml에 branch_switch가 없습니다."
+src/drok_arm_control/scripts/check_v4_cable_limits.py:178:        for value in branch["pick_joint_positions"]
+src/drok_arm_control/scripts/check_v4_cable_limits.py:183:        for value in branch["place_joint_positions"]
+src/drok_arm_control/scripts/check_v4_cable_limits.py:319:        ("PICK_BRANCH", start_q),
+src/drok_arm_control/scripts/check_v4_cable_limits.py:320:        ("PLACE_BRANCH", goal_q),
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:41:CONFIRMATION_TEXT = "EXECUTE_PLACE_DESCEND_ONLY"
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:134:class TransferExecutor(Node):
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:141:            "cylinder_place_descend_only_executor"
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:261:            f"PLACE_DESCEND_ONLY: "
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:289:                "TRANSFER goal rejected"
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:293:            "PLACE_DESCEND_ONLY: goal accepted"
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:318:                "TRANSFER action result timeout"
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:335:                "TRANSFER controller 오류: "
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:341:            "PLACE_DESCEND_ONLY: completed"
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:345:def create_transfer_trajectory(
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:356:            "TRANSFER point가 부족합니다."
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:364:    # 첫 point는 현재 PICK_GRASP 경계점이므로
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:436:        == "PLACE_DESCEND"
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:441:            "TRANSFER block을 정확히 "
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:483:    trajectory = create_transfer_trajectory(
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:557:    node = TransferExecutor(
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:613:                "현재 팔이 TRANSFER 시작점과 "
+src/drok_arm_control/scripts/execute_cylinder_place_descend_only.py:643:                "TRANSFER 종료 관절 오차가 "
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py:49:            / "cylinder_best_place_retreat_target.yaml"
+
+===== PATH GENERATOR ARGUMENTS =====
+
+------------------------------------------------------------
+FILE: src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py
+------------------------------------------------------------
+54:    parser = argparse.ArgumentParser()
+56:    parser.add_argument(
+63:    parser.add_argument(
+69:    parser.add_argument(
+78:    parser.add_argument(
+87:    parser.add_argument(
+93:    parser.add_argument(
+99:    parser.add_argument(
+105:    parser.add_argument(
+111:    parser.add_argument(
+125:        self.positions: Dict[str, float] | None = None
+138:        if len(message.name) != len(message.position):
+144:                message.position,
+164:        self.positions = result
+167:def read_current_joint_positions(
+179:            and node.positions is None
+187:        if node.positions is None:
+194:            node.positions[name]
+338:    position: Sequence[float],
+352:            for value in position
+403:    joint_positions = [
+409:    position_match = (
+419:        "joint_positions": joint_positions,
+420:        "position_error": (
+421:            float(position_match.group(1))
+422:            if position_match is not None
+469:    joint_positions: Sequence[float],
+479:            joint_positions,
+498:def main() -> int:
+560:        pickup["pregrasp_tcp_xyz"],
+565:        pickup["grasp_tcp_xyz"],
+570:        pickup["lift_tcp_xyz"],
+575:        place["lift_tcp_xyz"],
+580:        place["grasp_tcp_xyz"],
+585:        place["pregrasp_tcp_xyz"],
+625:    current_q = read_current_joint_positions(
+642:        "solve at PICK_PREGRASP"
+645:    initial_position_result = run_ik_solver(
+650:        "position",
+654:    if not initial_position_result["success"]:
+656:        print(initial_position_result["output"])
+659:    q_previous = initial_position_result[
+660:        "joint_positions"
+692:        "joint_positions"
+697:            "segment": "PICK_PREGRASP",
+699:            "position": (
+702:            "joint_positions": list(
+723:            "PICK_APPROACH",
+728:            "PICK_LIFT",
+733:            "TRANSFER",
+738:            "PLACE_DESCEND",
+743:            "PLACE_RETREAT",
+752:        positions = interpolate_segment(
+763:            f"samples={len(positions)}"
+771:        for sample_index, position in enumerate(
+772:            positions,
+777:                position,
+788:                    f"{len(positions)}"
+795:                        for value in position
+804:                "joint_positions"
+868:                    "position": (
+869:                        position.tolist()
+871:                    "joint_positions": list(
+874:                    "position_error": (
+875:                        result["position_error"]
+928:        "initial_joint_positions": (
+
+------------------------------------------------------------
+FILE: src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py
+------------------------------------------------------------
+54:    parser = argparse.ArgumentParser()
+56:    parser.add_argument(
+63:    parser.add_argument(
+69:    parser.add_argument(
+78:    parser.add_argument(
+87:    parser.add_argument(
+93:    parser.add_argument(
+99:    parser.add_argument(
+105:    parser.add_argument(
+111:    parser.add_argument(
+125:        self.positions: Dict[str, float] | None = None
+138:        if len(message.name) != len(message.position):
+144:                message.position,
+164:        self.positions = result
+167:def read_current_joint_positions(
+179:            and node.positions is None
+187:        if node.positions is None:
+194:            node.positions[name]
+338:    position: Sequence[float],
+353:                for value in position
+369:                for value in position
+457:    joint_positions = [
+463:    position_match = (
+473:        "joint_positions": joint_positions,
+474:        "position_error": (
+475:            float(position_match.group(1))
+476:            if position_match is not None
+523:    joint_positions: Sequence[float],
+533:            joint_positions,
+552:def main() -> int:
+614:        pickup["pregrasp_tcp_xyz"],
+619:        pickup["grasp_tcp_xyz"],
+624:        pickup["lift_tcp_xyz"],
+629:        place["lift_tcp_xyz"],
+634:        place["grasp_tcp_xyz"],
+639:        place["pregrasp_tcp_xyz"],
+679:    current_q = read_current_joint_positions(
+696:        "solve at PICK_PREGRASP"
+699:    initial_position_result = run_ik_solver(
+704:        "position",
+708:    if not initial_position_result["success"]:
+710:        print(initial_position_result["output"])
+713:    q_previous = initial_position_result[
+714:        "joint_positions"
+746:        "joint_positions"
+751:            "segment": "PICK_PREGRASP",
+753:            "position": (
+756:            "joint_positions": list(
+779:    # PLACE_RETREAT은 여기서 계산하지 않는다.
+780:    # PLACE_GRASP에서 결정된 최종 yaw를 읽은 뒤,
+784:            "PICK_APPROACH",
+790:            "PICK_LIFT",
+796:            "TRANSFER",
+802:            "PLACE_DESCEND",
+812:        positions = interpolate_segment(
+824:            f"samples={len(positions)}"
+832:        for sample_index, position in enumerate(
+833:            positions,
+838:                position,
+849:                    f"{len(positions)}"
+856:                        for value in position
+865:                "joint_positions"
+930:                    "position": (
+931:                        position.tolist()
+933:                    "joint_positions": list(
+936:                    "position_error": (
+937:                        result["position_error"]
+990:        "initial_joint_positions": (
+
+------------------------------------------------------------
+FILE: src/drok_arm_control/scripts/assemble_cylinder_full_path.py
+------------------------------------------------------------
+28:    parser = argparse.ArgumentParser()
+30:    parser.add_argument(
+38:    parser.add_argument(
+46:    parser.add_argument(
+55:    parser.add_argument(
+157:    joint_positions: Sequence[float],
+167:            joint_positions,
+210:    record["joint_positions"] = [
+212:        for value in record["joint_positions"]
+215:    if "position" in record:
+216:        record["position"] = [
+218:            for value in record["position"]
+224:def main() -> int:
+271:    hybrid_last_position = as_vector(
+273:        "position",
+276:    retreat_first_position = as_vector(
+278:        "position",
+281:    position_gap = float(
+283:            hybrid_last_position
+284:            - retreat_first_position
+289:        hybrid_last["joint_positions"],
+290:        retreat_first["joint_positions"],
+294:    if position_gap > 1.0e-8:
+296:            "PLACE_DESCEND와 PLACE_RETREAT의 "
+298:            f"{position_gap:.9e} m"
+301:    # PLACE에서 full-pose alignment에 의한
+305:            "PLACE 연결점의 관절 차이가 큽니다: "
+323:    # retreat record 0은 PLACE_GRASP와 중복이므로 제거한다.
+328:                segment="PLACE_RETREAT",
+362:                "joint_positions"
+406:        "PICK_PREGRASP",
+407:        "PICK_APPROACH",
+408:        "PICK_LIFT",
+409:        "TRANSFER",
+410:        "PLACE_DESCEND",
+411:        "PLACE_RETREAT",
+427:        "PICK_APPROACH"
+431:        "PLACE_DESCEND"
+441:                "PICK_APPROACH가 완료된 후 "
+451:                "PLACE_DESCEND가 완료된 후 "
+457:    initial_joint_positions = [
+460:            "initial_joint_positions"
+464:    pregrasp_joint_positions = [
+467:            "joint_positions"
+473:            initial_joint_positions,
+474:            pregrasp_joint_positions,
+502:            "goal_joint_positions": (
+503:                pregrasp_joint_positions
+505:            "dry_run_initial_joint_positions": (
+506:                initial_joint_positions
+539:            "place_connection_position_gap_m": (
+540:                position_gap
+581:        "PLACE joint gap     : "
+
+------------------------------------------------------------
+FILE: src/drok_arm_control/scripts/time_parameterize_cylinder_path.py
+------------------------------------------------------------
+29:    parser = argparse.ArgumentParser()
+31:    parser.add_argument(
+39:    parser.add_argument(
+48:    parser.add_argument(
+57:    parser.add_argument(
+66:    parser.add_argument(
+435:def minimum_position_margin(
+492:            record["joint_positions"]
+527:      PICK_APPROACH : 0   -> 27
+528:      PICK_LIFT     : 27  -> 44
+529:      TRANSFER      : 44  -> 164
+530:      PLACE_DESCEND : 164 -> 181
+531:      PLACE_RETREAT : 181 -> 208
+583:    # 최초 PICK_PREGRASP index가 block 시작점이다.
+613:        # PICK_PREGRASP처럼 waypoint가 하나뿐인
+658:def main() -> int:
+864:        position_margin = (
+865:            minimum_position_margin(
+872:        if position_margin <= 0.0:
+876:                f"margin={position_margin:.9f} rad"
+973:        final_margin = minimum_position_margin(
+1006:                    "positions": (
+1119:            "lower_position_limit": float(
+1122:            "upper_position_limit": float(
+
+===== CURRENT GENERATED PATH METADATA =====
+
+========================================================================
+cylinder_best_full_cartesian_ik_path.yaml
+========================================================================
+Root keys: ['version', 'joint_names', 'candidate_index', 'candidate_phi_deg', 'source_files', 'runtime_entry', 'events', 'segment_ranges', 'summary', 'path']
+
+version:
+1
+
+joint_names:
+['JOINT1', 'JOINT2', 'JOINT3', 'JOINT4', 'JOINT5', 'JOINT6']
+
+source_files:
+{'hybrid_path': '/home/hgui/IK_solver_MuJoCo/cylinder_best_hybrid_path.yaml', 'retreat_path': '/home/hgui/IK_solver_MuJoCo/cylinder_best_place_retreat_full_path.yaml', 'urdf': '/home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf'}
+
+summary:
+{'cartesian_sample_count': 209, 'maximum_joint_jump_rad': 0.010211164999999967, 'maximum_joint_jump_deg': 0.5850566584117013, 'minimum_joint_limit_margin_rad': 0.19787541399999997, 'minimum_joint_limit_margin_deg': 11.33742609160388, 'place_connection_position_gap_m': 0.0, 'place_connection_joint_gap_rad': 6.45380000001694e-05, 'place_connection_joint_gap_deg': 0.003697755018225013}
+
+events:
+[{'type': 'GRIPPER_CLOSE', 'after_global_index': 27, 'description': 'PICK_APPROACH가 완료된 후 원기둥을 파지한다.'}, {'type': 'GRIPPER_OPEN', 'after_global_index': 181, 'description': 'PLACE_DESCEND가 완료된 후 원기둥을 놓는다.'}]
+
+========================================================================
+cylinder_best_timed_joint_path_segmented.yaml
+========================================================================
+Root keys: ['version', 'joint_names', 'source_files', 'controller_rate_hz', 'controller_period_sec', 'limits', 'events', 'summary', 'blocks']
+
+version:
+1
+
+joint_names:
+['JOINT1', 'JOINT2', 'JOINT3', 'JOINT4', 'JOINT5', 'JOINT6']
+
+source_files:
+{'cartesian_ik_path': '/home/hgui/IK_solver_MuJoCo/cylinder_best_full_cartesian_ik_path.yaml', 'timing_config': '/home/hgui/IK_solver_MuJoCo/src/drok_arm_control/config/cylinder_trajectory_timing.yaml', 'urdf': '/home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf', 'controllers': '/home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/config/controllers.yaml'}
+
+summary:
+{'motion_block_count': 5, 'total_arm_motion_duration_sec': 9.6, 'gripper_dwell_time_included': False}
+
+events:
+[{'type': 'GRIPPER_CLOSE', 'after_global_index': 27, 'description': 'PICK_APPROACH가 완료된 후 원기둥을 파지한다.'}, {'type': 'GRIPPER_OPEN', 'after_global_index': 181, 'description': 'PLACE_DESCEND가 완료된 후 원기둥을 놓는다.'}]
+
+Blocks:
+  [0] name=MOTION_BLOCK_1_PICK_APPROACH source=PICK_APPROACH samples=162
+  [1] name=MOTION_BLOCK_2_PICK_LIFT source=PICK_LIFT samples=138
+  [2] name=MOTION_BLOCK_3_TRANSFER source=TRANSFER samples=364
+  [3] name=MOTION_BLOCK_4_PLACE_DESCEND source=PLACE_DESCEND samples=139
+  [4] name=MOTION_BLOCK_5_PLACE_RETREAT source=PLACE_RETREAT samples=162

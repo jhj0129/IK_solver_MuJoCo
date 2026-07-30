@@ -1,0 +1,1052 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import math
+import os
+import re
+import subprocess
+import time
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Any, Dict, List, Sequence, Tuple
+
+import numpy as np
+import rclpy
+import yaml
+from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
+from sensor_msgs.msg import JointState
+
+
+ARM_JOINT_NAMES = [
+    "JOINT1",
+    "JOINT2",
+    "JOINT3",
+    "JOINT4",
+    "JOINT5",
+    "JOINT6",
+]
+
+SUCCESS_PATTERN = re.compile(
+    r"Success\s*:\s*true"
+)
+
+JOINT_PATTERN = re.compile(
+    r"JOINT_RESULT=([^\n\r]+)"
+)
+
+POSITION_ERROR_PATTERN = re.compile(
+    r"Position error\s*:\s*"
+    r"([0-9eE+\-.]+)"
+)
+
+ORIENTATION_ERROR_PATTERN = re.compile(
+    r"Orientation error\s*:\s*"
+    r"([0-9eE+\-.]+)"
+)
+
+
+def parse_arguments() -> argparse.Namespace:
+    root = Path.home() / "IK_solver_MuJoCo"
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--candidate-file",
+        default=str(
+            root / "cylinder_grasp_candidates.yaml"
+        ),
+    )
+
+    parser.add_argument(
+        "--candidate-index",
+        type=int,
+        default=0,
+    )
+
+    parser.add_argument(
+        "--geometry",
+        default=str(
+            root
+            / "src/drok_arm_kinematics"
+            / "config/robot_geometry.yaml"
+        ),
+    )
+
+    parser.add_argument(
+        "--urdf",
+        default=str(
+            root
+            / "src/drok_arm_mujoco"
+            / "urdf/drok_arm_mujoco.urdf"
+        ),
+    )
+
+    parser.add_argument(
+        "--cartesian-step",
+        type=float,
+        default=0.003,
+    )
+
+    parser.add_argument(
+        "--maximum-joint-jump-deg",
+        type=float,
+        default=5.0,
+    )
+
+    parser.add_argument(
+        "--joint-state-timeout",
+        type=float,
+        default=10.0,
+    )
+
+    parser.add_argument(
+        "--solver-timeout",
+        type=float,
+        default=15.0,
+    )
+
+    parser.add_argument(
+        "--output",
+        default="",
+    )
+
+    return parser.parse_args()
+
+
+class JointStateReader(Node):
+    def __init__(self) -> None:
+        super().__init__(
+            "cylinder_ik_dry_run_joint_state_reader"
+        )
+
+        self.positions: Dict[str, float] | None = None
+
+        self.subscription = self.create_subscription(
+            JointState,
+            "/joint_states",
+            self.callback,
+            qos_profile_sensor_data,
+        )
+
+    def callback(
+        self,
+        message: JointState,
+    ) -> None:
+        if len(message.name) != len(message.position):
+            return
+
+        values = dict(
+            zip(
+                message.name,
+                message.position,
+            )
+        )
+
+        if not all(
+            name in values
+            for name in ARM_JOINT_NAMES
+        ):
+            return
+
+        result: Dict[str, float] = {}
+
+        for name in ARM_JOINT_NAMES:
+            value = float(values[name])
+
+            if not math.isfinite(value):
+                return
+
+            result[name] = value
+
+        self.positions = result
+
+
+def read_current_joint_positions(
+    timeout: float,
+) -> List[float]:
+    rclpy.init()
+
+    node = JointStateReader()
+
+    try:
+        deadline = time.monotonic() + timeout
+
+        while (
+            rclpy.ok()
+            and node.positions is None
+            and time.monotonic() < deadline
+        ):
+            rclpy.spin_once(
+                node,
+                timeout_sec=0.1,
+            )
+
+        if node.positions is None:
+            raise RuntimeError(
+                "시간 내에 /joint_states에서 "
+                "JOINT1~JOINT6을 받지 못했습니다."
+            )
+
+        return [
+            node.positions[name]
+            for name in ARM_JOINT_NAMES
+        ]
+
+    finally:
+        node.destroy_node()
+
+        if rclpy.ok():
+            rclpy.shutdown()
+
+
+def read_joint_limits(
+    urdf_path: Path,
+) -> List[Tuple[float, float]]:
+    root = ET.parse(
+        urdf_path
+    ).getroot()
+
+    joints = {
+        joint.attrib.get("name", ""): joint
+        for joint in root.findall("joint")
+    }
+
+    limits: List[Tuple[float, float]] = []
+
+    for name in ARM_JOINT_NAMES:
+        if name not in joints:
+            raise RuntimeError(
+                f"URDF에서 {name}을 찾지 못했습니다."
+            )
+
+        limit = joints[name].find("limit")
+
+        if limit is None:
+            raise RuntimeError(
+                f"{name}에 limit이 없습니다."
+            )
+
+        lower = float(
+            limit.attrib["lower"]
+        )
+
+        upper = float(
+            limit.attrib["upper"]
+        )
+
+        if not (
+            math.isfinite(lower)
+            and math.isfinite(upper)
+            and lower < upper
+        ):
+            raise RuntimeError(
+                f"{name} limit이 잘못되었습니다."
+            )
+
+        limits.append(
+            (
+                lower,
+                upper,
+            )
+        )
+
+    return limits
+
+
+def matrix_to_rpy(
+    rotation: np.ndarray,
+) -> np.ndarray:
+    if rotation.shape != (3, 3):
+        raise ValueError(
+            "회전행렬은 3x3이어야 합니다."
+        )
+
+    orthogonality_error = float(
+        np.linalg.norm(
+            rotation.T @ rotation
+            - np.eye(3)
+        )
+    )
+
+    determinant = float(
+        np.linalg.det(rotation)
+    )
+
+    if orthogonality_error > 1.0e-7:
+        raise RuntimeError(
+            "회전행렬이 직교하지 않습니다: "
+            f"{orthogonality_error:.3e}"
+        )
+
+    if abs(determinant - 1.0) > 1.0e-7:
+        raise RuntimeError(
+            "회전행렬 determinant가 1이 아닙니다: "
+            f"{determinant:.12f}"
+        )
+
+    # 기존 C++의 정의와 동일:
+    # R = Rz(yaw) * Ry(pitch) * Rx(roll)
+    sine_pitch = float(
+        np.clip(
+            -rotation[2, 0],
+            -1.0,
+            1.0,
+        )
+    )
+
+    pitch = math.asin(
+        sine_pitch
+    )
+
+    cosine_pitch = math.cos(
+        pitch
+    )
+
+    if abs(cosine_pitch) > 1.0e-9:
+        roll = math.atan2(
+            rotation[2, 1],
+            rotation[2, 2],
+        )
+
+        yaw = math.atan2(
+            rotation[1, 0],
+            rotation[0, 0],
+        )
+    else:
+        roll = 0.0
+
+        yaw = math.atan2(
+            -rotation[0, 1],
+            rotation[1, 1],
+        )
+
+    return np.asarray(
+        [
+            roll,
+            pitch,
+            yaw,
+        ],
+        dtype=float,
+    )
+
+
+def run_ik_solver(
+    geometry_path: Path,
+    position: Sequence[float],
+    rpy: Sequence[float],
+    seed: Sequence[float],
+    mode: str,
+    timeout: float,
+) -> Dict[str, Any]:
+    if mode == "upright":
+        command = [
+            "ros2",
+            "run",
+            "drok_arm_kinematics",
+            "solve_ik_upright",
+            str(geometry_path),
+            *(
+                f"{float(value):.12f}"
+                for value in position
+            ),
+            *(
+                f"{float(value):.12f}"
+                for value in seed
+            ),
+        ]
+    else:
+        command = [
+            "ros2",
+            "run",
+            "drok_arm_kinematics",
+            "solve_ik_pose",
+            str(geometry_path),
+            *(
+                f"{float(value):.12f}"
+                for value in position
+            ),
+            *(
+                f"{float(value):.12f}"
+                for value in rpy
+            ),
+            *(
+                f"{float(value):.12f}"
+                for value in seed
+            ),
+        ]
+
+    environment = os.environ.copy()
+
+    if mode == "upright":
+        # 0.05 mm 위치 오차,
+        # 약 0.0029 deg 수직축 오차
+        environment.setdefault(
+            "DROK_UPRIGHT_POSITION_TOLERANCE",
+            "0.000050",
+        )
+        environment.setdefault(
+            "DROK_UPRIGHT_ANGLE_TOLERANCE",
+            "0.000050",
+        )
+
+        # 직전 Cartesian sample과의 관절 연속성
+        environment.setdefault(
+            "DROK_UPRIGHT_SEED_GAIN",
+            "0.08",
+        )
+
+        # 관절 제한 15 deg 이내에서만 활성화
+        environment.setdefault(
+            "DROK_UPRIGHT_LIMIT_SOFT_MARGIN",
+            "0.261799388",
+        )
+
+        environment.setdefault(
+            "DROK_UPRIGHT_LIMIT_BARRIER_GAIN",
+            "0.02",
+        )
+
+        # 한 iteration에서 null-space가 움직일 수 있는
+        # 최대 관절 변화: 약 0.115 deg
+        environment.setdefault(
+            "DROK_UPRIGHT_MAX_SECONDARY_STEP",
+            "0.002",
+        )
+    else:
+        environment["DROK_IK_MODE"] = mode
+
+    completed = subprocess.run(
+        command,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=timeout,
+        check=False,
+        env=environment,
+    )
+
+    output = completed.stdout
+
+    success = (
+        completed.returncode == 0
+        and SUCCESS_PATTERN.search(output)
+        is not None
+    )
+
+    if not success:
+        return {
+            "success": False,
+            "returncode": completed.returncode,
+            "output": output,
+        }
+
+    joint_match = JOINT_PATTERN.search(
+        output
+    )
+
+    if joint_match is None:
+        return {
+            "success": False,
+            "returncode": completed.returncode,
+            "output": output,
+        }
+
+    joint_positions = [
+        float(value)
+        for value
+        in joint_match.group(1).split(",")
+    ]
+
+    position_match = (
+        POSITION_ERROR_PATTERN.search(output)
+    )
+
+    orientation_match = (
+        ORIENTATION_ERROR_PATTERN.search(output)
+    )
+
+    return {
+        "success": True,
+        "joint_positions": joint_positions,
+        "position_error": (
+            float(position_match.group(1))
+            if position_match is not None
+            else math.nan
+        ),
+        "orientation_error": (
+            float(orientation_match.group(1))
+            if orientation_match is not None
+            else math.nan
+        ),
+        "output": output,
+    }
+
+
+def interpolate_segment(
+    start: np.ndarray,
+    goal: np.ndarray,
+    maximum_step: float,
+) -> List[np.ndarray]:
+    displacement = goal - start
+
+    distance = float(
+        np.linalg.norm(displacement)
+    )
+
+    interval_count = max(
+        1,
+        int(
+            math.ceil(
+                distance / maximum_step
+            )
+        ),
+    )
+
+    return [
+        start
+        + (
+            float(index)
+            / float(interval_count)
+        )
+        * displacement
+        for index in range(
+            1,
+            interval_count + 1,
+        )
+    ]
+
+
+def minimum_limit_margin(
+    joint_positions: Sequence[float],
+    limits: Sequence[Tuple[float, float]],
+) -> float:
+    return min(
+        min(
+            value - lower,
+            upper - value,
+        )
+        for value, (lower, upper)
+        in zip(
+            joint_positions,
+            limits,
+        )
+    )
+
+
+def maximum_joint_difference(
+    first: Sequence[float],
+    second: Sequence[float],
+) -> float:
+    return max(
+        abs(a - b)
+        for a, b in zip(
+            first,
+            second,
+        )
+    )
+
+
+def main() -> int:
+    arguments = parse_arguments()
+
+    candidate_path = Path(
+        arguments.candidate_file
+    ).expanduser().resolve()
+
+    geometry_path = Path(
+        arguments.geometry
+    ).expanduser().resolve()
+
+    urdf_path = Path(
+        arguments.urdf
+    ).expanduser().resolve()
+
+    if arguments.cartesian_step <= 0.0:
+        raise RuntimeError(
+            "cartesian-step은 양수여야 합니다."
+        )
+
+    if arguments.maximum_joint_jump_deg <= 0.0:
+        raise RuntimeError(
+            "maximum-joint-jump-deg는 "
+            "양수여야 합니다."
+        )
+
+    with candidate_path.open(
+        "r",
+        encoding="utf-8",
+    ) as stream:
+        document = yaml.safe_load(stream)
+
+    candidates = document["candidates"]
+
+    selected = None
+
+    for candidate in candidates:
+        if int(candidate["index"]) == (
+            arguments.candidate_index
+        ):
+            selected = candidate
+            break
+
+    if selected is None:
+        raise RuntimeError(
+            "요청한 candidate index가 없습니다: "
+            f"{arguments.candidate_index}"
+        )
+
+    rotation = np.asarray(
+        selected["rotation_world_tcp"],
+        dtype=float,
+    )
+
+    target_rpy = matrix_to_rpy(
+        rotation
+    )
+
+    pickup = selected["pickup"]
+    place = selected["place"]
+
+    pickup_pregrasp = np.asarray(
+        pickup["pregrasp_tcp_xyz"],
+        dtype=float,
+    )
+
+    pickup_grasp = np.asarray(
+        pickup["grasp_tcp_xyz"],
+        dtype=float,
+    )
+
+    pickup_lift = np.asarray(
+        pickup["lift_tcp_xyz"],
+        dtype=float,
+    )
+
+    place_lift = np.asarray(
+        place["lift_tcp_xyz"],
+        dtype=float,
+    )
+
+    place_grasp = np.asarray(
+        place["grasp_tcp_xyz"],
+        dtype=float,
+    )
+
+    place_pregrasp = np.asarray(
+        place["pregrasp_tcp_xyz"],
+        dtype=float,
+    )
+
+    limits = read_joint_limits(
+        urdf_path
+    )
+
+    print("=" * 88)
+    print("CYLINDER HYBRID CARTESIAN IK DRY RUN")
+    print("=" * 88)
+
+    print(
+        f"Candidate index : "
+        f"{arguments.candidate_index}"
+    )
+
+    print(
+        f"Candidate phi   : "
+        f"{float(selected['phi_deg']):.3f} deg"
+    )
+
+    print(
+        "Target RPY      : "
+        + ", ".join(
+            f"{value:+.9f}"
+            for value in target_rpy
+        )
+    )
+
+    print(
+        "Cartesian step  : "
+        f"{arguments.cartesian_step:.6f} m"
+    )
+
+    print()
+    print(
+        "현재 /joint_states를 기다립니다."
+    )
+
+    current_q = read_current_joint_positions(
+        arguments.joint_state_timeout
+    )
+
+    print(
+        "Current q [rad] : "
+        + ", ".join(
+            f"{value:+.9f}"
+            for value in current_q
+        )
+    )
+
+    # 먼저 위치만 맞춘 뒤 동일 위치에서
+    # 선택된 원기둥 grasp orientation을 맞춘다.
+    print()
+    print(
+        "[INITIAL 1/2] Position-only "
+        "solve at PICK_PREGRASP"
+    )
+
+    initial_position_result = run_ik_solver(
+        geometry_path,
+        pickup_pregrasp,
+        target_rpy,
+        current_q,
+        "position",
+        arguments.solver_timeout,
+    )
+
+    if not initial_position_result["success"]:
+        print("[FAIL] Position-only initial IK")
+        print(initial_position_result["output"])
+        return 2
+
+    q_previous = initial_position_result[
+        "joint_positions"
+    ]
+
+    print(
+        "[PASS] q = "
+        + ", ".join(
+            f"{value:+.6f}"
+            for value in q_previous
+        )
+    )
+
+    print()
+    print(
+        "[INITIAL 2/2] Full-pose "
+        "orientation alignment"
+    )
+
+    initial_full_result = run_ik_solver(
+        geometry_path,
+        pickup_pregrasp,
+        target_rpy,
+        q_previous,
+        "full",
+        arguments.solver_timeout,
+    )
+
+    if not initial_full_result["success"]:
+        print("[FAIL] Full-pose initial IK")
+        print(initial_full_result["output"])
+        return 3
+
+    q_previous = initial_full_result[
+        "joint_positions"
+    ]
+
+    path_records: List[Dict[str, Any]] = [
+        {
+            "segment": "PICK_PREGRASP",
+            "sample_index": 0,
+            "position": (
+                pickup_pregrasp.tolist()
+            ),
+            "joint_positions": list(
+                q_previous
+            ),
+        }
+    ]
+
+    global_maximum_jump = 0.0
+
+    global_minimum_margin = (
+        minimum_limit_margin(
+            q_previous,
+            limits,
+        )
+    )
+
+    maximum_jump_allowed = math.radians(
+        arguments.maximum_joint_jump_deg
+    )
+
+    # 원기둥을 잡는 동안에는 파지 자세를 정확히 유지한다.
+    # 운반 및 하강에서는 TCP local +Z만 world +Z에 고정하고,
+    # 원기둥의 대칭축 주위 yaw는 IK가 자동으로 조절한다.
+    #
+    # PLACE_RETREAT은 여기서 계산하지 않는다.
+    # PLACE_GRASP에서 결정된 최종 yaw를 읽은 뒤,
+    # 그 yaw의 실제 접근축 반대 방향으로 새로 생성해야 한다.
+    segments = [
+        (
+            "PICK_APPROACH",
+            pickup_pregrasp,
+            pickup_grasp,
+            "full",
+        ),
+        (
+            "PICK_LIFT",
+            pickup_grasp,
+            pickup_lift,
+            "full",
+        ),
+        (
+            "TRANSFER",
+            pickup_lift,
+            place_lift,
+            "upright",
+        ),
+        (
+            "PLACE_DESCEND",
+            place_lift,
+            place_grasp,
+            "upright",
+        ),
+    ]
+
+    total_samples = 1
+
+    for segment_name, start, goal, ik_mode in segments:
+        positions = interpolate_segment(
+            start,
+            goal,
+            arguments.cartesian_step,
+        )
+
+        print()
+        print(
+            f"[{segment_name}] "
+            f"mode={ik_mode}, "
+            f"distance="
+            f"{np.linalg.norm(goal - start):.6f} m, "
+            f"samples={len(positions)}"
+        )
+
+        segment_maximum_jump = 0.0
+        segment_minimum_margin = (
+            math.inf
+        )
+
+        for sample_index, position in enumerate(
+            positions,
+            start=1,
+        ):
+            result = run_ik_solver(
+                geometry_path,
+                position,
+                target_rpy,
+                q_previous,
+                ik_mode,
+                arguments.solver_timeout,
+            )
+
+            if not result["success"]:
+                print(
+                    f"[FAIL] {segment_name} "
+                    f"sample={sample_index}/"
+                    f"{len(positions)}"
+                )
+
+                print(
+                    "Position = "
+                    + ", ".join(
+                        f"{value:.9f}"
+                        for value in position
+                    )
+                )
+
+                print(result["output"])
+
+                return 4
+
+            q_current = result[
+                "joint_positions"
+            ]
+
+            joint_jump = (
+                maximum_joint_difference(
+                    q_current,
+                    q_previous,
+                )
+            )
+
+            margin = minimum_limit_margin(
+                q_current,
+                limits,
+            )
+
+            segment_maximum_jump = max(
+                segment_maximum_jump,
+                joint_jump,
+            )
+
+            segment_minimum_margin = min(
+                segment_minimum_margin,
+                margin,
+            )
+
+            global_maximum_jump = max(
+                global_maximum_jump,
+                joint_jump,
+            )
+
+            global_minimum_margin = min(
+                global_minimum_margin,
+                margin,
+            )
+
+            if margin <= 0.0:
+                print(
+                    f"[FAIL] Joint limit violation "
+                    f"at {segment_name} "
+                    f"sample={sample_index}"
+                )
+                return 5
+
+            if joint_jump > maximum_jump_allowed:
+                print(
+                    f"[FAIL] Joint branch jump "
+                    f"at {segment_name} "
+                    f"sample={sample_index}"
+                )
+
+                print(
+                    f"Jump={math.degrees(joint_jump):.6f} deg, "
+                    f"limit="
+                    f"{arguments.maximum_joint_jump_deg:.6f} deg"
+                )
+
+                return 6
+
+            path_records.append(
+                {
+                    "segment": segment_name,
+                    "ik_mode": ik_mode,
+                    "sample_index": (
+                        sample_index
+                    ),
+                    "position": (
+                        position.tolist()
+                    ),
+                    "joint_positions": list(
+                        q_current
+                    ),
+                    "position_error": (
+                        result["position_error"]
+                    ),
+                    "orientation_error": (
+                        result[
+                            "orientation_error"
+                        ]
+                    ),
+                    "maximum_joint_jump_rad": (
+                        joint_jump
+                    ),
+                    "minimum_limit_margin_rad": (
+                        margin
+                    ),
+                }
+            )
+
+            q_previous = q_current
+            total_samples += 1
+
+        print(
+            "[PASS] "
+            f"max jump="
+            f"{math.degrees(segment_maximum_jump):.6f} deg, "
+            f"minimum margin="
+            f"{math.degrees(segment_minimum_margin):.6f} deg"
+        )
+
+    if arguments.output:
+        output_path = Path(
+            arguments.output
+        ).expanduser().resolve()
+    else:
+        output_path = (
+            Path.home()
+            / "IK_solver_MuJoCo"
+            / (
+                "cylinder_candidate_"
+                f"{arguments.candidate_index:02d}"
+                "_ik_dry_run.yaml"
+            )
+        )
+
+    output_document = {
+        "version": 1,
+        "candidate_index": (
+            arguments.candidate_index
+        ),
+        "phi_deg": float(
+            selected["phi_deg"]
+        ),
+        "target_rpy_rad": (
+            target_rpy.tolist()
+        ),
+        "initial_joint_positions": (
+            current_q
+        ),
+        "cartesian_step": (
+            arguments.cartesian_step
+        ),
+        "total_samples": total_samples,
+        "maximum_joint_jump_rad": (
+            global_maximum_jump
+        ),
+        "maximum_joint_jump_deg": (
+            math.degrees(
+                global_maximum_jump
+            )
+        ),
+        "minimum_joint_limit_margin_rad": (
+            global_minimum_margin
+        ),
+        "minimum_joint_limit_margin_deg": (
+            math.degrees(
+                global_minimum_margin
+            )
+        ),
+        "path": path_records,
+    }
+
+    output_path.write_text(
+        yaml.safe_dump(
+            output_document,
+            sort_keys=False,
+            allow_unicode=True,
+        ),
+        encoding="utf-8",
+    )
+
+    print()
+    print("=" * 88)
+    print("OVERALL RESULT: PASS")
+    print("=" * 88)
+
+    print(
+        f"Total samples       : "
+        f"{total_samples}"
+    )
+
+    print(
+        f"Maximum joint jump  : "
+        f"{math.degrees(global_maximum_jump):.6f} deg"
+    )
+
+    print(
+        f"Minimum limit margin: "
+        f"{math.degrees(global_minimum_margin):.6f} deg"
+    )
+
+    print("Saved:")
+    print(output_path)
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

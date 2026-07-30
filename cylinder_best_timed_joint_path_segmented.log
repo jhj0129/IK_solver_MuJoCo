@@ -1,0 +1,66 @@
+================================================================================================
+CYLINDER PATH TIME PARAMETERIZATION
+================================================================================================
+Controller rate : 100.000 Hz
+
+Derived limits
+  JOINT1: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT2: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT3: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT4: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT5: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT6: v=0.350000 rad/s, a=0.700000 rad/s^2, j=3.500000 rad/s^3
+
+[MOTION_BLOCK_1_PICK_APPROACH] index=0->27
+  waypoints       : 28
+  duration        : 1.610000 s
+  samples         : 162
+  velocity ratio  : 0.707447
+  accel ratio     : 0.717379
+  jerk ratio      : 0.941394
+  limit margin    : 25.787038 deg
+
+[MOTION_BLOCK_2_PICK_LIFT] index=27->44
+  waypoints       : 18
+  duration        : 1.370000 s
+  samples         : 138
+  velocity ratio  : 0.499362
+  accel ratio     : 0.593045
+  jerk ratio      : 0.925967
+  limit margin    : 25.787038 deg
+
+[MOTION_BLOCK_3_TRANSFER] index=44->164
+  waypoints       : 121
+  duration        : 3.630000 s
+  samples         : 364
+  velocity ratio  : 0.979819
+  accel ratio     : 0.398596
+  jerk ratio      : 0.188696
+  limit margin    : 18.205222 deg
+
+[MOTION_BLOCK_4_PLACE_DESCEND] index=164->181
+  waypoints       : 18
+  duration        : 1.380000 s
+  samples         : 139
+  velocity ratio  : 0.550841
+  accel ratio     : 0.614714
+  jerk ratio      : 0.924428
+  limit margin    : 17.037121 deg
+
+[MOTION_BLOCK_5_PLACE_RETREAT] index=181->208
+  waypoints       : 28
+  duration        : 1.610000 s
+  samples         : 162
+  velocity ratio  : 0.714250
+  accel ratio     : 0.720050
+  jerk ratio      : 0.941744
+  limit margin    : 11.337426 deg
+
+================================================================================================
+OVERALL RESULT: PASS
+================================================================================================
+Motion blocks       : 5
+Arm motion duration : 9.600000 s
+Gripper dwell       : not included
+Saved:
+/home/hgui/IK_solver_MuJoCo/cylinder_best_timed_joint_path_segmented.yaml

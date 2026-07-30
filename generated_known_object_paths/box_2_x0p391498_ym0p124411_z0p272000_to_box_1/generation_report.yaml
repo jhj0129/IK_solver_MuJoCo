@@ -1,0 +1,117 @@
+version: 1
+from_box: 2
+to_box: 1
+source_geom: place_pedestal
+target_geom: pickup_pedestal
+result: PASS
+selected_candidate: &id001
+  candidate_index: 15
+  directory: /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_15
+  minimum_joint_limit_margin_rad: 0.440007646
+  minimum_joint_limit_margin_deg: 25.210581069286377
+  maximum_joint_jump_rad: 0.016824916000000023
+  maximum_joint_jump_deg: 0.9639966774621324
+successful_candidates:
+- *id001
+- candidate_index: 16
+  directory: /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_16
+  minimum_joint_limit_margin_rad: 0.416825031
+  minimum_joint_limit_margin_deg: 23.882315071709705
+  maximum_joint_jump_rad: 0.013224671999999993
+  maximum_joint_jump_deg: 0.757717891044833
+- candidate_index: 18
+  directory: /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_18
+  minimum_joint_limit_margin_rad: 0.33957322199999984
+  minimum_joint_limit_margin_deg: 19.456112456258946
+  maximum_joint_jump_rad: 0.015310754000000038
+  maximum_joint_jump_deg: 0.8772415853630454
+- candidate_index: 17
+  directory: /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_17
+  minimum_joint_limit_margin_rad: 0.18859476399999986
+  minimum_joint_limit_margin_deg: 10.805684015465788
+  maximum_joint_jump_rad: 0.020419726000000082
+  maximum_joint_jump_deg: 1.1699641186135592
+- candidate_index: 19
+  directory: /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_19
+  minimum_joint_limit_margin_rad: 0.18238535899999997
+  minimum_joint_limit_margin_deg: 10.449911315678364
+  maximum_joint_jump_rad: 0.013926841999999828
+  maximum_joint_jump_deg: 0.7979492685455246
+- candidate_index: 14
+  directory: /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_14
+  minimum_joint_limit_margin_rad: 0.12569491999999993
+  minimum_joint_limit_margin_deg: 7.201788422234517
+  maximum_joint_jump_rad: 0.014955300999999976
+  maximum_joint_jump_deg: 0.8568756286477782
+- candidate_index: 20
+  directory: /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_20
+  minimum_joint_limit_margin_rad: 0.027331132999999896
+  minimum_joint_limit_margin_deg: 1.5659585702107224
+  maximum_joint_jump_rad: 0.01168304099999995
+  maximum_joint_jump_deg: 0.669388941178298
+failed_candidates:
+- candidate_index: 0
+  failed_stage: HYBRID IK
+- candidate_index: 1
+  failed_stage: HYBRID IK
+- candidate_index: 2
+  failed_stage: HYBRID IK
+- candidate_index: 3
+  failed_stage: HYBRID IK
+- candidate_index: 4
+  failed_stage: HYBRID IK
+- candidate_index: 5
+  failed_stage: HYBRID IK
+- candidate_index: 6
+  failed_stage: HYBRID IK
+- candidate_index: 7
+  failed_stage: HYBRID IK
+- candidate_index: 8
+  failed_stage: HYBRID IK
+- candidate_index: 9
+  failed_stage: HYBRID IK
+- candidate_index: 10
+  failed_stage: HYBRID IK
+- candidate_index: 11
+  failed_stage: HYBRID IK
+- candidate_index: 12
+  failed_stage: HYBRID IK
+- candidate_index: 13
+  failed_stage: HYBRID IK
+- candidate_index: 21
+  failed_stage: HYBRID IK
+- candidate_index: 22
+  failed_stage: HYBRID IK
+- candidate_index: 23
+  failed_stage: HYBRID IK
+- candidate_index: 24
+  failed_stage: HYBRID IK
+- candidate_index: 25
+  failed_stage: HYBRID IK
+- candidate_index: 26
+  failed_stage: HYBRID IK
+- candidate_index: 27
+  failed_stage: HYBRID IK
+- candidate_index: 28
+  failed_stage: HYBRID IK
+- candidate_index: 29
+  failed_stage: HYBRID IK
+- candidate_index: 30
+  failed_stage: HYBRID IK
+- candidate_index: 31
+  failed_stage: HYBRID IK
+- candidate_index: 32
+  failed_stage: HYBRID IK
+- candidate_index: 33
+  failed_stage: HYBRID IK
+- candidate_index: 34
+  failed_stage: HYBRID IK
+- candidate_index: 35
+  failed_stage: HYBRID IK
+output_files:
+  grasp_candidates: grasp_candidates.yaml
+  hybrid_path: hybrid_path.yaml
+  retreat_target: retreat_target.yaml
+  retreat_path: retreat_path.yaml
+  full_cartesian_path: full_cartesian_path.yaml
+  timed_joint_path: timed_joint_path.yaml

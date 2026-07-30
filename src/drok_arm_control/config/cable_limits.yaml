@@ -1,0 +1,42 @@
+version: 1
+units: rad
+source: provisional_mujoco_manual_collection
+description: 'Provisional wrist cable limits selected in MuJoCo. These values are
+  not validated on the real robot.
+
+  '
+joint_order:
+- JOINT4
+- JOINT5
+- JOINT6
+limits:
+  JOINT4:
+    mechanical_lower: -5.89101
+    mechanical_upper: 2.64243
+    neutral: -6.860316781906697e-05
+    soft_lower: -1.3078309965243713
+    soft_upper: 1.3103213941661858
+    hard_lower: -1.5721230591443645
+    hard_upper: 1.5721242280090504
+  JOINT5:
+    mechanical_lower: -1.52175
+    mechanical_upper: 1.31947
+    neutral: -0.00037198932315030776
+    soft_lower: -0.7860321098453643
+    soft_upper: 0.7844524017064799
+    hard_lower: -1.0455540905376093
+    hard_upper: 1.0490620503075712
+  JOINT6:
+    mechanical_lower: -2.87729
+    mechanical_upper: 1.3115
+    neutral: 2.162979597942955e-05
+    soft_lower: -0.779502567707072
+    soft_upper: 0.7867614810612062
+    hard_lower: -1.0468708539957412
+    hard_upper: 1.0533970154086516
+collection:
+  complete: true
+  notes:
+  - MuJoCo provisional limits only
+  - Real robot cable validation required
+  - Do not use V4 wrist branch switch on real hardware

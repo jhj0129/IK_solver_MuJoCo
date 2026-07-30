@@ -1,0 +1,52 @@
+/**:
+  ros__parameters:
+    joints:
+      - JOINT1
+      - JOINT2
+      - JOINT3
+      - JOINT4
+      - JOINT5
+      - JOINT6
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: false
+    open_loop_control: false
+    allow_integration_in_goal_trajectories: true
+    allow_nonzero_velocity_at_trajectory_end: false
+
+    constraints:
+      stopped_velocity_tolerance: 0.05
+      goal_time: 1.0
+
+      JOINT1:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT2:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT3:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT4:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT5:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT6:
+        trajectory: 10.0
+        goal: 10.0

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>drok_arm_control</name>
+
+  <version>0.0.1</version>
+
+  <description>
+    Integrated Cartesian pose motion control for the DROK arm.
+  </description>
+
+  <maintainer email="jhj020129@kookmin.ac.kr">
+    hgui
+  </maintainer>
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>eigen</depend>
+
+  <depend>drok_arm_kinematics</depend>
+  <depend>drok_arm_trajectory</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

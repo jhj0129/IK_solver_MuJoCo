@@ -1,0 +1,48 @@
+================================================================================================
+CYLINDER PATH TIME PARAMETERIZATION
+================================================================================================
+Controller rate : 100.000 Hz
+
+Derived limits
+  JOINT1: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT2: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT3: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT4: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT5: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT6: v=0.350000 rad/s, a=0.700000 rad/s^2, j=3.500000 rad/s^3
+
+[MOTION_BLOCK_1] index=0->27
+  waypoints       : 28
+  duration        : 1.610000 s
+  samples         : 162
+  velocity ratio  : 0.706346
+  accel ratio     : 0.710362
+  jerk ratio      : 0.928385
+  limit margin    : 24.715989 deg
+
+[MOTION_BLOCK_2] index=27->181
+  waypoints       : 155
+  duration        : 34.020000 s
+  samples         : 3403
+  velocity ratio  : 0.163726
+  accel ratio     : 0.489506
+  jerk ratio      : 0.943953
+  limit margin    : 17.282621 deg
+
+[MOTION_BLOCK_3] index=181->208
+  waypoints       : 28
+  duration        : 1.610000 s
+  samples         : 162
+  velocity ratio  : 0.716282
+  accel ratio     : 0.713755
+  jerk ratio      : 0.928099
+  limit margin    : 11.793683 deg
+
+================================================================================================
+OVERALL RESULT: PASS
+================================================================================================
+Motion blocks       : 3
+Arm motion duration : 37.240000 s
+Gripper dwell       : not included
+Saved:
+/home/hgui/IK_solver_MuJoCo/cylinder_timed_joint_path.yaml

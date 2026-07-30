@@ -1,0 +1,68 @@
+$ /usr/bin/python3 /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/scripts/time_parameterize_cylinder_path.py --path /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_23/full_cartesian_path.yaml --timing-config /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/config/cylinder_trajectory_timing.yaml --urdf /home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf --controllers /home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/config/controllers.yaml --output /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_23/timed_joint_path.yaml
+
+================================================================================================
+CYLINDER PATH TIME PARAMETERIZATION
+================================================================================================
+Controller rate : 100.000 Hz
+
+Derived limits
+  JOINT1: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT2: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT3: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT4: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT5: v=0.420000 rad/s, a=0.840000 rad/s^2, j=4.200000 rad/s^3
+  JOINT6: v=0.350000 rad/s, a=0.700000 rad/s^2, j=3.500000 rad/s^3
+
+[MOTION_BLOCK_1_PICK_APPROACH] index=0->27
+  waypoints       : 28
+  duration        : 1.490000 s
+  samples         : 150
+  velocity ratio  : 0.571648
+  accel ratio     : 0.640796
+  jerk ratio      : 0.930225
+  limit margin    : 28.755624 deg
+
+[MOTION_BLOCK_2_PICK_LIFT] index=27->44
+  waypoints       : 18
+  duration        : 1.420000 s
+  samples         : 143
+  velocity ratio  : 0.578763
+  accel ratio     : 0.632652
+  jerk ratio      : 0.929929
+  limit margin    : 34.986079 deg
+
+[MOTION_BLOCK_3_TRANSFER] index=44->190
+  waypoints       : 147
+  duration        : 4.160000 s
+  samples         : 417
+  velocity ratio  : 0.980199
+  accel ratio     : 0.417285
+  jerk ratio      : 0.178855
+  limit margin    : 38.426616 deg
+
+[MOTION_BLOCK_4_PLACE_DESCEND] index=190->207
+  waypoints       : 18
+  duration        : 1.340000 s
+  samples         : 135
+  velocity ratio  : 0.507312
+  accel ratio     : 0.590978
+  jerk ratio      : 0.931481
+  limit margin    : 33.648593 deg
+
+[MOTION_BLOCK_5_PLACE_RETREAT] index=207->234
+  waypoints       : 28
+  duration        : 1.530000 s
+  samples         : 154
+  velocity ratio  : 0.623573
+  accel ratio     : 0.667814
+  jerk ratio      : 0.939157
+  limit margin    : 26.732458 deg
+
+================================================================================================
+OVERALL RESULT: PASS
+================================================================================================
+Motion blocks       : 5
+Arm motion duration : 9.940000 s
+Gripper dwell       : not included
+Saved:
+/home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_23/timed_joint_path.yaml

@@ -1,0 +1,23 @@
+========================================================================================
+CYLINDER PICK LIFT ONLY
+========================================================================================
+Timed path      : /home/hgui/IK_solver_MuJoCo/cylinder_best_timed_joint_path_segmented.yaml
+Block           : MOTION_BLOCK_2_PICK_LIFT
+Speed scale     : 0.500
+Lift duration   : 2.740 s
+Expected motion : PICK_GRASP에서 수직 50 mm 상승
+Gripper command : 전송하지 않음
+
+Arm start error : 0.372772 deg
+JOINT7                  : +0.047285221 m (error=0.915 mm)
+GRIPPER_RIGHT_JOINT     : -0.048212343 m (error=0.012 mm)
+[INFO] [1785234685.357870457] [cylinder_pick_lift_only_executor]: PICK_LIFT_ONLY: 137 points 전송
+[INFO] [1785234685.359516413] [cylinder_pick_lift_only_executor]: PICK_LIFT_ONLY: goal accepted
+[INFO] [1785234688.109720053] [cylinder_pick_lift_only_executor]: PICK_LIFT_ONLY: completed
+Arm goal error  : 0.250814 deg
+Final JOINT7            : +0.047080460 m (error=1.120 mm)
+Final GRIPPER_RIGHT_JOINT: -0.047057335 m (error=1.143 mm)
+
+========================================================================================
+PICK LIFT RESULT: PASS
+========================================================================================

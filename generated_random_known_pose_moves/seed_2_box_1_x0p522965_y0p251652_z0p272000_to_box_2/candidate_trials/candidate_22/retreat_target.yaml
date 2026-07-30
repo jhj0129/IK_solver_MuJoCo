@@ -1,0 +1,33 @@
+version: 1
+source_hybrid_path: /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_22/hybrid_path.yaml
+candidate_index: 22
+place_grasp_tcp_xyz:
+- 0.45
+- -0.18
+- 0.28200000000000003
+place_grasp_joint_positions:
+- -0.55376642
+- 1.480841209
+- 0.769718213
+- 1.008730251
+- -0.794380311
+- 0.736269012
+final_tcp_yaw_rad: -0.163740972
+final_tcp_yaw_deg: -9.381666628969787
+approach_direction_world:
+- 0.9866243717643287
+- -0.16301027280709576
+- 0.0
+retreat_direction_world:
+- -0.9866243717643287
+- 0.16301027280709576
+- 0.0
+retreat_distance: 0.08
+place_retreat_tcp_xyz:
+- 0.3710700502588537
+- -0.16695917817543232
+- 0.28200000000000003
+retreat_target_rpy_rad:
+- 0.0
+- 0.0
+- -0.163740972

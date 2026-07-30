@@ -1,0 +1,48 @@
+/mujoco_robot_description을 기다리는 중...
+
+===== 중력 보상 관절 명령 계산 =====
+
+JOINT1
+  target            = -0.166851682000 rad
+  gravity torque    = +0.000000000000 Nm
+  kp                = 3000.000000
+  gravity offset    = +0.000000000000 rad
+  command           = -0.166851682000 rad
+
+JOINT2
+  target            = +0.322959341000 rad
+  gravity torque    = +3.249754032331 Nm
+  kp                = 2000.000000
+  gravity offset    = +0.001624877016 rad
+  command           = +0.324584218016 rad
+
+JOINT3
+  target            = +0.473951666000 rad
+  gravity torque    = +3.735722696151 Nm
+  kp                = 2000.000000
+  gravity offset    = +0.001867861348 rad
+  command           = +0.475819527348 rad
+
+JOINT4
+  target            = +0.134104292000 rad
+  gravity torque    = -0.065458666101 Nm
+  kp                = 240.000000
+  gravity offset    = -0.000272744442 rad
+  command           = +0.133831547558 rad
+
+JOINT5
+  target            = +0.104545633000 rad
+  gravity torque    = -0.092712310358 Nm
+  kp                = 160.000000
+  gravity offset    = -0.000579451940 rad
+  command           = +0.103966181060 rad
+
+JOINT6
+  target            = -0.209751053000 rad
+  gravity torque    = -0.000386359425 Nm
+  kp                = 50.000000
+  gravity offset    = -0.000007727189 rad
+  command           = -0.209758780189 rad
+
+Machine-readable compensated result
+COMMAND_RESULT=-0.166851682000,0.324584218016,0.475819527348,0.133831547558,0.103966181060,-0.209758780189

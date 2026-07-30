@@ -1,0 +1,21 @@
+BOX MOVE EXECUTOR 설치
+
+1. 압축을 프로젝트 루트에 해제:
+   cd ~/IK_solver_MuJoCo
+   unzip -o ~/Downloads/box_move_executor_bundle.zip
+
+2. 문법 검사:
+   python3 -m py_compile src/drok_arm_control/scripts/execute_box_move.py
+
+3. Dry-run:
+   source /opt/ros/humble/setup.bash
+   source install/setup.bash
+   python3 src/drok_arm_control/scripts/execute_box_move.py --from-box 2 --to-box 3
+
+4. 실제 MuJoCo 실행:
+   python3 src/drok_arm_control/scripts/execute_box_move.py \
+     --from-box 2 \
+     --to-box 3 \
+     --speed-scale 0.5 \
+     --execute \
+     --confirmation EXECUTE_MUJOCO_BOX_MOVE

@@ -1,0 +1,632 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+from itertools import product
+from pathlib import Path
+
+import mujoco
+import numpy as np
+
+
+ROOT = Path.home() / "IK_solver_MuJoCo"
+MODEL_PATH = (
+    ROOT
+    / "src/drok_arm_mujoco/model/scene.xml"
+)
+
+LEFT_JOINT = "JOINT7"
+RIGHT_JOINT = "GRIPPER_RIGHT_JOINT"
+
+LEFT_BODY_CANDIDATES = [
+    "GRIPPER_LEFT",
+]
+
+RIGHT_BODY_CANDIDATES = [
+    "GRIPPER_RIGH",
+    "GRIPPER_RIGHT",
+]
+
+BASE_BODY_CANDIDATES = [
+    "GRIPPER_BASE",
+]
+
+
+def resolve_body_id(
+    model: mujoco.MjModel,
+    candidates: list[str],
+) -> int:
+    for candidate in candidates:
+        body_id = mujoco.mj_name2id(
+            model,
+            mujoco.mjtObj.mjOBJ_BODY,
+            candidate,
+        )
+
+        if body_id >= 0:
+            return int(body_id)
+
+    for body_id in range(model.nbody):
+        name = mujoco.mj_id2name(
+            model,
+            mujoco.mjtObj.mjOBJ_BODY,
+            body_id,
+        )
+
+        if name is None:
+            continue
+
+        for candidate in candidates:
+            if name.endswith(candidate):
+                return body_id
+
+    raise RuntimeError(
+        "Body를 찾지 못했습니다: "
+        + ", ".join(candidates)
+    )
+
+
+def subtree_body_ids(
+    model: mujoco.MjModel,
+    root_body_id: int,
+) -> set[int]:
+    result: set[int] = set()
+
+    for body_id in range(model.nbody):
+        current = body_id
+
+        while current > 0:
+            if current == root_body_id:
+                result.add(body_id)
+                break
+
+            current = int(
+                model.body_parentid[current]
+            )
+
+    result.add(root_body_id)
+
+    return result
+
+
+def collect_geoms(
+    model: mujoco.MjModel,
+    body_ids: set[int],
+) -> list[int]:
+    collision_geoms = [
+        geom_id
+        for geom_id in range(model.ngeom)
+        if int(model.geom_bodyid[geom_id])
+        in body_ids
+        and (
+            int(model.geom_contype[geom_id]) != 0
+            or int(model.geom_conaffinity[geom_id]) != 0
+        )
+    ]
+
+    if collision_geoms:
+        return collision_geoms
+
+    return [
+        geom_id
+        for geom_id in range(model.ngeom)
+        if int(model.geom_bodyid[geom_id])
+        in body_ids
+    ]
+
+
+def geom_name(
+    model: mujoco.MjModel,
+    geom_id: int,
+) -> str:
+    name = mujoco.mj_id2name(
+        model,
+        mujoco.mjtObj.mjOBJ_GEOM,
+        geom_id,
+    )
+
+    if name is None:
+        return f"geom_{geom_id}"
+
+    return name
+
+
+def primitive_support_radius(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    geom_id: int,
+    direction_world: np.ndarray,
+) -> float:
+    rotation = np.asarray(
+        data.geom_xmat[geom_id]
+    ).reshape(3, 3)
+
+    direction_local = (
+        rotation.T @ direction_world
+    )
+
+    geom_type = int(
+        model.geom_type[geom_id]
+    )
+
+    size = np.asarray(
+        model.geom_size[geom_id],
+        dtype=float,
+    )
+
+    if geom_type == int(
+        mujoco.mjtGeom.mjGEOM_SPHERE
+    ):
+        return float(size[0])
+
+    if geom_type == int(
+        mujoco.mjtGeom.mjGEOM_BOX
+    ):
+        return float(
+            np.sum(
+                np.abs(direction_local)
+                * size
+            )
+        )
+
+    if geom_type == int(
+        mujoco.mjtGeom.mjGEOM_ELLIPSOID
+    ):
+        return float(
+            np.sqrt(
+                np.sum(
+                    (
+                        direction_local
+                        * size
+                    ) ** 2
+                )
+            )
+        )
+
+    if geom_type == int(
+        mujoco.mjtGeom.mjGEOM_CYLINDER
+    ):
+        radial_component = np.linalg.norm(
+            direction_local[:2]
+        )
+
+        return float(
+            size[0] * radial_component
+            + size[1]
+            * abs(direction_local[2])
+        )
+
+    if geom_type == int(
+        mujoco.mjtGeom.mjGEOM_CAPSULE
+    ):
+        return float(
+            size[0]
+            + size[1]
+            * abs(direction_local[2])
+        )
+
+    raise RuntimeError(
+        f"지원하지 않는 primitive geom type: "
+        f"{geom_type}"
+    )
+
+
+def geom_projection_interval(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    geom_id: int,
+    origin_world: np.ndarray,
+    direction_world: np.ndarray,
+) -> tuple[float, float]:
+    geom_type = int(
+        model.geom_type[geom_id]
+    )
+
+    position = np.asarray(
+        data.geom_xpos[geom_id],
+        dtype=float,
+    )
+
+    rotation = np.asarray(
+        data.geom_xmat[geom_id],
+        dtype=float,
+    ).reshape(3, 3)
+
+    if geom_type == int(
+        mujoco.mjtGeom.mjGEOM_MESH
+    ):
+        mesh_id = int(
+            model.geom_dataid[geom_id]
+        )
+
+        if mesh_id < 0:
+            raise RuntimeError(
+                f"{geom_name(model, geom_id)}의 "
+                "mesh id가 없습니다."
+            )
+
+        vertex_start = int(
+            model.mesh_vertadr[mesh_id]
+        )
+
+        vertex_count = int(
+            model.mesh_vertnum[mesh_id]
+        )
+
+        vertices_local = np.asarray(
+            model.mesh_vert[
+                vertex_start:
+                vertex_start + vertex_count
+            ],
+            dtype=float,
+        )
+
+        vertices_world = (
+            vertices_local @ rotation.T
+            + position
+        )
+
+        projections = (
+            vertices_world - origin_world
+        ) @ direction_world
+
+        return (
+            float(np.min(projections)),
+            float(np.max(projections)),
+        )
+
+    supported_types = {
+        int(mujoco.mjtGeom.mjGEOM_SPHERE),
+        int(mujoco.mjtGeom.mjGEOM_BOX),
+        int(mujoco.mjtGeom.mjGEOM_ELLIPSOID),
+        int(mujoco.mjtGeom.mjGEOM_CYLINDER),
+        int(mujoco.mjtGeom.mjGEOM_CAPSULE),
+    }
+
+    if geom_type not in supported_types:
+        raise RuntimeError(
+            f"{geom_name(model, geom_id)}: "
+            f"지원하지 않는 geom type={geom_type}"
+        )
+
+    center_projection = float(
+        np.dot(
+            position - origin_world,
+            direction_world,
+        )
+    )
+
+    support = primitive_support_radius(
+        model,
+        data,
+        geom_id,
+        direction_world,
+    )
+
+    return (
+        center_projection - support,
+        center_projection + support,
+    )
+
+
+def set_joint_position(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    joint_name: str,
+    position: float,
+) -> None:
+    joint_id = mujoco.mj_name2id(
+        model,
+        mujoco.mjtObj.mjOBJ_JOINT,
+        joint_name,
+    )
+
+    if joint_id < 0:
+        raise RuntimeError(
+            f"{joint_name}을 찾지 못했습니다."
+        )
+
+    joint_type = int(
+        model.jnt_type[joint_id]
+    )
+
+    if joint_type not in {
+        int(mujoco.mjtJoint.mjJNT_SLIDE),
+        int(mujoco.mjtJoint.mjJNT_HINGE),
+    }:
+        raise RuntimeError(
+            f"{joint_name}은 1-DoF joint가 아닙니다."
+        )
+
+    qpos_address = int(
+        model.jnt_qposadr[joint_id]
+    )
+
+    data.qpos[qpos_address] = position
+
+
+def measure_gap(
+    model: mujoco.MjModel,
+    data: mujoco.MjData,
+    base_body_id: int,
+    left_body_id: int,
+    right_body_id: int,
+    left_geoms: list[int],
+    right_geoms: list[int],
+    joint_position: float,
+) -> tuple[float, float, list, list]:
+    data.qpos[:] = model.qpos0
+    data.qvel[:] = 0.0
+
+    set_joint_position(
+        model,
+        data,
+        LEFT_JOINT,
+        +joint_position,
+    )
+
+    set_joint_position(
+        model,
+        data,
+        RIGHT_JOINT,
+        -joint_position,
+    )
+
+    mujoco.mj_forward(
+        model,
+        data,
+    )
+
+    base_position = np.asarray(
+        data.xpos[base_body_id],
+        dtype=float,
+    )
+
+    base_rotation = np.asarray(
+        data.xmat[base_body_id],
+        dtype=float,
+    ).reshape(3, 3)
+
+    # GRIPPER_BASE local +Y 방향.
+    closing_axis_world = base_rotation[:, 1]
+
+    left_details = []
+    right_details = []
+
+    for geom_id in left_geoms:
+        interval = geom_projection_interval(
+            model,
+            data,
+            geom_id,
+            base_position,
+            closing_axis_world,
+        )
+
+        left_details.append(
+            (
+                geom_name(model, geom_id),
+                interval,
+            )
+        )
+
+    for geom_id in right_geoms:
+        interval = geom_projection_interval(
+            model,
+            data,
+            geom_id,
+            base_position,
+            closing_axis_world,
+        )
+
+        right_details.append(
+            (
+                geom_name(model, geom_id),
+                interval,
+            )
+        )
+
+    # 왼쪽 손가락은 +Y에 있으므로 가장 작은 Y가 내측면.
+    left_inner_surface = min(
+        interval[0]
+        for _, interval in left_details
+    )
+
+    # 오른쪽 손가락은 -Y에 있으므로 가장 큰 Y가 내측면.
+    right_inner_surface = max(
+        interval[1]
+        for _, interval in right_details
+    )
+
+    collision_gap = (
+        left_inner_surface
+        - right_inner_surface
+    )
+
+    left_body_projection = float(
+        np.dot(
+            np.asarray(
+                data.xpos[left_body_id]
+            ) - base_position,
+            closing_axis_world,
+        )
+    )
+
+    right_body_projection = float(
+        np.dot(
+            np.asarray(
+                data.xpos[right_body_id]
+            ) - base_position,
+            closing_axis_world,
+        )
+    )
+
+    body_origin_separation = (
+        left_body_projection
+        - right_body_projection
+    )
+
+    return (
+        collision_gap,
+        body_origin_separation,
+        left_details,
+        right_details,
+    )
+
+
+def main() -> int:
+    model = mujoco.MjModel.from_xml_path(
+        str(MODEL_PATH)
+    )
+
+    data = mujoco.MjData(model)
+
+    base_body_id = resolve_body_id(
+        model,
+        BASE_BODY_CANDIDATES,
+    )
+
+    left_body_id = resolve_body_id(
+        model,
+        LEFT_BODY_CANDIDATES,
+    )
+
+    right_body_id = resolve_body_id(
+        model,
+        RIGHT_BODY_CANDIDATES,
+    )
+
+    left_geoms = collect_geoms(
+        model,
+        subtree_body_ids(
+            model,
+            left_body_id,
+        ),
+    )
+
+    right_geoms = collect_geoms(
+        model,
+        subtree_body_ids(
+            model,
+            right_body_id,
+        ),
+    )
+
+    print("=" * 88)
+    print("MUJOCO GRIPPER COLLISION GAP")
+    print("=" * 88)
+
+    print(f"Model      : {MODEL_PATH}")
+    print(f"Base body  : {base_body_id}")
+    print(f"Left body  : {left_body_id}")
+    print(f"Right body : {right_body_id}")
+
+    measurements = {}
+
+    for joint_position in [
+        0.000,
+        0.020,
+        0.040,
+    ]:
+        (
+            collision_gap,
+            body_separation,
+            left_details,
+            right_details,
+        ) = measure_gap(
+            model,
+            data,
+            base_body_id,
+            left_body_id,
+            right_body_id,
+            left_geoms,
+            right_geoms,
+            joint_position,
+        )
+
+        measurements[joint_position] = (
+            collision_gap
+        )
+
+        print()
+        print(
+            f"q = ±{joint_position:.3f} m"
+        )
+
+        print(
+            "  joint-origin separation : "
+            f"{body_separation * 1000.0:.3f} mm"
+        )
+
+        print(
+            "  collision projected gap : "
+            f"{collision_gap * 1000.0:.3f} mm"
+        )
+
+        if abs(
+            joint_position - 0.020
+        ) < 1.0e-12:
+            print("  Left collision geoms")
+
+            for name, interval in left_details:
+                print(
+                    f"    {name:32s} "
+                    f"[{interval[0] * 1000.0:+.3f}, "
+                    f"{interval[1] * 1000.0:+.3f}] mm"
+                )
+
+            print("  Right collision geoms")
+
+            for name, interval in right_details:
+                print(
+                    f"    {name:32s} "
+                    f"[{interval[0] * 1000.0:+.3f}, "
+                    f"{interval[1] * 1000.0:+.3f}] mm"
+                )
+
+    open_gap = measurements[0.000]
+    object_diameter = 0.060
+
+    estimated_touch_position = (
+        open_gap - object_diameter
+    ) / 2.0
+
+    print()
+    print("=" * 88)
+    print("60 mm CYLINDER ESTIMATE")
+    print("=" * 88)
+
+    print(
+        "Measured open collision gap : "
+        f"{open_gap * 1000.0:.3f} mm"
+    )
+
+    print(
+        "Cylinder diameter           : "
+        f"{object_diameter * 1000.0:.3f} mm"
+    )
+
+    print(
+        "Estimated symmetric q       : "
+        f"±{estimated_touch_position:.6f} m"
+    )
+
+    if (
+        0.0
+        <= estimated_touch_position
+        <= 0.040
+    ):
+        print(
+            "URDF limit feasibility      : "
+            "POSSIBLE"
+        )
+    else:
+        print(
+            "URDF limit feasibility      : "
+            "NOT POSSIBLE"
+        )
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

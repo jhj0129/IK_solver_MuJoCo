@@ -1,0 +1,35 @@
+========================================================================================
+CYLINDER TIMED ARM PATH EXECUTOR
+========================================================================================
+Timed path       : /home/hgui/IK_solver_MuJoCo/cylinder_best_timed_joint_path_segmented.yaml
+Arm action       : /arm_controller/follow_joint_trajectory
+Controller rate  : 100.000 Hz
+Speed scale      : 0.500
+Stop after block : 1
+Selected blocks  : MOTION_BLOCK_1_PICK_APPROACH
+Scaled block time: 3.220 s
+
+GRIPPER COMMAND  : DISABLED
+
+Current q        : -0.000071, +0.297439, +0.296828, -0.000066, +0.000278, -0.000035
+PICK_PREGRASP q  : +0.157001, +1.213851, +0.569324, +1.002157, -0.728360, +0.706917
+Entry max change : 57.423 deg
+Entry duration   : 9.850 s
+[INFO] [1785235846.903171519] [cylinder_timed_arm_executor]: ENTRY_TO_PICK_PREGRASP: 985 points 전송
+[INFO] [1785235846.907241370] [cylinder_timed_arm_executor]: ENTRY_TO_PICK_PREGRASP: goal accepted
+[INFO] [1785235856.809580296] [cylinder_timed_arm_executor]: ENTRY_TO_PICK_PREGRASP: completed
+Entry goal error : 0.344199 deg
+
+[BLOCK 1] MOTION_BLOCK_1_PICK_APPROACH
+Start error      : 0.344199 deg
+Points           : 161
+Scaled duration  : 3.220 s
+[INFO] [1785235856.814790102] [cylinder_timed_arm_executor]: MOTION_BLOCK_1_PICK_APPROACH: 161 points 전송
+[INFO] [1785235856.816569146] [cylinder_timed_arm_executor]: MOTION_BLOCK_1_PICK_APPROACH: goal accepted
+[INFO] [1785235860.067282145] [cylinder_timed_arm_executor]: MOTION_BLOCK_1_PICK_APPROACH: completed
+Goal error       : 0.345044 deg
+
+========================================================================================
+EXECUTION RESULT: PASS
+========================================================================================
+Gripper commands were not sent.

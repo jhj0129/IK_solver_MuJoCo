@@ -1,0 +1,210 @@
+============================================================================================
+CYLINDER PREGRASP CANDIDATE SCAN
+============================================================================================
+현재 /joint_states를 기다립니다.
+Current q [rad]: +0.000057276, +0.296959786, +0.296286907, -0.000070502, -0.000374736, +0.000017205
+
+[01/36] candidate=00, phi=  0.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[02/36] candidate=01, phi= 10.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[03/36] candidate=02, phi= 20.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[04/36] candidate=03, phi= 30.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[05/36] candidate=04, phi= 40.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[06/36] candidate=05, phi= 50.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[07/36] candidate=06, phi= 60.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[08/36] candidate=07, phi= 70.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[09/36] candidate=08, phi= 80.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[10/36] candidate=09, phi= 90.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[11/36] candidate=10, phi=100.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[12/36] candidate=11, phi=110.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[13/36] candidate=12, phi=120.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[14/36] candidate=13, phi=130.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[15/36] candidate=14, phi=140.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[16/36] candidate=15, phi=150.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[17/36] candidate=16, phi=160.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[18/36] candidate=17, phi=170.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[19/36] candidate=18, phi=180.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[20/36] candidate=19, phi=190.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[21/36] candidate=20, phi=200.000 deg
+  PASS seed=current_joint_state, max-change=98.098 deg, margin=2.627 deg
+  PASS seed=position_only_solution, max-change=98.095 deg, margin=2.630 deg
+  RESULT: PASS, selected seed=position_only_solution
+
+[22/36] candidate=21, phi=210.000 deg
+  PASS seed=current_joint_state, max-change=57.423 deg, margin=32.620 deg
+  PASS seed=previous_phi_solution, max-change=57.423 deg, margin=32.620 deg
+  PASS seed=position_only_solution, max-change=57.423 deg, margin=32.620 deg
+  RESULT: PASS, selected seed=position_only_solution
+
+[23/36] candidate=22, phi=220.000 deg
+  PASS seed=current_joint_state, max-change=58.147 deg, margin=31.696 deg
+  PASS seed=previous_phi_solution, max-change=58.147 deg, margin=31.696 deg
+  PASS seed=position_only_solution, max-change=58.147 deg, margin=31.696 deg
+  RESULT: PASS, selected seed=previous_phi_solution
+
+[24/36] candidate=23, phi=230.000 deg
+  PASS seed=current_joint_state, max-change=160.188 deg, margin=5.174 deg
+  PASS seed=previous_phi_solution, max-change=68.333 deg, margin=18.836 deg
+  PASS seed=position_only_solution, max-change=68.332 deg, margin=18.836 deg
+  RESULT: PASS, selected seed=position_only_solution
+
+[25/36] candidate=24, phi=240.000 deg
+  FAIL seed=current_joint_state
+  PASS seed=previous_phi_solution, max-change=78.657 deg, margin=8.511 deg
+  PASS seed=position_only_solution, max-change=78.657 deg, margin=8.511 deg
+  RESULT: PASS, selected seed=position_only_solution
+
+[26/36] candidate=25, phi=250.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[27/36] candidate=26, phi=260.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[28/36] candidate=27, phi=270.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[29/36] candidate=28, phi=280.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[30/36] candidate=29, phi=290.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[31/36] candidate=30, phi=300.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[32/36] candidate=31, phi=310.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[33/36] candidate=32, phi=320.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[34/36] candidate=33, phi=330.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[35/36] candidate=34, phi=340.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+[36/36] candidate=35, phi=350.000 deg
+  FAIL seed=current_joint_state
+  FAIL seed=previous_phi_solution
+  FAIL seed=position_only_solution
+  RESULT: no full-pose solution
+
+============================================================================================
+OVERALL RESULT: PASS
+Best candidate index : 21
+Best phi             : 210.000 deg
+Maximum joint change : 57.423 deg
+Minimum limit margin : 32.620 deg
+Saved:
+/home/hgui/IK_solver_MuJoCo/cylinder_pregrasp_candidate_scan.yaml
+============================================================================================

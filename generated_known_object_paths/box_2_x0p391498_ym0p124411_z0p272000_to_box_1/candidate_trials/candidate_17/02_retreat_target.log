@@ -1,0 +1,58 @@
+$ /usr/bin/python3 /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py --hybrid-path /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_17/hybrid_path.yaml --candidate-file /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/all_grasp_candidates.yaml --geometry /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics/config/robot_geometry.yaml --output /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_17/retreat_target.yaml
+
+========================================
+ DROK Upright 5-DoF IK Solver
+========================================
+IK mode: upright
+----------------------------------------
+Target position [m]
+x = 0.450000000
+y = 0.180000000
+z = 0.282000000
+----------------------------------------
+Constraint
+TCP local +Z = world +Z
+TCP yaw      = free
+----------------------------------------
+Initial joint positions [rad]
+q1 = 0.178227394
+q2 = 1.491677630
+q3 = 0.779503951
+q4 = -2.218080827
+q5 = 0.824877039
+q6 = -2.463697810
+----------------------------------------
+IK result joint positions [rad]
+q1 = 0.178227394
+q2 = 1.491677630
+q3 = 0.779503951
+q4 = -2.218080827
+q5 = 0.824877039
+q6 = -2.463697810
+----------------------------------------
+Solved TCP local +Z in world
+ 0.000001409 -0.000018981  1.000000000
+Solved TCP yaw    : 0.637056319 rad
+----------------------------------------
+Success           : true
+Iterations        : 0
+Position error    : 0.000020411 m
+Upright error     : 0.000019033 rad
+Orientation error : 0.000019033 rad
+Minimum margin    : 0.413592190 rad
+Message           : Upright IK converged.
+----------------------------------------
+Machine-readable joint result
+JOINT_RESULT=0.178227394,1.491677630,0.779503951,-2.218080827,0.824877039,-2.463697810
+========================================
+
+========================================================================================
+NEW HEIGHT PLACE RETREAT TARGET
+========================================================================================
+Candidate index : 17
+Final yaw       : +36.500638 deg
+Place grasp TCP : +0.450000000, +0.180000000, +0.282000000
+Retreat TCP     : +0.385691981, +0.132413461, +0.282000000
+Retreat vector  : -0.803850233, -0.594831743, +0.000000000
+Saved:
+/home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_17/retreat_target.yaml

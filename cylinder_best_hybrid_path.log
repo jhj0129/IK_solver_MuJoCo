@@ -1,0 +1,36 @@
+========================================================================================
+CYLINDER HYBRID CARTESIAN IK DRY RUN
+========================================================================================
+Candidate index : 21
+Candidate phi   : 210.000 deg
+Target RPY      : +0.000000000, -0.000000000, +0.523598776
+Cartesian step  : 0.003000 m
+
+현재 /joint_states를 기다립니다.
+Current q [rad] : +0.000021609, +0.297006584, +0.296264084, -0.000071083, -0.000340607, +0.000015249
+
+[INITIAL 1/2] Position-only solve at PICK_PREGRASP
+[PASS] q = +0.265641, +1.171752, +0.788007, +0.040825, -0.161408, +0.000015
+
+[INITIAL 2/2] Full-pose orientation alignment
+
+[PICK_APPROACH] mode=full, distance=0.080000 m, samples=27
+[PASS] max jump=0.571177 deg, minimum margin=25.787038 deg
+
+[PICK_LIFT] mode=full, distance=0.050000 m, samples=17
+[PASS] max jump=0.538143 deg, minimum margin=26.113257 deg
+
+[TRANSFER] mode=upright, distance=0.360000 m, samples=120
+[PASS] max jump=0.366531 deg, minimum margin=18.205222 deg
+
+[PLACE_DESCEND] mode=upright, distance=0.050000 m, samples=17
+[PASS] max jump=0.585057 deg, minimum margin=17.037121 deg
+
+========================================================================================
+OVERALL RESULT: PASS
+========================================================================================
+Total samples       : 182
+Maximum joint jump  : 0.585057 deg
+Minimum limit margin: 17.037121 deg
+Saved:
+/home/hgui/IK_solver_MuJoCo/cylinder_best_hybrid_path.yaml

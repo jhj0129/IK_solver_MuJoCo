@@ -1,0 +1,4765 @@
+version: 1
+joint_names:
+- JOINT1
+- JOINT2
+- JOINT3
+- JOINT4
+- JOINT5
+- JOINT6
+candidate_index: 21
+candidate_phi_deg: 210.00000000000003
+source_files:
+  hybrid_path: /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_21/hybrid_path.yaml
+  retreat_path: /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_21/retreat_path.yaml
+  urdf: /home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf
+runtime_entry:
+  mode: joint_space_quintic
+  start_source: /joint_states
+  goal_global_index: 0
+  goal_joint_positions:
+  - 0.369291496
+  - 1.505215043
+  - 0.791879711
+  - 1.33742435
+  - -0.726958996
+  - 0.976138084
+  dry_run_initial_joint_positions:
+  - 6.455389281726996e-05
+  - 0.2956637828654761
+  - 0.2946429289199186
+  - -0.0012546443650146265
+  - 0.00021150921947804904
+  - -0.004529578769311978
+  dry_run_maximum_joint_change_rad: 1.3386789943650146
+  dry_run_maximum_joint_change_deg: 76.70065649993265
+events:
+- type: GRIPPER_CLOSE
+  after_global_index: 27
+  description: PICK_APPROACH가 완료된 후 원기둥을 파지한다.
+- type: GRIPPER_OPEN
+  after_global_index: 207
+  description: PLACE_DESCEND가 완료된 후 원기둥을 놓는다.
+segment_ranges:
+  PICK_PREGRASP:
+    start_index: 0
+    end_index: 0
+  PICK_APPROACH:
+    start_index: 1
+    end_index: 27
+  PICK_LIFT:
+    start_index: 28
+    end_index: 44
+  TRANSFER:
+    start_index: 45
+    end_index: 190
+  PLACE_DESCEND:
+    start_index: 191
+    end_index: 207
+  PLACE_RETREAT:
+    start_index: 208
+    end_index: 234
+summary:
+  cartesian_sample_count: 235
+  maximum_joint_jump_rad: 0.01080233900000005
+  maximum_joint_jump_deg: 0.618928433569573
+  minimum_joint_limit_margin_rad: 0.253215411
+  minimum_joint_limit_margin_deg: 14.508174357970521
+  place_connection_position_gap_m: 0.0
+  place_connection_joint_gap_rad: 6.581599999999632e-05
+  place_connection_joint_gap_deg: 0.0037709790244328154
+path:
+- segment: PICK_PREGRASP
+  sample_index: 0
+  position:
+  - 0.4536829676972449
+  - 0.21165199999999998
+  - 0.28200000000000003
+  joint_positions:
+  - 0.369291496
+  - 1.505215043
+  - 0.791879711
+  - 1.33742435
+  - -0.726958996
+  - 0.976138084
+  ik_mode: entry
+  global_index: 0
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 1
+  position:
+  - 0.45624896889364325
+  - 0.21313348148148145
+  - 0.28200000000000003
+  joint_positions:
+  - 0.370890096
+  - 1.513863284
+  - 0.799919486
+  - 1.339949207
+  - -0.727273364
+  - 0.978117312
+  position_error: 2.6e-08
+  orientation_error: 4.3e-08
+  maximum_joint_jump_rad: 0.008648240999999945
+  minimum_limit_margin_rad: 0.33338268800000015
+  global_index: 1
+  maximum_joint_jump_from_previous_rad: 0.008648240999999945
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 2
+  position:
+  - 0.4588149700900416
+  - 0.21461496296296295
+  - 0.28200000000000003
+  joint_positions:
+  - 0.372457419
+  - 1.522470463
+  - 0.808006256
+  - 1.342404285
+  - -0.727510561
+  - 0.980029797
+  position_error: 2.6e-08
+  orientation_error: 4.3e-08
+  maximum_joint_jump_rad: 0.008607179000000187
+  minimum_limit_margin_rad: 0.3314702030000001
+  global_index: 2
+  maximum_joint_jump_from_previous_rad: 0.008607179000000187
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 3
+  position:
+  - 0.46138097128643996
+  - 0.21609644444444442
+  - 0.28200000000000003
+  joint_positions:
+  - 0.373993136
+  - 1.531038164
+  - 0.816140295
+  - 1.344789401
+  - -0.727671803
+  - 0.981875917
+  position_error: 2.6e-08
+  orientation_error: 4.3e-08
+  maximum_joint_jump_rad: 0.008567700999999817
+  minimum_limit_margin_rad: 0.3296240830000001
+  global_index: 3
+  maximum_joint_jump_from_previous_rad: 0.008567700999999817
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 4
+  position:
+  - 0.4639469724828383
+  - 0.2175779259259259
+  - 0.28200000000000003
+  joint_positions:
+  - 0.375498187
+  - 1.539567392
+  - 0.824321495
+  - 1.34710689
+  - -0.727757704
+  - 0.983657991
+  position_error: 2.6e-08
+  orientation_error: 4.3e-08
+  maximum_joint_jump_rad: 0.008529228
+  minimum_limit_margin_rad: 0.32784200900000016
+  global_index: 4
+  maximum_joint_jump_from_previous_rad: 0.008529228
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 5
+  position:
+  - 0.4665129736792366
+  - 0.2190594074074074
+  - 0.28200000000000003
+  joint_positions:
+  - 0.376973475
+  - 1.548059145
+  - 0.832549768
+  - 1.349358975
+  - -0.727768877
+  - 0.98537823
+  position_error: 2.6e-08
+  orientation_error: 4.2e-08
+  maximum_joint_jump_rad: 0.008491753000000157
+  minimum_limit_margin_rad: 0.3261217700000001
+  global_index: 5
+  maximum_joint_jump_from_previous_rad: 0.008491753000000157
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 6
+  position:
+  - 0.46907897487563494
+  - 0.22054088888888887
+  - 0.28200000000000003
+  joint_positions:
+  - 0.378419868
+  - 1.556514414
+  - 0.840825043
+  - 1.351547782
+  - -0.727705936
+  - 0.987038739
+  position_error: 2.6e-08
+  orientation_error: 4.2e-08
+  maximum_joint_jump_rad: 0.008455268999999932
+  minimum_limit_margin_rad: 0.32446126100000006
+  global_index: 6
+  maximum_joint_jump_from_previous_rad: 0.008455268999999932
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 7
+  position:
+  - 0.47164497607203326
+  - 0.22202237037037034
+  - 0.28200000000000003
+  joint_positions:
+  - 0.379838199
+  - 1.564934184
+  - 0.849147269
+  - 1.353675333
+  - -0.727569496
+  - 0.988641527
+  position_error: 2.6e-08
+  orientation_error: 4.2e-08
+  maximum_joint_jump_rad: 0.008419769999999938
+  minimum_limit_margin_rad: 0.32285847300000015
+  global_index: 7
+  maximum_joint_jump_from_previous_rad: 0.008419769999999938
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 8
+  position:
+  - 0.4742109772684316
+  - 0.22350385185185184
+  - 0.28200000000000003
+  joint_positions:
+  - 0.381229274
+  - 1.573319433
+  - 0.857516416
+  - 1.35574356
+  - -0.727360166
+  - 0.990188504
+  position_error: 2.5e-08
+  orientation_error: 4.2e-08
+  maximum_joint_jump_rad: 0.008385249000000039
+  minimum_limit_margin_rad: 0.3213114960000001
+  global_index: 8
+  maximum_joint_jump_from_previous_rad: 0.008385249000000039
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 9
+  position:
+  - 0.47677697846482997
+  - 0.22498533333333331
+  - 0.28200000000000003
+  joint_positions:
+  - 0.382593864
+  - 1.581671133
+  - 0.86593247
+  - 1.357754307
+  - -0.727078553
+  - 0.991681497
+  position_error: 2.5e-08
+  orientation_error: 4.1e-08
+  maximum_joint_jump_rad: 0.008416054000000006
+  minimum_limit_margin_rad: 0.31981850300000014
+  global_index: 9
+  maximum_joint_jump_from_previous_rad: 0.008416054000000006
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 10
+  position:
+  - 0.4793429796612283
+  - 0.2264668148148148
+  - 0.28200000000000003
+  joint_positions:
+  - 0.383932713
+  - 1.589990247
+  - 0.874395439
+  - 1.359709332
+  - -0.72672526
+  - 0.993122242
+  position_error: 2.5e-08
+  orientation_error: 4.1e-08
+  maximum_joint_jump_rad: 0.008462969000000098
+  minimum_limit_margin_rad: 0.3183777580000001
+  global_index: 10
+  maximum_joint_jump_from_previous_rad: 0.008462969000000098
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 11
+  position:
+  - 0.4819089808576266
+  - 0.2279482962962963
+  - 0.28200000000000003
+  joint_positions:
+  - 0.38524654
+  - 1.598277733
+  - 0.882905348
+  - 1.361610313
+  - -0.726300879
+  - 0.994512397
+  position_error: 2.5e-08
+  orientation_error: 4.1e-08
+  maximum_joint_jump_rad: 0.008509908999999927
+  minimum_limit_margin_rad: 0.31698760300000006
+  global_index: 11
+  maximum_joint_jump_from_previous_rad: 0.008509908999999927
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 12
+  position:
+  - 0.48447498205402495
+  - 0.22942977777777776
+  - 0.28200000000000003
+  joint_positions:
+  - 0.386536033
+  - 1.606534544
+  - 0.891462242
+  - 1.363458854
+  - -0.725805999
+  - 0.995853544
+  position_error: 2.5e-08
+  orientation_error: 4.1e-08
+  maximum_joint_jump_rad: 0.008556894000000037
+  minimum_limit_margin_rad: 0.3156464560000001
+  global_index: 12
+  maximum_joint_jump_from_previous_rad: 0.008556894000000037
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 13
+  position:
+  - 0.4870409832504233
+  - 0.23091125925925923
+  - 0.28200000000000003
+  joint_positions:
+  - 0.387801859
+  - 1.614761623
+  - 0.900066184
+  - 1.365256484
+  - -0.725241199
+  - 0.997147188
+  position_error: 2.5e-08
+  orientation_error: 4.1e-08
+  maximum_joint_jump_rad: 0.008603942000000031
+  minimum_limit_margin_rad: 0.3143528120000001
+  global_index: 13
+  maximum_joint_jump_from_previous_rad: 0.008603942000000031
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 14
+  position:
+  - 0.4896069844468216
+  - 0.23239274074074073
+  - 0.28200000000000003
+  joint_positions:
+  - 0.38904466
+  - 1.622959909
+  - 0.908717258
+  - 1.367004662
+  - -0.724607047
+  - 0.998394768
+  position_error: 2.5e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.00865107399999998
+  minimum_limit_margin_rad: 0.31310523200000007
+  global_index: 14
+  maximum_joint_jump_from_previous_rad: 0.00865107399999998
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 15
+  position:
+  - 0.49217298564322
+  - 0.2338742222222222
+  - 0.28200000000000003
+  joint_positions:
+  - 0.390265053
+  - 1.631130335
+  - 0.917415565
+  - 1.368704784
+  - -0.723904103
+  - 0.999597651
+  position_error: 2.5e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.00869830699999996
+  minimum_limit_margin_rad: 0.31190234900000013
+  global_index: 15
+  maximum_joint_jump_from_previous_rad: 0.00869830699999996
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 16
+  position:
+  - 0.4947389868396183
+  - 0.23535570370370368
+  - 0.28200000000000003
+  joint_positions:
+  - 0.391463637
+  - 1.639273827
+  - 0.926161227
+  - 1.370358178
+  - -0.723132913
+  - 1.000757145
+  position_error: 2.6e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.008745662000000043
+  minimum_limit_margin_rad: 0.3107428550000002
+  global_index: 16
+  maximum_joint_jump_from_previous_rad: 0.008745662000000043
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 17
+  position:
+  - 0.49730498803601664
+  - 0.23683718518518518
+  - 0.28200000000000003
+  joint_positions:
+  - 0.392640988
+  - 1.647391306
+  - 0.934954384
+  - 1.371966117
+  - -0.722294014
+  - 1.001874495
+  position_error: 2.6e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.00879315699999994
+  minimum_limit_margin_rad: 0.3096255050000001
+  global_index: 17
+  maximum_joint_jump_from_previous_rad: 0.00879315699999994
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 18
+  position:
+  - 0.49987098923241496
+  - 0.23831866666666665
+  - 0.28200000000000003
+  joint_positions:
+  - 0.39379766
+  - 1.655483687
+  - 0.943795195
+  - 1.373529813
+  - -0.721387931
+  - 1.002950887
+  position_error: 2.6e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.008840811000000004
+  minimum_limit_margin_rad: 0.3085491130000002
+  global_index: 18
+  maximum_joint_jump_from_previous_rad: 0.008840811000000004
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 19
+  position:
+  - 0.5024369904288133
+  - 0.23980014814814812
+  - 0.28200000000000003
+  joint_positions:
+  - 0.394934192
+  - 1.663551879
+  - 0.952683839
+  - 1.375050423
+  - -0.720415172
+  - 1.003987451
+  position_error: 2.6e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.008888644000000001
+  minimum_limit_margin_rad: 0.30751254900000013
+  global_index: 19
+  maximum_joint_jump_from_previous_rad: 0.008888644000000001
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 20
+  position:
+  - 0.5050029916252117
+  - 0.24128162962962962
+  - 0.28200000000000003
+  joint_positions:
+  - 0.396051102
+  - 1.671596788
+  - 0.961620516
+  - 1.376529052
+  - -0.719376235
+  - 1.004985266
+  position_error: 2.6e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.008936677000000004
+  minimum_limit_margin_rad: 0.30651473400000007
+  global_index: 20
+  maximum_joint_jump_from_previous_rad: 0.008936677000000004
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 21
+  position:
+  - 0.5075689928216099
+  - 0.2427631111111111
+  - 0.28200000000000003
+  joint_positions:
+  - 0.397148891
+  - 1.679619313
+  - 0.970605444
+  - 1.377966754
+  - -0.718271604
+  - 1.005945357
+  position_error: 2.6e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.008984928000000059
+  minimum_limit_margin_rad: 0.305554643
+  global_index: 21
+  maximum_joint_jump_from_previous_rad: 0.008984928000000059
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 22
+  position:
+  - 0.5101349940180083
+  - 0.24424459259259257
+  - 0.28200000000000003
+  joint_positions:
+  - 0.398228044
+  - 1.687620349
+  - 0.979638862
+  - 1.379364534
+  - -0.717101745
+  - 1.006868702
+  position_error: 2.6e-08
+  orientation_error: 4.0e-08
+  maximum_joint_jump_rad: 0.009033418000000015
+  minimum_limit_margin_rad: 0.3046312980000001
+  global_index: 22
+  maximum_joint_jump_from_previous_rad: 0.009033418000000015
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 23
+  position:
+  - 0.5127009952144067
+  - 0.24572607407407407
+  - 0.28200000000000003
+  joint_positions:
+  - 0.399289028
+  - 1.695600788
+  - 0.988721027
+  - 1.380723351
+  - -0.715867113
+  - 1.007756229
+  position_error: 2.6e-08
+  orientation_error: 3.9e-08
+  maximum_joint_jump_rad: 0.00908216499999992
+  minimum_limit_margin_rad: 0.30374377100000016
+  global_index: 23
+  maximum_joint_jump_from_previous_rad: 0.00908216499999992
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 24
+  position:
+  - 0.515266996410805
+  - 0.24720755555555554
+  - 0.28200000000000003
+  joint_positions:
+  - 0.400332295
+  - 1.703561516
+  - 0.99785222
+  - 1.38204412
+  - -0.714568145
+  - 1.008608825
+  position_error: 2.6e-08
+  orientation_error: 3.9e-08
+  maximum_joint_jump_rad: 0.009131192999999982
+  minimum_limit_margin_rad: 0.30289117500000007
+  global_index: 24
+  maximum_joint_jump_from_previous_rad: 0.009131192999999982
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 25
+  position:
+  - 0.5178329976072034
+  - 0.24868903703703701
+  - 0.28200000000000003
+  joint_positions:
+  - 0.401358285
+  - 1.711503418
+  - 1.007032739
+  - 1.383327711
+  - -0.713205264
+  - 1.009427329
+  position_error: 2.7e-08
+  orientation_error: 3.9e-08
+  maximum_joint_jump_rad: 0.009180519000000054
+  minimum_limit_margin_rad: 0.3020726710000001
+  global_index: 25
+  maximum_joint_jump_from_previous_rad: 0.009180519000000054
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 26
+  position:
+  - 0.5203989988036016
+  - 0.2501705185185185
+  - 0.28200000000000003
+  joint_positions:
+  - 0.40236742
+  - 1.719427373
+  - 1.016262906
+  - 1.384574953
+  - -0.711778874
+  - 1.010212541
+  position_error: 2.7e-08
+  orientation_error: 3.9e-08
+  maximum_joint_jump_rad: 0.0092301669999999
+  minimum_limit_margin_rad: 0.3012874590000001
+  global_index: 26
+  maximum_joint_jump_from_previous_rad: 0.0092301669999999
+- segment: PICK_APPROACH
+  ik_mode: full
+  sample_index: 27
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.28200000000000003
+  joint_positions:
+  - 0.403360111
+  - 1.727334259
+  - 1.025543061
+  - 1.385786636
+  - -0.710289365
+  - 1.010965219
+  position_error: 2.7e-08
+  orientation_error: 3.9e-08
+  maximum_joint_jump_rad: 0.009280155000000123
+  minimum_limit_margin_rad: 0.3005347810000001
+  global_index: 27
+  maximum_joint_jump_from_previous_rad: 0.009280155000000123
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 1
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.28494117647058825
+  joint_positions:
+  - 0.403360216
+  - 1.723512956
+  - 1.030629424
+  - 1.383854697
+  - -0.701535264
+  - 1.008426499
+  position_error: 4.5e-08
+  orientation_error: 8.4e-08
+  maximum_joint_jump_rad: 0.008754100999999959
+  minimum_limit_margin_rad: 0.3030735010000001
+  global_index: 28
+  maximum_joint_jump_from_previous_rad: 0.008754100999999959
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 2
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.2878823529411765
+  joint_positions:
+  - 0.403360224
+  - 1.719768044
+  - 1.035783604
+  - 1.381869373
+  - -0.692792858
+  - 1.005836961
+  position_error: 4.6e-08
+  orientation_error: 8.8e-08
+  maximum_joint_jump_rad: 0.00874240599999998
+  minimum_limit_margin_rad: 0.30566303900000014
+  global_index: 29
+  maximum_joint_jump_from_previous_rad: 0.00874240599999998
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 3
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.29082352941176476
+  joint_positions:
+  - 0.403360231
+  - 1.716099459
+  - 1.041005402
+  - 1.379829054
+  - -0.684062368
+  - 1.00319492
+  position_error: 4.8e-08
+  orientation_error: 9.3e-08
+  maximum_joint_jump_rad: 0.008730490000000035
+  minimum_limit_margin_rad: 0.30830508
+  global_index: 30
+  maximum_joint_jump_from_previous_rad: 0.008730490000000035
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 4
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.293764705882353
+  joint_positions:
+  - 0.40336024
+  - 1.712507157
+  - 1.046294649
+  - 1.377731808
+  - -0.67534404
+  - 1.000498413
+  position_error: 5.0e-08
+  orientation_error: 9.7e-08
+  maximum_joint_jump_rad: 0.008718327999999942
+  minimum_limit_margin_rad: 0.311001587
+  global_index: 31
+  maximum_joint_jump_from_previous_rad: 0.008718327999999942
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 5
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.2967058823529412
+  joint_positions:
+  - 0.403360249
+  - 1.70899109
+  - 1.051651188
+  - 1.375575602
+  - -0.666638113
+  - 0.997745378
+  position_error: 5.2e-08
+  orientation_error: 1.02e-07
+  maximum_joint_jump_rad: 0.008705927000000058
+  minimum_limit_margin_rad: 0.31375462200000015
+  global_index: 32
+  maximum_joint_jump_from_previous_rad: 0.008705927000000058
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 6
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.29964705882352943
+  joint_positions:
+  - 0.403360258
+  - 1.705551198
+  - 1.057074866
+  - 1.3733583
+  - -0.65794481
+  - 0.994933648
+  position_error: 5.4e-08
+  orientation_error: 1.08e-07
+  maximum_joint_jump_rad: 0.00869330299999993
+  minimum_limit_margin_rad: 0.31656635200000016
+  global_index: 33
+  maximum_joint_jump_from_previous_rad: 0.00869330299999993
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 7
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.30258823529411766
+  joint_positions:
+  - 0.403360268
+  - 1.702187413
+  - 1.062565543
+  - 1.371077656
+  - -0.649264346
+  - 0.992060945
+  position_error: 5.6e-08
+  orientation_error: 1.14e-07
+  maximum_joint_jump_rad: 0.008680463999999999
+  minimum_limit_margin_rad: 0.31943905500000014
+  global_index: 34
+  maximum_joint_jump_from_previous_rad: 0.008680463999999999
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 8
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.3055294117647059
+  joint_positions:
+  - 0.403360279
+  - 1.69889966
+  - 1.068123087
+  - 1.368731304
+  - -0.640596928
+  - 0.98912487
+  position_error: 5.9e-08
+  orientation_error: 1.2e-07
+  maximum_joint_jump_rad: 0.008667418000000038
+  minimum_limit_margin_rad: 0.32237513000000007
+  global_index: 35
+  maximum_joint_jump_from_previous_rad: 0.008667418000000038
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 9
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.30847058823529416
+  joint_positions:
+  - 0.403360291
+  - 1.695687855
+  - 1.073747375
+  - 1.366316752
+  - -0.631942749
+  - 0.9861229
+  position_error: 6.1e-08
+  orientation_error: 1.27e-07
+  maximum_joint_jump_rad: 0.008654178999999984
+  minimum_limit_margin_rad: 0.3253771000000001
+  global_index: 36
+  maximum_joint_jump_from_previous_rad: 0.008654178999999984
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 10
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.3114117647058824
+  joint_positions:
+  - 0.403360303
+  - 1.692551908
+  - 1.079438294
+  - 1.363831375
+  - -0.623301998
+  - 0.983052374
+  position_error: 6.4e-08
+  orientation_error: 1.34e-07
+  maximum_joint_jump_rad: 0.008640751000000058
+  minimum_limit_margin_rad: 0.3284476260000001
+  global_index: 37
+  maximum_joint_jump_from_previous_rad: 0.008640751000000058
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 11
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.3143529411764706
+  joint_positions:
+  - 0.403360317
+  - 1.689491723
+  - 1.085195743
+  - 1.361272405
+  - -0.614674855
+  - 0.979910489
+  position_error: 6.7e-08
+  orientation_error: 1.42e-07
+  maximum_joint_jump_rad: 0.008627143000000004
+  minimum_limit_margin_rad: 0.3315895110000001
+  global_index: 38
+  maximum_joint_jump_from_previous_rad: 0.008627143000000004
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 12
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.31729411764705884
+  joint_positions:
+  - 0.403360331
+  - 1.686507196
+  - 1.091019629
+  - 1.358636918
+  - -0.606061491
+  - 0.976694289
+  position_error: 7.1e-08
+  orientation_error: 1.5e-07
+  maximum_joint_jump_rad: 0.008613364000000012
+  minimum_limit_margin_rad: 0.3348057110000001
+  global_index: 39
+  maximum_joint_jump_from_previous_rad: 0.008613364000000012
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 13
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.32023529411764706
+  joint_positions:
+  - 0.403360347
+  - 1.68359822
+  - 1.096909872
+  - 1.355921829
+  - -0.597462074
+  - 0.973400652
+  position_error: 7.5e-08
+  orientation_error: 1.59e-07
+  maximum_joint_jump_rad: 0.008599416999999998
+  minimum_limit_margin_rad: 0.3380993480000001
+  global_index: 40
+  maximum_joint_jump_from_previous_rad: 0.008599416999999998
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 14
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.3231764705882353
+  joint_positions:
+  - 0.403360363
+  - 1.680764682
+  - 1.102866403
+  - 1.353123878
+  - -0.588876767
+  - 0.970026281
+  position_error: 7.9e-08
+  orientation_error: 1.68e-07
+  maximum_joint_jump_rad: 0.008585306999999931
+  minimum_limit_margin_rad: 0.3414737190000001
+  global_index: 41
+  maximum_joint_jump_from_previous_rad: 0.008585306999999931
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 15
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.32611764705882357
+  joint_positions:
+  - 0.403360381
+  - 1.678006464
+  - 1.108889163
+  - 1.350239617
+  - -0.580305725
+  - 0.966567692
+  position_error: 8.3e-08
+  orientation_error: 1.79e-07
+  maximum_joint_jump_rad: 0.008571042000000029
+  minimum_limit_margin_rad: 0.3449323080000001
+  global_index: 42
+  maximum_joint_jump_from_previous_rad: 0.008571042000000029
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 16
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.3290588235294118
+  joint_positions:
+  - 0.403360401
+  - 1.675323446
+  - 1.114978107
+  - 1.347265398
+  - -0.571749106
+  - 0.963021199
+  position_error: 8.8e-08
+  orientation_error: 1.9e-07
+  maximum_joint_jump_rad: 0.008556619000000043
+  minimum_limit_margin_rad: 0.34847880100000006
+  global_index: 43
+  maximum_joint_jump_from_previous_rad: 0.008556619000000043
+- segment: PICK_LIFT
+  ik_mode: full
+  sample_index: 17
+  position:
+  - 0.522965
+  - 0.251652
+  - 0.332
+  joint_positions:
+  - 0.403360422
+  - 1.672715502
+  - 1.1211332
+  - 1.344197357
+  - -0.56320706
+  - 0.959382902
+  position_error: 9.3e-08
+  orientation_error: 2.02e-07
+  maximum_joint_jump_rad: 0.00854204599999997
+  minimum_limit_margin_rad: 0.35211709800000013
+  global_index: 44
+  maximum_joint_jump_from_previous_rad: 0.00854204599999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 1
+  position:
+  - 0.5224652397260274
+  - 0.24869547945205478
+  - 0.332
+  joint_positions:
+  - 0.399045067
+  - 1.667893342
+  - 1.115786999
+  - 1.344554543
+  - -0.563698748
+  - 0.959747597
+  position_error: 9.128e-06
+  orientation_error: 1.116e-06
+  maximum_joint_jump_rad: 0.00534620100000005
+  minimum_limit_margin_rad: 0.3517524030000001
+  global_index: 45
+  maximum_joint_jump_from_previous_rad: 0.00534620100000005
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 2
+  position:
+  - 0.5219654794520548
+  - 0.24573895890410957
+  - 0.332
+  joint_positions:
+  - 0.394695314
+  - 1.663099448
+  - 1.110505395
+  - 1.344919866
+  - -0.56415408
+  - 0.960114787
+  position_error: 9.156e-06
+  orientation_error: 1.089e-06
+  maximum_joint_jump_rad: 0.005281604000000106
+  minimum_limit_margin_rad: 0.35138521300000014
+  global_index: 46
+  maximum_joint_jump_from_previous_rad: 0.005281604000000106
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 3
+  position:
+  - 0.5214657191780822
+  - 0.24278243835616437
+  - 0.332
+  joint_positions:
+  - 0.390323882
+  - 1.658329842
+  - 1.105274918
+  - 1.34529152
+  - -0.564581625
+  - 0.96048397
+  position_error: 9.161e-06
+  orientation_error: 1.068e-06
+  maximum_joint_jump_rad: 0.005230476999999789
+  minimum_limit_margin_rad: 0.35101603000000015
+  global_index: 47
+  maximum_joint_jump_from_previous_rad: 0.005230476999999789
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 4
+  position:
+  - 0.5209659589041096
+  - 0.23982591780821916
+  - 0.332
+  joint_positions:
+  - 0.385930735
+  - 1.65358462
+  - 1.100095323
+  - 1.3456695
+  - -0.564981742
+  - 0.96085519
+  position_error: 9.166e-06
+  orientation_error: 1.047e-06
+  maximum_joint_jump_rad: 0.005179595000000203
+  minimum_limit_margin_rad: 0.35064481000000014
+  global_index: 48
+  maximum_joint_jump_from_previous_rad: 0.005179595000000203
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 5
+  position:
+  - 0.520466198630137
+  - 0.23686939726027395
+  - 0.332
+  joint_positions:
+  - 0.381515817
+  - 1.648863991
+  - 1.094966485
+  - 1.346053807
+  - -0.565354777
+  - 0.961228495
+  position_error: 9.17e-06
+  orientation_error: 1.026e-06
+  maximum_joint_jump_rad: 0.005128837999999858
+  minimum_limit_margin_rad: 0.35027150500000015
+  global_index: 49
+  maximum_joint_jump_from_previous_rad: 0.005128837999999858
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 6
+  position:
+  - 0.5199664383561644
+  - 0.23391287671232874
+  - 0.332
+  joint_positions:
+  - 0.377079077
+  - 1.644168171
+  - 1.089888281
+  - 1.34644444
+  - -0.565701077
+  - 0.961603931
+  position_error: 9.174e-06
+  orientation_error: 1.006e-06
+  maximum_joint_jump_rad: 0.005078204000000142
+  minimum_limit_margin_rad: 0.34989606900000014
+  global_index: 50
+  maximum_joint_jump_from_previous_rad: 0.005078204000000142
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 7
+  position:
+  - 0.5194666780821918
+  - 0.23095635616438354
+  - 0.332
+  joint_positions:
+  - 0.372620466
+  - 1.639497383
+  - 1.084860597
+  - 1.346841399
+  - -0.566020995
+  - 0.961981544
+  position_error: 9.178e-06
+  orientation_error: 9.87e-07
+  maximum_joint_jump_rad: 0.005027683999999866
+  minimum_limit_margin_rad: 0.3495184560000001
+  global_index: 51
+  maximum_joint_jump_from_previous_rad: 0.005027683999999866
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 8
+  position:
+  - 0.5189669178082192
+  - 0.22799983561643836
+  - 0.332
+  joint_positions:
+  - 0.368139937
+  - 1.634851861
+  - 1.079883319
+  - 1.347244681
+  - -0.566314887
+  - 0.962361382
+  position_error: 9.182e-06
+  orientation_error: 9.67e-07
+  maximum_joint_jump_rad: 0.00497727800000014
+  minimum_limit_margin_rad: 0.3491386180000001
+  global_index: 52
+  maximum_joint_jump_from_previous_rad: 0.00497727800000014
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 9
+  position:
+  - 0.5184671575342465
+  - 0.22504331506849315
+  - 0.332
+  joint_positions:
+  - 0.363637446
+  - 1.630231845
+  - 1.074956341
+  - 1.347654283
+  - -0.566583112
+  - 0.962743491
+  position_error: 9.186e-06
+  orientation_error: 9.48e-07
+  maximum_joint_jump_rad: 0.00492697799999986
+  minimum_limit_margin_rad: 0.3487565090000001
+  global_index: 53
+  maximum_joint_jump_from_previous_rad: 0.00492697799999986
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 10
+  position:
+  - 0.517967397260274
+  - 0.22208679452054794
+  - 0.332
+  joint_positions:
+  - 0.359112952
+  - 1.625637583
+  - 1.070079558
+  - 1.348070201
+  - -0.566826033
+  - 0.96312792
+  position_error: 9.189e-06
+  orientation_error: 9.29e-07
+  maximum_joint_jump_rad: 0.004876783000000051
+  minimum_limit_margin_rad: 0.3483720800000001
+  global_index: 54
+  maximum_joint_jump_from_previous_rad: 0.004876783000000051
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 11
+  position:
+  - 0.5174676369863014
+  - 0.21913027397260273
+  - 0.332
+  joint_positions:
+  - 0.354566416
+  - 1.621069329
+  - 1.065252871
+  - 1.348492429
+  - -0.567044018
+  - 0.963514715
+  position_error: 9.192e-06
+  orientation_error: 9.11e-07
+  maximum_joint_jump_rad: 0.004826686999999996
+  minimum_limit_margin_rad: 0.34798528500000014
+  global_index: 55
+  maximum_joint_jump_from_previous_rad: 0.004826686999999996
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 12
+  position:
+  - 0.5169678767123288
+  - 0.21617375342465753
+  - 0.332
+  joint_positions:
+  - 0.349997803
+  - 1.616527349
+  - 1.060476183
+  - 1.348920961
+  - -0.567237437
+  - 0.963903925
+  position_error: 9.195e-06
+  orientation_error: 8.93e-07
+  maximum_joint_jump_rad: 0.004776687999999973
+  minimum_limit_margin_rad: 0.3475960750000001
+  global_index: 56
+  maximum_joint_jump_from_previous_rad: 0.004776687999999973
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 13
+  position:
+  - 0.5164681164383562
+  - 0.21321723287671232
+  - 0.332
+  joint_positions:
+  - 0.345407079
+  - 1.612011911
+  - 1.055749403
+  - 1.349355789
+  - -0.567406665
+  - 0.964295597
+  position_error: 9.197e-06
+  orientation_error: 8.75e-07
+  maximum_joint_jump_rad: 0.0047267799999999305
+  minimum_limit_margin_rad: 0.3472044030000001
+  global_index: 57
+  maximum_joint_jump_from_previous_rad: 0.0047267799999999305
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 14
+  position:
+  - 0.5159683561643835
+  - 0.2102607123287671
+  - 0.332
+  joint_positions:
+  - 0.340794215
+  - 1.607523295
+  - 1.051072442
+  - 1.349796905
+  - -0.567552082
+  - 0.96468978
+  position_error: 9.2e-06
+  orientation_error: 8.57e-07
+  maximum_joint_jump_rad: 0.004676961000000146
+  minimum_limit_margin_rad: 0.34681022000000006
+  global_index: 58
+  maximum_joint_jump_from_previous_rad: 0.004676961000000146
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 15
+  position:
+  - 0.5154685958904109
+  - 0.2073041917808219
+  - 0.332
+  joint_positions:
+  - 0.336159183
+  - 1.603061785
+  - 1.046445212
+  - 1.350244299
+  - -0.56767407
+  - 0.965086522
+  position_error: 9.202e-06
+  orientation_error: 8.41e-07
+  maximum_joint_jump_rad: 0.004635032000000039
+  minimum_limit_margin_rad: 0.3464134780000001
+  global_index: 59
+  maximum_joint_jump_from_previous_rad: 0.004635032000000039
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 16
+  position:
+  - 0.5149688356164384
+  - 0.2043476712328767
+  - 0.332
+  joint_positions:
+  - 0.331501961
+  - 1.598627674
+  - 1.041867633
+  - 1.35069796
+  - -0.567773018
+  - 0.96548587
+  position_error: 9.203e-06
+  orientation_error: 8.24e-07
+  maximum_joint_jump_rad: 0.004657221999999961
+  minimum_limit_margin_rad: 0.34601413000000014
+  global_index: 60
+  maximum_joint_jump_from_previous_rad: 0.004657221999999961
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 17
+  position:
+  - 0.5144690753424658
+  - 0.2013911506849315
+  - 0.332
+  joint_positions:
+  - 0.326822527
+  - 1.594221261
+  - 1.037339624
+  - 1.351157876
+  - -0.567849315
+  - 0.965887872
+  position_error: 9.205e-06
+  orientation_error: 8.08e-07
+  maximum_joint_jump_rad: 0.004679434000000038
+  minimum_limit_margin_rad: 0.3456121280000001
+  global_index: 61
+  maximum_joint_jump_from_previous_rad: 0.004679434000000038
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 18
+  position:
+  - 0.5139693150684932
+  - 0.19843463013698628
+  - 0.332
+  joint_positions:
+  - 0.322120864
+  - 1.589842853
+  - 1.032861109
+  - 1.351624034
+  - -0.567903359
+  - 0.966292577
+  position_error: 9.207e-06
+  orientation_error: 7.92e-07
+  maximum_joint_jump_rad: 0.004701662999999967
+  minimum_limit_margin_rad: 0.34520742300000007
+  global_index: 62
+  maximum_joint_jump_from_previous_rad: 0.004701662999999967
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 19
+  position:
+  - 0.5134695547945206
+  - 0.1954781095890411
+  - 0.332
+  joint_positions:
+  - 0.317396959
+  - 1.585492764
+  - 1.028432013
+  - 1.35209642
+  - -0.56793555
+  - 0.966700033
+  position_error: 9.208e-06
+  orientation_error: 7.77e-07
+  maximum_joint_jump_rad: 0.004723905000000028
+  minimum_limit_margin_rad: 0.34479996700000015
+  global_index: 63
+  maximum_joint_jump_from_previous_rad: 0.004723905000000028
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 20
+  position:
+  - 0.5129697945205479
+  - 0.1925215890410959
+  - 0.332
+  joint_positions:
+  - 0.3126508
+  - 1.581171312
+  - 1.024052265
+  - 1.35257502
+  - -0.567946291
+  - 0.967110286
+  position_error: 9.209e-06
+  orientation_error: 7.62e-07
+  maximum_joint_jump_rad: 0.004746158999999972
+  minimum_limit_margin_rad: 0.34438971400000007
+  global_index: 64
+  maximum_joint_jump_from_previous_rad: 0.004746158999999972
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 21
+  position:
+  - 0.5124700342465753
+  - 0.1895650684931507
+  - 0.332
+  joint_positions:
+  - 0.307882382
+  - 1.576878825
+  - 1.019721796
+  - 1.353059815
+  - -0.567935991
+  - 0.967523386
+  position_error: 9.21e-06
+  orientation_error: 7.47e-07
+  maximum_joint_jump_rad: 0.0047684179999999965
+  minimum_limit_margin_rad: 0.3439766140000001
+  global_index: 65
+  maximum_joint_jump_from_previous_rad: 0.0047684179999999965
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 22
+  position:
+  - 0.5119702739726028
+  - 0.18660854794520548
+  - 0.332
+  joint_positions:
+  - 0.303091702
+  - 1.572615636
+  - 1.015440539
+  - 1.35355079
+  - -0.567905064
+  - 0.967939378
+  position_error: 9.21e-06
+  orientation_error: 7.33e-07
+  maximum_joint_jump_rad: 0.004790679999999992
+  minimum_limit_margin_rad: 0.34356062200000015
+  global_index: 66
+  maximum_joint_jump_from_previous_rad: 0.004790679999999992
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 23
+  position:
+  - 0.5114705136986302
+  - 0.18365202739726028
+  - 0.332
+  joint_positions:
+  - 0.298278759
+  - 1.568382085
+  - 1.01120843
+  - 1.354047925
+  - -0.567853926
+  - 0.968358311
+  position_error: 9.211e-06
+  orientation_error: 7.19e-07
+  maximum_joint_jump_rad: 0.004812943000000014
+  minimum_limit_margin_rad: 0.3431416890000001
+  global_index: 67
+  maximum_joint_jump_from_previous_rad: 0.004812943000000014
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 24
+  position:
+  - 0.5109707534246576
+  - 0.18069550684931507
+  - 0.332
+  joint_positions:
+  - 0.293443559
+  - 1.564178517
+  - 1.007025406
+  - 1.3545512
+  - -0.567782998
+  - 0.96878023
+  position_error: 9.211e-06
+  orientation_error: 7.06e-07
+  maximum_joint_jump_rad: 0.004835199999999984
+  minimum_limit_margin_rad: 0.3427197700000001
+  global_index: 68
+  maximum_joint_jump_from_previous_rad: 0.004835199999999984
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 25
+  position:
+  - 0.5104709931506849
+  - 0.17773898630136986
+  - 0.332
+  joint_positions:
+  - 0.288586109
+  - 1.560005283
+  - 1.002891407
+  - 1.355060595
+  - -0.567692708
+  - 0.969205183
+  position_error: 9.211e-06
+  orientation_error: 6.94e-07
+  maximum_joint_jump_rad: 0.004857450000000041
+  minimum_limit_margin_rad: 0.3422948170000001
+  global_index: 69
+  maximum_joint_jump_from_previous_rad: 0.004857450000000041
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 26
+  position:
+  - 0.5099712328767123
+  - 0.17478246575342465
+  - 0.332
+  joint_positions:
+  - 0.283706423
+  - 1.555862742
+  - 0.998806374
+  - 1.355576088
+  - -0.567583483
+  - 0.969633214
+  position_error: 9.211e-06
+  orientation_error: 6.81e-07
+  maximum_joint_jump_rad: 0.004879685999999994
+  minimum_limit_margin_rad: 0.3418667860000001
+  global_index: 70
+  maximum_joint_jump_from_previous_rad: 0.004879685999999994
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 27
+  position:
+  - 0.5094714726027397
+  - 0.17182594520547945
+  - 0.332
+  joint_positions:
+  - 0.278804516
+  - 1.551751257
+  - 0.99477025
+  - 1.356097655
+  - -0.567455759
+  - 0.970064371
+  position_error: 9.211e-06
+  orientation_error: 6.69e-07
+  maximum_joint_jump_rad: 0.004901906999999983
+  minimum_limit_margin_rad: 0.34143562900000013
+  global_index: 71
+  maximum_joint_jump_from_previous_rad: 0.004901906999999983
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 28
+  position:
+  - 0.5089717123287671
+  - 0.16886942465753424
+  - 0.332
+  joint_positions:
+  - 0.27388041
+  - 1.547671198
+  - 0.990782979
+  - 1.356625273
+  - -0.567309974
+  - 0.970498698
+  position_error: 9.211e-06
+  orientation_error: 6.58e-07
+  maximum_joint_jump_rad: 0.004924105999999984
+  minimum_limit_margin_rad: 0.3410013020000001
+  global_index: 72
+  maximum_joint_jump_from_previous_rad: 0.004924105999999984
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 29
+  position:
+  - 0.5084719520547946
+  - 0.16591290410958903
+  - 0.332
+  joint_positions:
+  - 0.268934129
+  - 1.543622939
+  - 0.986844508
+  - 1.357158915
+  - -0.56714657
+  - 0.970936239
+  position_error: 9.21e-06
+  orientation_error: 6.47e-07
+  maximum_joint_jump_rad: 0.004946280999999997
+  minimum_limit_margin_rad: 0.3405637610000001
+  global_index: 73
+  maximum_joint_jump_from_previous_rad: 0.004946280999999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 30
+  position:
+  - 0.507972191780822
+  - 0.16295638356164382
+  - 0.332
+  joint_positions:
+  - 0.263965703
+  - 1.53960686
+  - 0.982954785
+  - 1.357698555
+  - -0.566965994
+  - 0.971377039
+  position_error: 9.21e-06
+  orientation_error: 6.37e-07
+  maximum_joint_jump_rad: 0.004968426000000026
+  minimum_limit_margin_rad: 0.34012296100000006
+  global_index: 74
+  maximum_joint_jump_from_previous_rad: 0.004968426000000026
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 31
+  position:
+  - 0.5074724315068493
+  - 0.15999986301369862
+  - 0.332
+  joint_positions:
+  - 0.258975166
+  - 1.535623346
+  - 0.979113759
+  - 1.358244166
+  - -0.566768695
+  - 0.97182114
+  position_error: 9.209e-06
+  orientation_error: 6.28e-07
+  maximum_joint_jump_rad: 0.004990537000000017
+  minimum_limit_margin_rad: 0.33967886000000014
+  global_index: 75
+  maximum_joint_jump_from_previous_rad: 0.004990537000000017
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 32
+  position:
+  - 0.5069726712328767
+  - 0.1570433424657534
+  - 0.332
+  joint_positions:
+  - 0.253962556
+  - 1.531672787
+  - 0.97532138
+  - 1.358795718
+  - -0.566555128
+  - 0.972268586
+  position_error: 9.208e-06
+  orientation_error: 6.18e-07
+  maximum_joint_jump_rad: 0.005012609999999973
+  minimum_limit_margin_rad: 0.3392314140000001
+  global_index: 76
+  maximum_joint_jump_from_previous_rad: 0.005012609999999973
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 33
+  position:
+  - 0.5064729109589041
+  - 0.1540868219178082
+  - 0.332
+  joint_positions:
+  - 0.248927916
+  - 1.527755579
+  - 0.971577598
+  - 1.359353182
+  - -0.566325751
+  - 0.972719419
+  position_error: 9.207e-06
+  orientation_error: 6.09e-07
+  maximum_joint_jump_rad: 0.005034640000000007
+  minimum_limit_margin_rad: 0.3387805810000001
+  global_index: 77
+  maximum_joint_jump_from_previous_rad: 0.005034640000000007
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 34
+  position:
+  - 0.5059731506849315
+  - 0.151130301369863
+  - 0.332
+  joint_positions:
+  - 0.243871295
+  - 1.523872122
+  - 0.967882368
+  - 1.359916527
+  - -0.566081026
+  - 0.973173679
+  position_error: 9.206e-06
+  orientation_error: 6.02e-07
+  maximum_joint_jump_rad: 0.005056621000000011
+  minimum_limit_margin_rad: 0.33832632100000015
+  global_index: 78
+  maximum_joint_jump_from_previous_rad: 0.005056621000000011
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 35
+  position:
+  - 0.505473390410959
+  - 0.1481737808219178
+  - 0.332
+  joint_positions:
+  - 0.238792745
+  - 1.520022819
+  - 0.964235641
+  - 1.360485719
+  - -0.565821417
+  - 0.973631408
+  position_error: 9.205e-06
+  orientation_error: 5.93e-07
+  maximum_joint_jump_rad: 0.005078549999999987
+  minimum_limit_margin_rad: 0.3378685920000001
+  global_index: 79
+  maximum_joint_jump_from_previous_rad: 0.005078549999999987
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 36
+  position:
+  - 0.5049736301369863
+  - 0.14521726027397258
+  - 0.332
+  joint_positions:
+  - 0.233692323
+  - 1.516208079
+  - 0.960637373
+  - 1.361060726
+  - -0.565547393
+  - 0.974092645
+  position_error: 9.204e-06
+  orientation_error: 5.86e-07
+  maximum_joint_jump_rad: 0.005100421999999993
+  minimum_limit_margin_rad: 0.3374073550000001
+  global_index: 80
+  maximum_joint_jump_from_previous_rad: 0.005100421999999993
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 37
+  position:
+  - 0.5044738698630137
+  - 0.14226073972602737
+  - 0.332
+  joint_positions:
+  - 0.228570094
+  - 1.512428315
+  - 0.957087519
+  - 1.361641513
+  - -0.565259427
+  - 0.974557428
+  position_error: 9.203e-06
+  orientation_error: 5.79e-07
+  maximum_joint_jump_rad: 0.005122229000000006
+  minimum_limit_margin_rad: 0.3369425720000001
+  global_index: 81
+  maximum_joint_jump_from_previous_rad: 0.005122229000000006
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 38
+  position:
+  - 0.5039741095890411
+  - 0.1393042191780822
+  - 0.332
+  joint_positions:
+  - 0.223426123
+  - 1.508683943
+  - 0.953586035
+  - 1.362228045
+  - -0.564957993
+  - 0.975025795
+  position_error: 9.202e-06
+  orientation_error: 5.73e-07
+  maximum_joint_jump_rad: 0.005143970999999997
+  minimum_limit_margin_rad: 0.33647420500000014
+  global_index: 82
+  maximum_joint_jump_from_previous_rad: 0.005143970999999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 39
+  position:
+  - 0.5034743493150685
+  - 0.13634769863013696
+  - 0.332
+  joint_positions:
+  - 0.218260486
+  - 1.504975383
+  - 0.950132877
+  - 1.362820284
+  - -0.56464357
+  - 0.975497784
+  position_error: 9.201e-06
+  orientation_error: 5.67e-07
+  maximum_joint_jump_rad: 0.005165637000000001
+  minimum_limit_margin_rad: 0.33600221600000013
+  global_index: 83
+  maximum_joint_jump_from_previous_rad: 0.005165637000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 40
+  position:
+  - 0.5029745890410959
+  - 0.13339117808219178
+  - 0.332
+  joint_positions:
+  - 0.21307326
+  - 1.50130306
+  - 0.946728002
+  - 1.363418193
+  - -0.564316639
+  - 0.975973429
+  position_error: 9.2e-06
+  orientation_error: 5.61e-07
+  maximum_joint_jump_rad: 0.005187226000000017
+  minimum_limit_margin_rad: 0.33552657100000016
+  global_index: 84
+  maximum_joint_jump_from_previous_rad: 0.005187226000000017
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 41
+  position:
+  - 0.5024748287671233
+  - 0.13043465753424655
+  - 0.332
+  joint_positions:
+  - 0.207864529
+  - 1.4976674
+  - 0.943371369
+  - 1.364021732
+  - -0.563977684
+  - 0.976452766
+  position_error: 9.198e-06
+  orientation_error: 5.57e-07
+  maximum_joint_jump_rad: 0.005208730999999994
+  minimum_limit_margin_rad: 0.33504723400000014
+  global_index: 85
+  maximum_joint_jump_from_previous_rad: 0.005208730999999994
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 42
+  position:
+  - 0.5019750684931507
+  - 0.12747813698630137
+  - 0.332
+  joint_positions:
+  - 0.202634383
+  - 1.494068832
+  - 0.940062936
+  - 1.364630862
+  - -0.563627192
+  - 0.976935827
+  position_error: 9.197e-06
+  orientation_error: 5.52e-07
+  maximum_joint_jump_rad: 0.005230145999999991
+  minimum_limit_margin_rad: 0.3345641730000001
+  global_index: 86
+  maximum_joint_jump_from_previous_rad: 0.005230145999999991
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 43
+  position:
+  - 0.5014753082191781
+  - 0.12452161643835616
+  - 0.332
+  joint_positions:
+  - 0.197382917
+  - 1.490507791
+  - 0.936802662
+  - 1.36524554
+  - -0.563265652
+  - 0.977422645
+  position_error: 9.196e-06
+  orientation_error: 5.48e-07
+  maximum_joint_jump_rad: 0.00525146600000001
+  minimum_limit_margin_rad: 0.33407735500000013
+  global_index: 87
+  maximum_joint_jump_from_previous_rad: 0.00525146600000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 44
+  position:
+  - 0.5009755479452055
+  - 0.12156509589041095
+  - 0.332
+  joint_positions:
+  - 0.192110231
+  - 1.486984712
+  - 0.933590506
+  - 1.365865725
+  - -0.562893555
+  - 0.977913251
+  position_error: 9.194e-06
+  orientation_error: 5.45e-07
+  maximum_joint_jump_rad: 0.005272685999999999
+  minimum_limit_margin_rad: 0.33358674900000007
+  global_index: 88
+  maximum_joint_jump_from_previous_rad: 0.005272685999999999
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 45
+  position:
+  - 0.5004757876712329
+  - 0.11860857534246574
+  - 0.332
+  joint_positions:
+  - 0.186816432
+  - 1.483500032
+  - 0.930426427
+  - 1.366491372
+  - -0.562511395
+  - 0.978407675
+  position_error: 9.193e-06
+  orientation_error: 5.41e-07
+  maximum_joint_jump_rad: 0.005293798999999988
+  minimum_limit_margin_rad: 0.3330923250000001
+  global_index: 89
+  maximum_joint_jump_from_previous_rad: 0.005293798999999988
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 46
+  position:
+  - 0.49997602739726027
+  - 0.11565205479452054
+  - 0.332
+  joint_positions:
+  - 0.181501633
+  - 1.480054191
+  - 0.927310386
+  - 1.367122438
+  - -0.562119667
+  - 0.978905945
+  position_error: 9.192e-06
+  orientation_error: 5.39e-07
+  maximum_joint_jump_rad: 0.005314799000000009
+  minimum_limit_margin_rad: 0.33259405500000006
+  global_index: 90
+  maximum_joint_jump_from_previous_rad: 0.005314799000000009
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 47
+  position:
+  - 0.4994762671232877
+  - 0.11269553424657533
+  - 0.332
+  joint_positions:
+  - 0.176165952
+  - 1.476647633
+  - 0.924242342
+  - 1.367758876
+  - -0.561718867
+  - 0.979408089
+  position_error: 9.191e-06
+  orientation_error: 5.36e-07
+  maximum_joint_jump_rad: 0.005335681000000009
+  minimum_limit_margin_rad: 0.33209191100000013
+  global_index: 91
+  maximum_joint_jump_from_previous_rad: 0.005335681000000009
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 48
+  position:
+  - 0.4989765068493151
+  - 0.10973901369863015
+  - 0.332
+  joint_positions:
+  - 0.170809513
+  - 1.473280799
+  - 0.921222257
+  - 1.36840064
+  - -0.561309494
+  - 0.979914131
+  position_error: 9.19e-06
+  orientation_error: 5.34e-07
+  maximum_joint_jump_rad: 0.005356438999999991
+  minimum_limit_margin_rad: 0.3315858690000001
+  global_index: 92
+  maximum_joint_jump_from_previous_rad: 0.005356438999999991
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 49
+  position:
+  - 0.49847674657534247
+  - 0.10678249315068492
+  - 0.332
+  joint_positions:
+  - 0.165432447
+  - 1.469954136
+  - 0.91825009
+  - 1.369047681
+  - -0.560892049
+  - 0.980424097
+  position_error: 9.189e-06
+  orientation_error: 5.32e-07
+  maximum_joint_jump_rad: 0.005377065999999986
+  minimum_limit_margin_rad: 0.3310759030000001
+  global_index: 93
+  maximum_joint_jump_from_previous_rad: 0.005377065999999986
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 50
+  position:
+  - 0.4979769863013699
+  - 0.10382597260273974
+  - 0.332
+  joint_positions:
+  - 0.16003489
+  - 1.46666809
+  - 0.915325802
+  - 1.369699951
+  - -0.560467031
+  - 0.980938009
+  position_error: 9.188e-06
+  orientation_error: 5.3e-07
+  maximum_joint_jump_rad: 0.005397556999999997
+  minimum_limit_margin_rad: 0.33056199100000005
+  global_index: 94
+  maximum_joint_jump_from_previous_rad: 0.005397556999999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 51
+  position:
+  - 0.4974772260273973
+  - 0.1008694520547945
+  - 0.332
+  joint_positions:
+  - 0.154616987
+  - 1.463423108
+  - 0.912449355
+  - 1.3703574
+  - -0.560034943
+  - 0.981455888
+  position_error: 9.187e-06
+  orientation_error: 5.29e-07
+  maximum_joint_jump_rad: 0.005417903000000002
+  minimum_limit_margin_rad: 0.33004411200000006
+  global_index: 95
+  maximum_joint_jump_from_previous_rad: 0.005417903000000002
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 52
+  position:
+  - 0.49697746575342466
+  - 0.09791293150684932
+  - 0.332
+  joint_positions:
+  - 0.149178885
+  - 1.460219638
+  - 0.909620709
+  - 1.371019976
+  - -0.559596285
+  - 0.981977754
+  position_error: 9.186e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005438102
+  minimum_limit_margin_rad: 0.32952224600000013
+  global_index: 96
+  maximum_joint_jump_from_previous_rad: 0.005438102
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 53
+  position:
+  - 0.4964777054794521
+  - 0.09495641095890411
+  - 0.332
+  joint_positions:
+  - 0.14372074
+  - 1.457058128
+  - 0.906839825
+  - 1.371687628
+  - -0.559151561
+  - 0.982503624
+  position_error: 9.186e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.005458144999999998
+  minimum_limit_margin_rad: 0.3289963760000001
+  global_index: 97
+  maximum_joint_jump_from_previous_rad: 0.005458144999999998
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 54
+  position:
+  - 0.49597794520547944
+  - 0.0919998904109589
+  - 0.332
+  joint_positions:
+  - 0.138242716
+  - 1.453939027
+  - 0.904106665
+  - 1.372360301
+  - -0.558701273
+  - 0.983033516
+  position_error: 9.185e-06
+  orientation_error: 5.26e-07
+  maximum_joint_jump_rad: 0.005478024000000026
+  minimum_limit_margin_rad: 0.3284664840000001
+  global_index: 98
+  maximum_joint_jump_from_previous_rad: 0.005478024000000026
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 55
+  position:
+  - 0.49547818493150686
+  - 0.0890433698630137
+  - 0.332
+  joint_positions:
+  - 0.13274498
+  - 1.450862782
+  - 0.90142119
+  - 1.373037942
+  - -0.558245923
+  - 0.983567443
+  position_error: 9.185e-06
+  orientation_error: 5.26e-07
+  maximum_joint_jump_rad: 0.005497735999999975
+  minimum_limit_margin_rad: 0.3279325570000001
+  global_index: 99
+  maximum_joint_jump_from_previous_rad: 0.005497735999999975
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 56
+  position:
+  - 0.4949784246575343
+  - 0.08608684931506849
+  - 0.332
+  joint_positions:
+  - 0.127227708
+  - 1.447829843
+  - 0.89878336
+  - 1.373720495
+  - -0.557786013
+  - 0.984105419
+  position_error: 9.185e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.0055172720000000175
+  minimum_limit_margin_rad: 0.3273945810000001
+  global_index: 100
+  maximum_joint_jump_from_previous_rad: 0.0055172720000000175
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 57
+  position:
+  - 0.49447866438356164
+  - 0.08313032876712328
+  - 0.332
+  joint_positions:
+  - 0.121691082
+  - 1.444840655
+  - 0.896193138
+  - 1.374407905
+  - -0.557322043
+  - 0.984647455
+  position_error: 9.185e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005536625999999989
+  minimum_limit_margin_rad: 0.32685254500000016
+  global_index: 101
+  maximum_joint_jump_from_previous_rad: 0.005536625999999989
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 58
+  position:
+  - 0.49397890410958906
+  - 0.08017380821917808
+  - 0.332
+  joint_positions:
+  - 0.116135291
+  - 1.441895666
+  - 0.893650484
+  - 1.375100114
+  - -0.556854514
+  - 0.985193561
+  position_error: 9.185e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005555791000000004
+  minimum_limit_margin_rad: 0.3263064390000001
+  global_index: 102
+  maximum_joint_jump_from_previous_rad: 0.005555791000000004
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 59
+  position:
+  - 0.4934791438356165
+  - 0.07721728767123287
+  - 0.332
+  joint_positions:
+  - 0.110560531
+  - 1.43899532
+  - 0.891155359
+  - 1.375797063
+  - -0.556383925
+  - 0.985743743
+  position_error: 9.185e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005574759999999998
+  minimum_limit_margin_rad: 0.3257562570000001
+  global_index: 103
+  maximum_joint_jump_from_previous_rad: 0.005574759999999998
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 60
+  position:
+  - 0.49297938356164384
+  - 0.07426076712328766
+  - 0.332
+  joint_positions:
+  - 0.104967003
+  - 1.436140061
+  - 0.888707726
+  - 1.376498694
+  - -0.555910772
+  - 0.986298008
+  position_error: 9.185e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005593528
+  minimum_limit_margin_rad: 0.3252019920000001
+  global_index: 104
+  maximum_joint_jump_from_previous_rad: 0.005593528
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 61
+  position:
+  - 0.49247962328767125
+  - 0.07130424657534246
+  - 0.332
+  joint_positions:
+  - 0.099354917
+  - 1.433330331
+  - 0.886307544
+  - 1.377204946
+  - -0.55543555
+  - 0.98685636
+  position_error: 9.186e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005612086000000002
+  minimum_limit_margin_rad: 0.3246436400000001
+  global_index: 105
+  maximum_joint_jump_from_previous_rad: 0.005612086000000002
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 62
+  position:
+  - 0.49197986301369867
+  - 0.06834772602739728
+  - 0.332
+  joint_positions:
+  - 0.093724488
+  - 1.430566569
+  - 0.883954776
+  - 1.377915758
+  - -0.554958752
+  - 0.9874188
+  position_error: 9.187e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005630429000000006
+  minimum_limit_margin_rad: 0.32408120000000007
+  global_index: 106
+  maximum_joint_jump_from_previous_rad: 0.005630429000000006
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 63
+  position:
+  - 0.49148010273972603
+  - 0.06539120547945204
+  - 0.332
+  joint_positions:
+  - 0.088075941
+  - 1.427849212
+  - 0.881649383
+  - 1.378631069
+  - -0.55448087
+  - 0.987985328
+  position_error: 9.188e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.00564854699999999
+  minimum_limit_margin_rad: 0.32351467200000006
+  global_index: 107
+  maximum_joint_jump_from_previous_rad: 0.00564854699999999
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 64
+  position:
+  - 0.49098034246575345
+  - 0.06243468493150686
+  - 0.332
+  joint_positions:
+  - 0.082409505
+  - 1.425178695
+  - 0.879391325
+  - 1.379350814
+  - -0.554002389
+  - 0.988555943
+  position_error: 9.189e-06
+  orientation_error: 5.26e-07
+  maximum_joint_jump_rad: 0.005666436000000011
+  minimum_limit_margin_rad: 0.32294405700000006
+  global_index: 108
+  maximum_joint_jump_from_previous_rad: 0.005666436000000011
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 65
+  position:
+  - 0.4904805821917808
+  - 0.05947816438356163
+  - 0.332
+  joint_positions:
+  - 0.076725416
+  - 1.422555451
+  - 0.877180565
+  - 1.380074931
+  - -0.553523796
+  - 0.98913064
+  position_error: 9.19e-06
+  orientation_error: 5.26e-07
+  maximum_joint_jump_rad: 0.005684088999999989
+  minimum_limit_margin_rad: 0.32236936000000016
+  global_index: 109
+  maximum_joint_jump_from_previous_rad: 0.005684088999999989
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 66
+  position:
+  - 0.48998082191780823
+  - 0.05652164383561645
+  - 0.332
+  joint_positions:
+  - 0.07102392
+  - 1.419979906
+  - 0.875017063
+  - 1.380803354
+  - -0.553045571
+  - 0.989709414
+  position_error: 9.192e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.005701496
+  minimum_limit_margin_rad: 0.3217905860000001
+  global_index: 110
+  maximum_joint_jump_from_previous_rad: 0.005701496
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 67
+  position:
+  - 0.48948106164383565
+  - 0.05356512328767124
+  - 0.332
+  joint_positions:
+  - 0.065305265
+  - 1.417452486
+  - 0.872900781
+  - 1.381536018
+  - -0.552568192
+  - 0.990292257
+  position_error: 9.194e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.005718655000000003
+  minimum_limit_margin_rad: 0.3212077430000001
+  global_index: 111
+  maximum_joint_jump_from_previous_rad: 0.005718655000000003
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 68
+  position:
+  - 0.488981301369863
+  - 0.05060860273972603
+  - 0.332
+  joint_positions:
+  - 0.059569712
+  - 1.414973612
+  - 0.870831681
+  - 1.382272856
+  - -0.552092132
+  - 0.990879158
+  position_error: 9.196e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.005735553000000004
+  minimum_limit_margin_rad: 0.3206208420000001
+  global_index: 112
+  maximum_joint_jump_from_previous_rad: 0.005735553000000004
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 69
+  position:
+  - 0.4884815410958904
+  - 0.047652082191780826
+  - 0.332
+  joint_positions:
+  - 0.053817524
+  - 1.412543701
+  - 0.868809724
+  - 1.383013801
+  - -0.551617859
+  - 0.991470106
+  position_error: 9.198e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.005752187999999998
+  minimum_limit_margin_rad: 0.32002989400000015
+  global_index: 113
+  maximum_joint_jump_from_previous_rad: 0.005752187999999998
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 70
+  position:
+  - 0.48798178082191784
+  - 0.04469556164383562
+  - 0.332
+  joint_positions:
+  - 0.048048973
+  - 1.410163165
+  - 0.866834872
+  - 1.383758784
+  - -0.55114584
+  - 0.992065087
+  position_error: 9.201e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005768550999999997
+  minimum_limit_margin_rad: 0.31943491300000015
+  global_index: 114
+  maximum_joint_jump_from_previous_rad: 0.005768550999999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 71
+  position:
+  - 0.4874820205479452
+  - 0.04173904109589041
+  - 0.332
+  joint_positions:
+  - 0.042264338
+  - 1.407832413
+  - 0.864907087
+  - 1.384507738
+  - -0.550676532
+  - 0.992664083
+  position_error: 9.204e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005784635000000003
+  minimum_limit_margin_rad: 0.31883591700000014
+  global_index: 115
+  maximum_joint_jump_from_previous_rad: 0.005784635000000003
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 72
+  position:
+  - 0.4869822602739726
+  - 0.038782520547945204
+  - 0.332
+  joint_positions:
+  - 0.036463906
+  - 1.405551847
+  - 0.86302633
+  - 1.385260591
+  - -0.55021039
+  - 0.993267078
+  position_error: 9.207e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005800432000000001
+  minimum_limit_margin_rad: 0.3182329220000001
+  global_index: 116
+  maximum_joint_jump_from_previous_rad: 0.005800432000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 73
+  position:
+  - 0.48648250000000004
+  - 0.035826
+  - 0.332
+  joint_positions:
+  - 0.030647969
+  - 1.403321864
+  - 0.861192564
+  - 1.386017274
+  - -0.549747863
+  - 0.993874051
+  position_error: 9.21e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005815936999999997
+  minimum_limit_margin_rad: 0.3176259490000001
+  global_index: 117
+  maximum_joint_jump_from_previous_rad: 0.005815936999999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 74
+  position:
+  - 0.4859827397260274
+  - 0.03286947945205479
+  - 0.332
+  joint_positions:
+  - 0.024816827
+  - 1.401142857
+  - 0.859405751
+  - 1.386777715
+  - -0.549289392
+  - 0.994484979
+  position_error: 9.214e-06
+  orientation_error: 5.29e-07
+  maximum_joint_jump_rad: 0.005831142000000001
+  minimum_limit_margin_rad: 0.3170150210000001
+  global_index: 118
+  maximum_joint_jump_from_previous_rad: 0.005831142000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 75
+  position:
+  - 0.4854829794520548
+  - 0.029912958904109554
+  - 0.332
+  joint_positions:
+  - 0.018970786
+  - 1.399015211
+  - 0.857665854
+  - 1.387541842
+  - -0.548835415
+  - 0.995099838
+  position_error: 9.218e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005846041
+  minimum_limit_margin_rad: 0.3164001620000001
+  global_index: 119
+  maximum_joint_jump_from_previous_rad: 0.005846041
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 76
+  position:
+  - 0.4849832191780822
+  - 0.026956438356164403
+  - 0.332
+  joint_positions:
+  - 0.01311016
+  - 1.396939308
+  - 0.855972836
+  - 1.388309583
+  - -0.54838636
+  - 0.9957186
+  position_error: 9.222e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005860626000000001
+  minimum_limit_margin_rad: 0.3157814000000001
+  global_index: 120
+  maximum_joint_jump_from_previous_rad: 0.005860626000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 77
+  position:
+  - 0.4844834589041096
+  - 0.023999917808219168
+  - 0.332
+  joint_positions:
+  - 0.00723527
+  - 1.39491552
+  - 0.85432666
+  - 1.389080863
+  - -0.547942651
+  - 0.996341238
+  position_error: 9.227e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005874889999999999
+  minimum_limit_margin_rad: 0.31515876200000015
+  global_index: 121
+  maximum_joint_jump_from_previous_rad: 0.005874889999999999
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 78
+  position:
+  - 0.483983698630137
+  - 0.02104339726027396
+  - 0.332
+  joint_positions:
+  - 0.001346442
+  - 1.392944214
+  - 0.852727289
+  - 1.389855609
+  - -0.547504703
+  - 0.996967721
+  position_error: 9.231e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.0058888280000000005
+  minimum_limit_margin_rad: 0.31453227900000014
+  global_index: 122
+  maximum_joint_jump_from_previous_rad: 0.0058888280000000005
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 79
+  position:
+  - 0.4834839383561644
+  - 0.018086876712328753
+  - 0.332
+  joint_positions:
+  - -0.00455599
+  - 1.39102575
+  - 0.851174688
+  - 1.390633747
+  - -0.547072924
+  - 0.997598015
+  position_error: 9.236e-06
+  orientation_error: 5.28e-07
+  maximum_joint_jump_rad: 0.005902432
+  minimum_limit_margin_rad: 0.3139019850000001
+  global_index: 123
+  maximum_joint_jump_from_previous_rad: 0.005902432
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 80
+  position:
+  - 0.4829841780821918
+  - 0.015130356164383574
+  - 0.332
+  joint_positions:
+  - -0.010471685
+  - 1.389160482
+  - 0.849668821
+  - 1.3914152
+  - -0.546647713
+  - 0.998232086
+  position_error: 9.242e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.0059156949999999995
+  minimum_limit_margin_rad: 0.3132679140000001
+  global_index: 124
+  maximum_joint_jump_from_previous_rad: 0.0059156949999999995
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 81
+  position:
+  - 0.4824844178082192
+  - 0.012173835616438367
+  - 0.332
+  joint_positions:
+  - -0.016400297
+  - 1.387348755
+  - 0.848209653
+  - 1.392199893
+  - -0.546229464
+  - 0.998869896
+  position_error: 9.247e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.0059286120000000015
+  minimum_limit_margin_rad: 0.31263010400000013
+  global_index: 125
+  maximum_joint_jump_from_previous_rad: 0.0059286120000000015
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 82
+  position:
+  - 0.4819846575342466
+  - 0.009217315068493132
+  - 0.332
+  joint_positions:
+  - -0.022341473
+  - 1.385590905
+  - 0.846797149
+  - 1.392987748
+  - -0.545818559
+  - 0.999511406
+  position_error: 9.253e-06
+  orientation_error: 5.26e-07
+  maximum_joint_jump_rad: 0.005941175999999999
+  minimum_limit_margin_rad: 0.3119885940000001
+  global_index: 126
+  maximum_joint_jump_from_previous_rad: 0.005941175999999999
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 83
+  position:
+  - 0.481484897260274
+  - 0.006260794520547924
+  - 0.332
+  joint_positions:
+  - -0.028294852
+  - 1.383887263
+  - 0.845431274
+  - 1.393778689
+  - -0.545415374
+  - 1.000156575
+  position_error: 9.26e-06
+  orientation_error: 5.27e-07
+  maximum_joint_jump_rad: 0.005953378999999998
+  minimum_limit_margin_rad: 0.311343425
+  global_index: 127
+  maximum_joint_jump_from_previous_rad: 0.005953378999999998
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 84
+  position:
+  - 0.4809851369863014
+  - 0.003304273972602745
+  - 0.332
+  joint_positions:
+  - -0.034260069
+  - 1.38223815
+  - 0.844111996
+  - 1.394572638
+  - -0.545020273
+  - 1.000805359
+  position_error: 9.266e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005965216999999998
+  minimum_limit_margin_rad: 0.3106946410000002
+  global_index: 128
+  maximum_joint_jump_from_previous_rad: 0.005965216999999998
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 85
+  position:
+  - 0.48048537671232877
+  - 0.00034775342465753756
+  - 0.332
+  joint_positions:
+  - -0.040236751
+  - 1.380643878
+  - 0.842839281
+  - 1.395369516
+  - -0.544633614
+  - 1.001457714
+  position_error: 9.273e-06
+  orientation_error: 5.25e-07
+  maximum_joint_jump_rad: 0.005976682000000004
+  minimum_limit_margin_rad: 0.31004228600000006
+  global_index: 129
+  maximum_joint_jump_from_previous_rad: 0.005976682000000004
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 86
+  position:
+  - 0.4799856164383562
+  - -0.0026087671232876697
+  - 0.332
+  joint_positions:
+  - -0.046224521
+  - 1.379104753
+  - 0.841613097
+  - 1.396169245
+  - -0.544255743
+  - 1.002113591
+  position_error: 9.28e-06
+  orientation_error: 5.24e-07
+  maximum_joint_jump_rad: 0.005987769999999996
+  minimum_limit_margin_rad: 0.30938640900000003
+  global_index: 130
+  maximum_joint_jump_from_previous_rad: 0.005987769999999996
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 87
+  position:
+  - 0.47948585616438355
+  - -0.005565287671232877
+  - 0.332
+  joint_positions:
+  - -0.052222995
+  - 1.377621068
+  - 0.840433412
+  - 1.396971745
+  - -0.543886997
+  - 1.002772942
+  position_error: 9.288e-06
+  orientation_error: 5.24e-07
+  maximum_joint_jump_rad: 0.005998474000000004
+  minimum_limit_margin_rad: 0.3087270580000001
+  global_index: 131
+  maximum_joint_jump_from_previous_rad: 0.005998474000000004
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 88
+  position:
+  - 0.47898609589041097
+  - -0.008521808219178084
+  - 0.332
+  joint_positions:
+  - -0.058231783
+  - 1.37619311
+  - 0.839300195
+  - 1.397776936
+  - -0.543527703
+  - 1.003435715
+  position_error: 9.295e-06
+  orientation_error: 5.22e-07
+  maximum_joint_jump_rad: 0.006008788000000001
+  minimum_limit_margin_rad: 0.30806428500000016
+  global_index: 132
+  maximum_joint_jump_from_previous_rad: 0.006008788000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 89
+  position:
+  - 0.4784863356164384
+  - -0.011478328767123291
+  - 0.332
+  joint_positions:
+  - -0.064250488
+  - 1.374821155
+  - 0.838213415
+  - 1.398584739
+  - -0.543178177
+  - 1.004101856
+  position_error: 9.303e-06
+  orientation_error: 5.22e-07
+  maximum_joint_jump_rad: 0.006018704999999992
+  minimum_limit_margin_rad: 0.3073981440000002
+  global_index: 133
+  maximum_joint_jump_from_previous_rad: 0.006018704999999992
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 90
+  position:
+  - 0.47798657534246575
+  - -0.014434849315068499
+  - 0.332
+  joint_positions:
+  - -0.070278711
+  - 1.37350547
+  - 0.837173044
+  - 1.399395072
+  - -0.542838725
+  - 1.004771311
+  position_error: 9.312e-06
+  orientation_error: 5.21e-07
+  maximum_joint_jump_rad: 0.006028222999999999
+  minimum_limit_margin_rad: 0.30672868900000005
+  global_index: 134
+  maximum_joint_jump_from_previous_rad: 0.006028222999999999
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 91
+  position:
+  - 0.47748681506849316
+  - -0.017391369863013706
+  - 0.332
+  joint_positions:
+  - -0.076316044
+  - 1.372246312
+  - 0.836179053
+  - 1.400207854
+  - -0.542509641
+  - 1.005444023
+  position_error: 9.32e-06
+  orientation_error: 5.2e-07
+  maximum_joint_jump_rad: 0.006037333000000006
+  minimum_limit_margin_rad: 0.3060559770000002
+  global_index: 135
+  maximum_joint_jump_from_previous_rad: 0.006037333000000006
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 92
+  position:
+  - 0.4769870547945206
+  - -0.020347890410958913
+  - 0.332
+  joint_positions:
+  - -0.082362077
+  - 1.371043928
+  - 0.835231414
+  - 1.401023004
+  - -0.542191209
+  - 1.006119932
+  position_error: 9.329e-06
+  orientation_error: 5.2e-07
+  maximum_joint_jump_rad: 0.006046033000000006
+  minimum_limit_margin_rad: 0.30538006800000006
+  global_index: 136
+  maximum_joint_jump_from_previous_rad: 0.006046033000000006
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 93
+  position:
+  - 0.47648729452054794
+  - -0.02330441095890412
+  - 0.332
+  joint_positions:
+  - -0.088416392
+  - 1.369898554
+  - 0.834330099
+  - 1.40184044
+  - -0.541883701
+  - 1.006798977
+  position_error: 9.339e-06
+  orientation_error: 5.18e-07
+  maximum_joint_jump_rad: 0.006054314999999991
+  minimum_limit_margin_rad: 0.304701023
+  global_index: 137
+  maximum_joint_jump_from_previous_rad: 0.006054314999999991
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 94
+  position:
+  - 0.47598753424657536
+  - -0.026260931506849328
+  - 0.332
+  joint_positions:
+  - -0.094478568
+  - 1.368810417
+  - 0.833475084
+  - 1.402660079
+  - -0.541587377
+  - 1.007481096
+  position_error: 9.348e-06
+  orientation_error: 5.18e-07
+  maximum_joint_jump_rad: 0.0060621760000000025
+  minimum_limit_margin_rad: 0.3040189040000001
+  global_index: 138
+  maximum_joint_jump_from_previous_rad: 0.0060621760000000025
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 95
+  position:
+  - 0.4754877739726028
+  - -0.029217452054794535
+  - 0.332
+  joint_positions:
+  - -0.100548178
+  - 1.367779732
+  - 0.832666343
+  - 1.40348184
+  - -0.541302487
+  - 1.008166224
+  position_error: 9.358e-06
+  orientation_error: 5.17e-07
+  maximum_joint_jump_rad: 0.006069610000000003
+  minimum_limit_margin_rad: 0.3033337760000001
+  global_index: 139
+  maximum_joint_jump_from_previous_rad: 0.006069610000000003
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 96
+  position:
+  - 0.47498801369863014
+  - -0.03217397260273969
+  - 0.332
+  joint_positions:
+  - -0.106624792
+  - 1.366806704
+  - 0.831903852
+  - 1.404305638
+  - -0.541029266
+  - 1.008854295
+  position_error: 9.368e-06
+  orientation_error: 5.16e-07
+  maximum_joint_jump_rad: 0.006076613999999994
+  minimum_limit_margin_rad: 0.3026457050000002
+  global_index: 140
+  maximum_joint_jump_from_previous_rad: 0.006076613999999994
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 97
+  position:
+  - 0.47448825342465756
+  - -0.03513049315068495
+  - 0.332
+  joint_positions:
+  - -0.112707975
+  - 1.365891526
+  - 0.831187588
+  - 1.405131391
+  - -0.54076794
+  - 1.009545241
+  position_error: 9.378e-06
+  orientation_error: 5.15e-07
+  maximum_joint_jump_rad: 0.006083183000000006
+  minimum_limit_margin_rad: 0.301954759
+  global_index: 141
+  maximum_joint_jump_from_previous_rad: 0.006083183000000006
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 98
+  position:
+  - 0.4739884931506849
+  - -0.03808701369863016
+  - 0.332
+  joint_positions:
+  - -0.118797286
+  - 1.365034382
+  - 0.830517529
+  - 1.405959016
+  - -0.540518719
+  - 1.010238992
+  position_error: 9.389e-06
+  orientation_error: 5.14e-07
+  maximum_joint_jump_rad: 0.006089311
+  minimum_limit_margin_rad: 0.3012610080000002
+  global_index: 142
+  maximum_joint_jump_from_previous_rad: 0.006089311
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 99
+  position:
+  - 0.47348873287671234
+  - -0.041043534246575364
+  - 0.332
+  joint_positions:
+  - -0.124892284
+  - 1.364235442
+  - 0.829893655
+  - 1.406788429
+  - -0.540281803
+  - 1.010935477
+  position_error: 9.4e-06
+  orientation_error: 5.13e-07
+  maximum_joint_jump_rad: 0.006094998000000004
+  minimum_limit_margin_rad: 0.30056452300000003
+  global_index: 143
+  maximum_joint_jump_from_previous_rad: 0.006094998000000004
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 100
+  position:
+  - 0.47298897260273975
+  - -0.044000054794520516
+  - 0.332
+  joint_positions:
+  - -0.130992519
+  - 1.363494866
+  - 0.829315945
+  - 1.407619545
+  - -0.54005738
+  - 1.011634624
+  position_error: 9.411e-06
+  orientation_error: 5.12e-07
+  maximum_joint_jump_rad: 0.0061002349999999955
+  minimum_limit_margin_rad: 0.2998653760000001
+  global_index: 144
+  maximum_joint_jump_from_previous_rad: 0.0061002349999999955
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 101
+  position:
+  - 0.4724892123287671
+  - -0.04695657534246572
+  - 0.332
+  joint_positions:
+  - -0.137097543
+  - 1.362812804
+  - 0.828784382
+  - 1.408452281
+  - -0.539845621
+  - 1.012336357
+  position_error: 9.422e-06
+  orientation_error: 5.11e-07
+  maximum_joint_jump_rad: 0.006105023999999987
+  minimum_limit_margin_rad: 0.2991636430000002
+  global_index: 145
+  maximum_joint_jump_from_previous_rad: 0.006105023999999987
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 102
+  position:
+  - 0.47198945205479453
+  - -0.049913095890410986
+  - 0.332
+  joint_positions:
+  - -0.1432069
+  - 1.362189392
+  - 0.828298948
+  - 1.409286553
+  - -0.539646689
+  - 1.0130406
+  position_error: 9.434e-06
+  orientation_error: 5.1e-07
+  maximum_joint_jump_rad: 0.00610935700000001
+  minimum_limit_margin_rad: 0.29845940000000004
+  global_index: 146
+  maximum_joint_jump_from_previous_rad: 0.00610935700000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 103
+  position:
+  - 0.4714896917808219
+  - -0.05286961643835619
+  - 0.332
+  joint_positions:
+  - -0.149320134
+  - 1.361624755
+  - 0.827859627
+  - 1.410122276
+  - -0.539460729
+  - 1.013747276
+  position_error: 9.446e-06
+  orientation_error: 5.09e-07
+  maximum_joint_jump_rad: 0.006113233999999995
+  minimum_limit_margin_rad: 0.2977527240000002
+  global_index: 147
+  maximum_joint_jump_from_previous_rad: 0.006113233999999995
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 104
+  position:
+  - 0.4709899315068493
+  - -0.055826136986301345
+  - 0.332
+  joint_positions:
+  - -0.155436785
+  - 1.361119005
+  - 0.827466403
+  - 1.410959365
+  - -0.539287877
+  - 1.014456307
+  position_error: 9.458e-06
+  orientation_error: 5.08e-07
+  maximum_joint_jump_rad: 0.006116651000000001
+  minimum_limit_margin_rad: 0.2970436930000002
+  global_index: 148
+  maximum_joint_jump_from_previous_rad: 0.006116651000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 105
+  position:
+  - 0.47049017123287673
+  - -0.05878265753424655
+  - 0.332
+  joint_positions:
+  - -0.161556389
+  - 1.360672246
+  - 0.827119264
+  - 1.411797736
+  - -0.539128253
+  - 1.015167611
+  position_error: 9.471e-06
+  orientation_error: 5.07e-07
+  maximum_joint_jump_rad: 0.006119604000000001
+  minimum_limit_margin_rad: 0.29633238900000003
+  global_index: 149
+  maximum_joint_jump_from_previous_rad: 0.006119604000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 106
+  position:
+  - 0.46999041095890415
+  - -0.06173917808219176
+  - 0.332
+  joint_positions:
+  - -0.167678482
+  - 1.360284564
+  - 0.826818196
+  - 1.412637304
+  - -0.538981964
+  - 1.015881107
+  position_error: 9.483e-06
+  orientation_error: 5.06e-07
+  maximum_joint_jump_rad: 0.006122092999999995
+  minimum_limit_margin_rad: 0.2956188930000001
+  global_index: 150
+  maximum_joint_jump_from_previous_rad: 0.006122092999999995
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 107
+  position:
+  - 0.4694906506849315
+  - -0.06469569863013702
+  - 0.332
+  joint_positions:
+  - -0.173802595
+  - 1.359956038
+  - 0.82656319
+  - 1.413477984
+  - -0.538849102
+  - 1.016596712
+  position_error: 9.496e-06
+  orientation_error: 5.05e-07
+  maximum_joint_jump_rad: 0.006124113000000014
+  minimum_limit_margin_rad: 0.2949032880000002
+  global_index: 151
+  maximum_joint_jump_from_previous_rad: 0.006124113000000014
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 108
+  position:
+  - 0.4689908904109589
+  - -0.06765221917808217
+  - 0.332
+  joint_positions:
+  - -0.17992826
+  - 1.359686733
+  - 0.826354234
+  - 1.414319692
+  - -0.538729749
+  - 1.017314341
+  position_error: 9.509e-06
+  orientation_error: 5.04e-07
+  maximum_joint_jump_rad: 0.006125665000000002
+  minimum_limit_margin_rad: 0.29418565900000004
+  global_index: 152
+  maximum_joint_jump_from_previous_rad: 0.006125665000000002
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 109
+  position:
+  - 0.4684911301369863
+  - -0.07060873972602738
+  - 0.332
+  joint_positions:
+  - -0.186055005
+  - 1.359476701
+  - 0.82619132
+  - 1.415162342
+  - -0.53862397
+  - 1.01803391
+  position_error: 9.522e-06
+  orientation_error: 5.04e-07
+  maximum_joint_jump_rad: 0.006126744999999989
+  minimum_limit_margin_rad: 0.2934660900000001
+  global_index: 153
+  maximum_joint_jump_from_previous_rad: 0.006126744999999989
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 110
+  position:
+  - 0.4679913698630137
+  - -0.07356526027397259
+  - 0.332
+  joint_positions:
+  - -0.192182357
+  - 1.359325982
+  - 0.826074442
+  - 1.416005849
+  - -0.538531816
+  - 1.018755332
+  position_error: 9.536e-06
+  orientation_error: 5.02e-07
+  maximum_joint_jump_rad: 0.006127352000000003
+  minimum_limit_margin_rad: 0.2927446680000001
+  global_index: 154
+  maximum_joint_jump_from_previous_rad: 0.006127352000000003
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 111
+  position:
+  - 0.4674916095890411
+  - -0.07652178082191785
+  - 0.332
+  joint_positions:
+  - -0.198309843
+  - 1.359234605
+  - 0.826003593
+  - 1.416850129
+  - -0.538453328
+  - 1.019478518
+  position_error: 9.55e-06
+  orientation_error: 5.01e-07
+  maximum_joint_jump_rad: 0.006127486000000015
+  minimum_limit_margin_rad: 0.2920214820000002
+  global_index: 155
+  maximum_joint_jump_from_previous_rad: 0.006127486000000015
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 112
+  position:
+  - 0.4669918493150685
+  - -0.079478301369863
+  - 0.332
+  joint_positions:
+  - -0.204436988
+  - 1.359202585
+  - 0.825978768
+  - 1.417695097
+  - -0.538388528
+  - 1.02020338
+  position_error: 9.564e-06
+  orientation_error: 5.0e-07
+  maximum_joint_jump_rad: 0.006127144999999973
+  minimum_limit_margin_rad: 0.29129662
+  global_index: 156
+  maximum_joint_jump_from_previous_rad: 0.006127144999999973
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 113
+  position:
+  - 0.4664920890410959
+  - -0.08243482191780821
+  - 0.332
+  joint_positions:
+  - -0.210563315
+  - 1.359229927
+  - 0.825999965
+  - 1.418540667
+  - -0.538337428
+  - 1.020929828
+  position_error: 9.578e-06
+  orientation_error: 5.0e-07
+  maximum_joint_jump_rad: 0.006126327000000015
+  minimum_limit_margin_rad: 0.290570172
+  global_index: 157
+  maximum_joint_jump_from_previous_rad: 0.006126327000000015
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 114
+  position:
+  - 0.4659923287671233
+  - -0.08539134246575342
+  - 0.332
+  joint_positions:
+  - -0.216688348
+  - 1.359316621
+  - 0.826067182
+  - 1.419386756
+  - -0.538300024
+  - 1.021657771
+  position_error: 9.592e-06
+  orientation_error: 4.99e-07
+  maximum_joint_jump_rad: 0.006125033000000002
+  minimum_limit_margin_rad: 0.289842229
+  global_index: 158
+  maximum_joint_jump_from_previous_rad: 0.006125033000000002
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 115
+  position:
+  - 0.4654925684931507
+  - -0.08834786301369862
+  - 0.332
+  joint_positions:
+  - -0.222811611
+  - 1.359462646
+  - 0.826180418
+  - 1.420233278
+  - -0.538276299
+  - 1.022387118
+  position_error: 9.606e-06
+  orientation_error: 4.98e-07
+  maximum_joint_jump_rad: 0.00612326299999999
+  minimum_limit_margin_rad: 0.2891128820000002
+  global_index: 159
+  maximum_joint_jump_from_previous_rad: 0.00612326299999999
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 116
+  position:
+  - 0.4649928082191781
+  - -0.09130438356164383
+  - 0.332
+  joint_positions:
+  - -0.228932626
+  - 1.359667968
+  - 0.826339674
+  - 1.421080149
+  - -0.538266223
+  - 1.023117776
+  position_error: 9.621e-06
+  orientation_error: 4.96e-07
+  maximum_joint_jump_rad: 0.006121015000000007
+  minimum_limit_margin_rad: 0.288382224
+  global_index: 160
+  maximum_joint_jump_from_previous_rad: 0.006121015000000007
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 117
+  position:
+  - 0.4644930479452055
+  - -0.09426090410958904
+  - 0.332
+  joint_positions:
+  - -0.235050919
+  - 1.359932543
+  - 0.826544953
+  - 1.421927285
+  - -0.53826975
+  - 1.023849652
+  position_error: 9.636e-06
+  orientation_error: 4.96e-07
+  maximum_joint_jump_rad: 0.006118292999999997
+  minimum_limit_margin_rad: 0.2876503480000001
+  global_index: 161
+  maximum_joint_jump_from_previous_rad: 0.006118292999999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 118
+  position:
+  - 0.4639932876712329
+  - -0.09721742465753425
+  - 0.332
+  joint_positions:
+  - -0.241166012
+  - 1.360256312
+  - 0.826796257
+  - 1.422774602
+  - -0.538286822
+  - 1.024582651
+  position_error: 9.65e-06
+  orientation_error: 4.95e-07
+  maximum_joint_jump_rad: 0.006115093000000016
+  minimum_limit_margin_rad: 0.2869173490000001
+  global_index: 162
+  maximum_joint_jump_from_previous_rad: 0.006115093000000016
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 119
+  position:
+  - 0.4634935273972603
+  - -0.10017394520547945
+  - 0.332
+  joint_positions:
+  - -0.24727743
+  - 1.360639204
+  - 0.827093592
+  - 1.423622015
+  - -0.538317367
+  - 1.025316679
+  position_error: 9.665e-06
+  orientation_error: 4.94e-07
+  maximum_joint_jump_rad: 0.00611141799999998
+  minimum_limit_margin_rad: 0.2861833210000002
+  global_index: 163
+  maximum_joint_jump_from_previous_rad: 0.00611141799999998
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 120
+  position:
+  - 0.46299376712328766
+  - -0.10313046575342466
+  - 0.332
+  joint_positions:
+  - -0.2533847
+  - 1.361081139
+  - 0.827436964
+  - 1.424469441
+  - -0.5383613
+  - 1.02605164
+  position_error: 9.681e-06
+  orientation_error: 4.94e-07
+  maximum_joint_jump_rad: 0.006107270000000026
+  minimum_limit_margin_rad: 0.2854483600000002
+  global_index: 164
+  maximum_joint_jump_from_previous_rad: 0.006107270000000026
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 121
+  position:
+  - 0.4624940068493151
+  - -0.10608698630136987
+  - 0.332
+  joint_positions:
+  - -0.259487348
+  - 1.361582021
+  - 0.82782638
+  - 1.425316796
+  - -0.53841852
+  - 1.026787439
+  position_error: 9.696e-06
+  orientation_error: 4.92e-07
+  maximum_joint_jump_rad: 0.006102647999999988
+  minimum_limit_margin_rad: 0.2847125610000001
+  global_index: 165
+  maximum_joint_jump_from_previous_rad: 0.006102647999999988
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 122
+  position:
+  - 0.4619942465753425
+  - -0.10904350684931507
+  - 0.332
+  joint_positions:
+  - -0.265584903
+  - 1.362141744
+  - 0.828261849
+  - 1.426163997
+  - -0.538488915
+  - 1.027523979
+  position_error: 9.711e-06
+  orientation_error: 4.91e-07
+  maximum_joint_jump_rad: 0.006097554999999977
+  minimum_limit_margin_rad: 0.2839760210000002
+  global_index: 166
+  maximum_joint_jump_from_previous_rad: 0.006097554999999977
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 123
+  position:
+  - 0.46149448630136986
+  - -0.11200002739726028
+  - 0.332
+  joint_positions:
+  - -0.271676895
+  - 1.362760191
+  - 0.828743382
+  - 1.427010961
+  - -0.53857236
+  - 1.028261162
+  position_error: 9.727e-06
+  orientation_error: 4.9e-07
+  maximum_joint_jump_rad: 0.0060919919999999905
+  minimum_limit_margin_rad: 0.28323883800000016
+  global_index: 167
+  maximum_joint_jump_from_previous_rad: 0.0060919919999999905
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 124
+  position:
+  - 0.4609947260273973
+  - -0.11495654794520543
+  - 0.332
+  joint_positions:
+  - -0.277762857
+  - 1.363437232
+  - 0.82927099
+  - 1.427857604
+  - -0.538668715
+  - 1.028998892
+  position_error: 9.743e-06
+  orientation_error: 4.89e-07
+  maximum_joint_jump_rad: 0.006085962
+  minimum_limit_margin_rad: 0.28250110800000017
+  global_index: 168
+  maximum_joint_jump_from_previous_rad: 0.006085962
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 125
+  position:
+  - 0.4604949657534247
+  - -0.1179130684931507
+  - 0.332
+  joint_positions:
+  - -0.283842322
+  - 1.364172724
+  - 0.829844685
+  - 1.428703845
+  - -0.538777827
+  - 1.02973707
+  position_error: 9.758e-06
+  orientation_error: 4.88e-07
+  maximum_joint_jump_rad: 0.006079465000000006
+  minimum_limit_margin_rad: 0.2817629300000002
+  global_index: 169
+  maximum_joint_jump_from_previous_rad: 0.006079465000000006
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 126
+  position:
+  - 0.45999520547945205
+  - -0.1208695890410959
+  - 0.332
+  joint_positions:
+  - -0.289914828
+  - 1.364966516
+  - 0.830464481
+  - 1.429549602
+  - -0.538899532
+  - 1.030475599
+  position_error: 9.774e-06
+  orientation_error: 4.87e-07
+  maximum_joint_jump_rad: 0.006072506000000033
+  minimum_limit_margin_rad: 0.28102440100000003
+  global_index: 170
+  maximum_joint_jump_from_previous_rad: 0.006072506000000033
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 127
+  position:
+  - 0.45949544520547947
+  - -0.12382610958904111
+  - 0.332
+  joint_positions:
+  - -0.295979914
+  - 1.365818443
+  - 0.831130394
+  - 1.430394793
+  - -0.539033652
+  - 1.03121438
+  position_error: 9.79e-06
+  orientation_error: 4.86e-07
+  maximum_joint_jump_rad: 0.006065085999999997
+  minimum_limit_margin_rad: 0.2802856200000001
+  global_index: 171
+  maximum_joint_jump_from_previous_rad: 0.006065085999999997
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 128
+  position:
+  - 0.4589956849315069
+  - -0.12678263013698626
+  - 0.332
+  joint_positions:
+  - -0.302037122
+  - 1.366728329
+  - 0.831842439
+  - 1.431239336
+  - -0.539179996
+  - 1.031953315
+  position_error: 9.806e-06
+  orientation_error: 4.84e-07
+  maximum_joint_jump_rad: 0.006057207999999981
+  minimum_limit_margin_rad: 0.27954668500000013
+  global_index: 172
+  maximum_joint_jump_from_previous_rad: 0.006057207999999981
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 129
+  position:
+  - 0.45849592465753425
+  - -0.12973915068493147
+  - 0.332
+  joint_positions:
+  - -0.308085999
+  - 1.367695987
+  - 0.832600635
+  - 1.432083151
+  - -0.539338361
+  - 1.032692305
+  position_error: 9.822e-06
+  orientation_error: 4.82e-07
+  maximum_joint_jump_rad: 0.006048877000000008
+  minimum_limit_margin_rad: 0.278807695
+  global_index: 173
+  maximum_joint_jump_from_previous_rad: 0.006048877000000008
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 130
+  position:
+  - 0.45799616438356167
+  - -0.13269567123287673
+  - 0.332
+  joint_positions:
+  - -0.314126093
+  - 1.36872122
+  - 0.833404999
+  - 1.432926156
+  - -0.539508532
+  - 1.033431252
+  position_error: 9.838e-06
+  orientation_error: 4.81e-07
+  maximum_joint_jump_rad: 0.006040093999999996
+  minimum_limit_margin_rad: 0.27806874800000014
+  global_index: 174
+  maximum_joint_jump_from_previous_rad: 0.006040093999999996
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 131
+  position:
+  - 0.457496404109589
+  - -0.13565219178082194
+  - 0.332
+  joint_positions:
+  - -0.320156957
+  - 1.369803819
+  - 0.834255552
+  - 1.433768273
+  - -0.539690282
+  - 1.034170056
+  position_error: 9.854e-06
+  orientation_error: 4.79e-07
+  maximum_joint_jump_rad: 0.006030864000000025
+  minimum_limit_margin_rad: 0.2773299440000001
+  global_index: 175
+  maximum_joint_jump_from_previous_rad: 0.006030864000000025
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 132
+  position:
+  - 0.45699664383561645
+  - -0.1386087123287671
+  - 0.332
+  joint_positions:
+  - -0.326178147
+  - 1.370943565
+  - 0.835152314
+  - 1.43460942
+  - -0.539883372
+  - 1.034908619
+  position_error: 9.871e-06
+  orientation_error: 4.78e-07
+  maximum_joint_jump_rad: 0.006021189999999954
+  minimum_limit_margin_rad: 0.276591381
+  global_index: 176
+  maximum_joint_jump_from_previous_rad: 0.006021189999999954
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 133
+  position:
+  - 0.45649688356164386
+  - -0.1415652328767123
+  - 0.332
+  joint_positions:
+  - -0.332189225
+  - 1.372140228
+  - 0.836095307
+  - 1.43544952
+  - -0.540087551
+  - 1.035646842
+  position_error: 9.887e-06
+  orientation_error: 4.75e-07
+  maximum_joint_jump_rad: 0.006011078000000003
+  minimum_limit_margin_rad: 0.2758531580000001
+  global_index: 177
+  maximum_joint_jump_from_previous_rad: 0.006011078000000003
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 134
+  position:
+  - 0.4559971232876712
+  - -0.1445217534246575
+  - 0.332
+  joint_positions:
+  - -0.338189753
+  - 1.373393569
+  - 0.837084555
+  - 1.436288492
+  - -0.540302556
+  - 1.036384627
+  position_error: 9.903e-06
+  orientation_error: 4.74e-07
+  maximum_joint_jump_rad: 0.006000528000000005
+  minimum_limit_margin_rad: 0.2751153730000002
+  global_index: 178
+  maximum_joint_jump_from_previous_rad: 0.006000528000000005
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 135
+  position:
+  - 0.45549736301369864
+  - -0.14747827397260277
+  - 0.332
+  joint_positions:
+  - -0.344179303
+  - 1.374703338
+  - 0.83812008
+  - 1.43712626
+  - -0.540528116
+  - 1.037121875
+  position_error: 9.92e-06
+  orientation_error: 4.71e-07
+  maximum_joint_jump_rad: 0.00598955000000001
+  minimum_limit_margin_rad: 0.27437812500000014
+  global_index: 179
+  maximum_joint_jump_from_previous_rad: 0.00598955000000001
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 136
+  position:
+  - 0.45499760273972606
+  - -0.15043479452054792
+  - 0.332
+  joint_positions:
+  - -0.350157447
+  - 1.376069274
+  - 0.839201908
+  - 1.437962744
+  - -0.540763945
+  - 1.037858489
+  position_error: 9.936e-06
+  orientation_error: 4.69e-07
+  maximum_joint_jump_rad: 0.0059781440000000186
+  minimum_limit_margin_rad: 0.2736415110000001
+  global_index: 180
+  maximum_joint_jump_from_previous_rad: 0.0059781440000000186
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 137
+  position:
+  - 0.4544978424657534
+  - -0.15339131506849313
+  - 0.332
+  joint_positions:
+  - -0.356123764
+  - 1.377491108
+  - 0.840330066
+  - 1.438797869
+  - -0.541009749
+  - 1.03859437
+  position_error: 9.952e-06
+  orientation_error: 4.67e-07
+  maximum_joint_jump_rad: 0.005966316999999999
+  minimum_limit_margin_rad: 0.2729056300000001
+  global_index: 181
+  maximum_joint_jump_from_previous_rad: 0.005966316999999999
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 138
+  position:
+  - 0.45399808219178084
+  - -0.15634783561643834
+  - 0.332
+  joint_positions:
+  - -0.362077838
+  - 1.378968562
+  - 0.841504578
+  - 1.439631558
+  - -0.541265223
+  - 1.039329421
+  position_error: 9.969e-06
+  orientation_error: 4.64e-07
+  maximum_joint_jump_rad: 0.005954073999999976
+  minimum_limit_margin_rad: 0.2721705790000002
+  global_index: 182
+  maximum_joint_jump_from_previous_rad: 0.005954073999999976
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 139
+  position:
+  - 0.45349832191780826
+  - -0.15930435616438354
+  - 0.332
+  joint_positions:
+  - -0.368019257
+  - 1.380501347
+  - 0.842725474
+  - 1.440463734
+  - -0.54153005
+  - 1.040063546
+  position_error: 9.985e-06
+  orientation_error: 4.61e-07
+  maximum_joint_jump_rad: 0.005941419000000003
+  minimum_limit_margin_rad: 0.27143645400000005
+  global_index: 183
+  maximum_joint_jump_from_previous_rad: 0.005941419000000003
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 140
+  position:
+  - 0.4529985616438356
+  - -0.16226087671232875
+  - 0.332
+  joint_positions:
+  - -0.373947616
+  - 1.382089166
+  - 0.843992782
+  - 1.441294322
+  - -0.541803906
+  - 1.040796648
+  position_error: 1.0002e-05
+  orientation_error: 4.58e-07
+  maximum_joint_jump_rad: 0.005928358999999994
+  minimum_limit_margin_rad: 0.2707033520000002
+  global_index: 184
+  maximum_joint_jump_from_previous_rad: 0.005928358999999994
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 141
+  position:
+  - 0.45249880136986304
+  - -0.16521739726027396
+  - 0.332
+  joint_positions:
+  - -0.379862514
+  - 1.383731714
+  - 0.84530653
+  - 1.442123249
+  - -0.542086455
+  - 1.04152863
+  position_error: 1.0019e-05
+  orientation_error: 4.55e-07
+  maximum_joint_jump_rad: 0.005914898000000002
+  minimum_limit_margin_rad: 0.26997137000000015
+  global_index: 185
+  maximum_joint_jump_from_previous_rad: 0.005914898000000002
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 142
+  position:
+  - 0.4519990410958904
+  - -0.16817391780821916
+  - 0.332
+  joint_positions:
+  - -0.385763557
+  - 1.385428676
+  - 0.84666675
+  - 1.442950439
+  - -0.542377353
+  - 1.042259398
+  position_error: 1.0035e-05
+  orientation_error: 4.52e-07
+  maximum_joint_jump_rad: 0.005901042999999995
+  minimum_limit_margin_rad: 0.2692406020000002
+  global_index: 186
+  maximum_joint_jump_from_previous_rad: 0.005901042999999995
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 143
+  position:
+  - 0.4514992808219178
+  - -0.17113043835616437
+  - 0.332
+  joint_positions:
+  - -0.391650356
+  - 1.387179728
+  - 0.848073471
+  - 1.443775819
+  - -0.542676247
+  - 1.042988856
+  position_error: 1.0052e-05
+  orientation_error: 4.49e-07
+  maximum_joint_jump_rad: 0.005886798999999998
+  minimum_limit_margin_rad: 0.2685111440000001
+  global_index: 187
+  maximum_joint_jump_from_previous_rad: 0.005886798999999998
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 144
+  position:
+  - 0.45099952054794523
+  - -0.17408695890410958
+  - 0.332
+  joint_positions:
+  - -0.397522528
+  - 1.388984542
+  - 0.849526726
+  - 1.444599317
+  - -0.542982774
+  - 1.04371691
+  position_error: 1.0068e-05
+  orientation_error: 4.45e-07
+  maximum_joint_jump_rad: 0.005872172000000009
+  minimum_limit_margin_rad: 0.26778309
+  global_index: 188
+  maximum_joint_jump_from_previous_rad: 0.005872172000000009
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 145
+  position:
+  - 0.45049976027397265
+  - -0.17704347945205479
+  - 0.332
+  joint_positions:
+  - -0.403379696
+  - 1.390842778
+  - 0.851026546
+  - 1.44542086
+  - -0.543296563
+  - 1.044443467
+  position_error: 1.0085e-05
+  orientation_error: 4.42e-07
+  maximum_joint_jump_rad: 0.005857168000000024
+  minimum_limit_margin_rad: 0.2670565330000001
+  global_index: 189
+  maximum_joint_jump_from_previous_rad: 0.005857168000000024
+- segment: TRANSFER
+  ik_mode: upright
+  sample_index: 146
+  position:
+  - 0.45
+  - -0.18
+  - 0.332
+  joint_positions:
+  - -0.409221491
+  - 1.39275409
+  - 0.852572964
+  - 1.446240377
+  - -0.543617236
+  - 1.045168435
+  position_error: 1.0101e-05
+  orientation_error: 4.37e-07
+  maximum_joint_jump_rad: 0.005841794999999983
+  minimum_limit_margin_rad: 0.2663315650000002
+  global_index: 190
+  maximum_joint_jump_from_previous_rad: 0.005841794999999983
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 1
+  position:
+  - 0.45
+  - -0.18
+  - 0.3290588235294118
+  joint_positions:
+  - -0.409663371
+  - 1.395524732
+  - 0.845831576
+  - 1.446297556
+  - -0.553152951
+  - 1.045828482
+  position_error: 1.6498e-05
+  orientation_error: 8.938e-06
+  maximum_joint_jump_rad: 0.009535714999999945
+  minimum_limit_margin_rad: 0.2656715180000002
+  global_index: 191
+  maximum_joint_jump_from_previous_rad: 0.009535714999999945
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 2
+  position:
+  - 0.45
+  - -0.18
+  - 0.32611764705882357
+  joint_positions:
+  - -0.410110322
+  - 1.39841479
+  - 0.839135599
+  - 1.446355427
+  - -0.562768685
+  - 1.04650764
+  position_error: 1.6746e-05
+  orientation_error: 9.001e-06
+  maximum_joint_jump_rad: 0.009615734000000042
+  minimum_limit_margin_rad: 0.26499236000000015
+  global_index: 192
+  maximum_joint_jump_from_previous_rad: 0.009615734000000042
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 3
+  position:
+  - 0.45
+  - -0.18
+  - 0.3231764705882353
+  joint_positions:
+  - -0.410555426
+  - 1.401402533
+  - 0.832498539
+  - 1.446414977
+  - -0.572421894
+  - 1.047199946
+  position_error: 1.688e-05
+  orientation_error: 9.017e-06
+  maximum_joint_jump_rad: 0.009653208999999996
+  minimum_limit_margin_rad: 0.264300054
+  global_index: 193
+  maximum_joint_jump_from_previous_rad: 0.009653208999999996
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 4
+  position:
+  - 0.45
+  - -0.18
+  - 0.32023529411764706
+  joint_positions:
+  - -0.410998595
+  - 1.404488365
+  - 0.825920523
+  - 1.446476267
+  - -0.582112796
+  - 1.047905438
+  position_error: 1.7012e-05
+  orientation_error: 9.033e-06
+  maximum_joint_jump_rad: 0.009690902000000001
+  minimum_limit_margin_rad: 0.2635945620000002
+  global_index: 194
+  maximum_joint_jump_from_previous_rad: 0.009690902000000001
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 5
+  position:
+  - 0.45
+  - -0.18
+  - 0.31729411764705884
+  joint_positions:
+  - -0.411439744
+  - 1.407673072
+  - 0.819401885
+  - 1.446539341
+  - -0.591841817
+  - 1.048624193
+  position_error: 1.7144e-05
+  orientation_error: 9.05e-06
+  maximum_joint_jump_rad: 0.00972902100000006
+  minimum_limit_margin_rad: 0.26287580700000013
+  global_index: 195
+  maximum_joint_jump_from_previous_rad: 0.00972902100000006
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 6
+  position:
+  - 0.45
+  - -0.18
+  - 0.3143529411764706
+  joint_positions:
+  - -0.411878785
+  - 1.410957442
+  - 0.812942978
+  - 1.446604245
+  - -0.601609364
+  - 1.049356284
+  position_error: 1.7276e-05
+  orientation_error: 9.067e-06
+  maximum_joint_jump_rad: 0.009767546999999932
+  minimum_limit_margin_rad: 0.2621437160000002
+  global_index: 196
+  maximum_joint_jump_from_previous_rad: 0.009767546999999932
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 7
+  position:
+  - 0.45
+  - -0.18
+  - 0.3114117647058824
+  joint_positions:
+  - -0.412315627
+  - 1.414342261
+  - 0.80654417
+  - 1.446671022
+  - -0.611415829
+  - 1.050101784
+  position_error: 1.7407e-05
+  orientation_error: 9.085e-06
+  maximum_joint_jump_rad: 0.009806465000000042
+  minimum_limit_margin_rad: 0.2613982160000001
+  global_index: 197
+  maximum_joint_jump_from_previous_rad: 0.009806465000000042
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 8
+  position:
+  - 0.45
+  - -0.18
+  - 0.30847058823529416
+  joint_positions:
+  - -0.412750181
+  - 1.41782831
+  - 0.800205844
+  - 1.446739696
+  - -0.621261585
+  - 1.050860739
+  position_error: 1.7538e-05
+  orientation_error: 9.104e-06
+  maximum_joint_jump_rad: 0.009845755999999928
+  minimum_limit_margin_rad: 0.2606392610000001
+  global_index: 198
+  maximum_joint_jump_from_previous_rad: 0.009845755999999928
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 9
+  position:
+  - 0.45
+  - -0.18
+  - 0.3055294117647059
+  joint_positions:
+  - -0.413182391
+  - 1.421416371
+  - 0.793928397
+  - 1.446810171
+  - -0.631146995
+  - 1.051633099
+  position_error: 1.7668e-05
+  orientation_error: 9.124e-06
+  maximum_joint_jump_rad: 0.009885410000000094
+  minimum_limit_margin_rad: 0.2598669010000001
+  global_index: 199
+  maximum_joint_jump_from_previous_rad: 0.009885410000000094
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 10
+  position:
+  - 0.45
+  - -0.18
+  - 0.30258823529411766
+  joint_positions:
+  - -0.413612202
+  - 1.425107218
+  - 0.787712245
+  - 1.446882328
+  - -0.641072405
+  - 1.052418791
+  position_error: 1.7797e-05
+  orientation_error: 9.145e-06
+  maximum_joint_jump_rad: 0.009925409999999912
+  minimum_limit_margin_rad: 0.2590812090000001
+  global_index: 200
+  maximum_joint_jump_from_previous_rad: 0.009925409999999912
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 11
+  position:
+  - 0.45
+  - -0.18
+  - 0.29964705882352943
+  joint_positions:
+  - -0.414039566
+  - 1.428901619
+  - 0.781557817
+  - 1.446956038
+  - -0.651038138
+  - 1.053217739
+  position_error: 1.7925e-05
+  orientation_error: 9.167e-06
+  maximum_joint_jump_rad: 0.009965733000000032
+  minimum_limit_margin_rad: 0.2582822610000002
+  global_index: 201
+  maximum_joint_jump_from_previous_rad: 0.009965733000000032
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 12
+  position:
+  - 0.45
+  - -0.18
+  - 0.2967058823529412
+  joint_positions:
+  - -0.414464432
+  - 1.432800338
+  - 0.775465554
+  - 1.447031168
+  - -0.661044499
+  - 1.054029857
+  position_error: 1.8053e-05
+  orientation_error: 9.191e-06
+  maximum_joint_jump_rad: 0.010006360999999964
+  minimum_limit_margin_rad: 0.25747014300000015
+  global_index: 202
+  maximum_joint_jump_from_previous_rad: 0.010006360999999964
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 13
+  position:
+  - 0.45
+  - -0.18
+  - 0.293764705882353
+  joint_positions:
+  - -0.414886756
+  - 1.436804126
+  - 0.769435917
+  - 1.447107576
+  - -0.671091769
+  - 1.054855055
+  position_error: 1.8179e-05
+  orientation_error: 9.216e-06
+  maximum_joint_jump_rad: 0.010047270000000053
+  minimum_limit_margin_rad: 0.2566449450000001
+  global_index: 203
+  maximum_joint_jump_from_previous_rad: 0.010047270000000053
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 14
+  position:
+  - 0.45
+  - -0.18
+  - 0.29082352941176476
+  joint_positions:
+  - -0.415306492
+  - 1.440913728
+  - 0.763469377
+  - 1.447185112
+  - -0.681180207
+  - 1.055693234
+  position_error: 1.8304e-05
+  orientation_error: 9.243e-06
+  maximum_joint_jump_rad: 0.010088438000000033
+  minimum_limit_margin_rad: 0.2558067660000001
+  global_index: 204
+  maximum_joint_jump_from_previous_rad: 0.010088438000000033
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 15
+  position:
+  - 0.45
+  - -0.18
+  - 0.2878823529411765
+  joint_positions:
+  - -0.415723598
+  - 1.445129875
+  - 0.75756642
+  - 1.447263618
+  - -0.691310048
+  - 1.056544291
+  position_error: 1.8428e-05
+  orientation_error: 9.271e-06
+  maximum_joint_jump_rad: 0.010129840999999917
+  minimum_limit_margin_rad: 0.2549557090000001
+  global_index: 205
+  maximum_joint_jump_from_previous_rad: 0.010129840999999917
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 16
+  position:
+  - 0.45
+  - -0.18
+  - 0.28494117647058825
+  joint_positions:
+  - -0.416138035
+  - 1.449453288
+  - 0.751727548
+  - 1.44734293
+  - -0.701481501
+  - 1.057408115
+  position_error: 1.8551e-05
+  orientation_error: 9.3e-06
+  maximum_joint_jump_rad: 0.010171452999999997
+  minimum_limit_margin_rad: 0.254091885
+  global_index: 206
+  maximum_joint_jump_from_previous_rad: 0.010171452999999997
+- segment: PLACE_DESCEND
+  ik_mode: upright
+  sample_index: 17
+  position:
+  - 0.45
+  - -0.18
+  - 0.28200000000000003
+  joint_positions:
+  - -0.416549765
+  - 1.453884673
+  - 0.745953274
+  - 1.447422875
+  - -0.711694749
+  - 1.058284589
+  position_error: 1.8672e-05
+  orientation_error: 9.331e-06
+  maximum_joint_jump_rad: 0.010213248000000008
+  minimum_limit_margin_rad: 0.253215411
+  global_index: 207
+  maximum_joint_jump_from_previous_rad: 0.010213248000000008
+- sample_index: 1
+  position:
+  - 0.44720281050491195
+  - -0.17902282015551932
+  - 0.28200000000000003
+  joint_positions:
+  - -0.417455713
+  - 1.444904111
+  - 0.738180028
+  - 1.445868794
+  - -0.710590052
+  - 1.057014353
+  position_error: 5.7e-08
+  orientation_error: 9.9e-08
+  maximum_joint_jump_rad: 0.009046377999999855
+  minimum_limit_margin_rad: 0.2544856470000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 208
+  maximum_joint_jump_from_previous_rad: 0.008980561999999859
+- sample_index: 2
+  position:
+  - 0.4444056210098239
+  - -0.17804564031103864
+  - 0.28200000000000003
+  joint_positions:
+  - -0.418386371
+  - 1.435805629
+  - 0.730436234
+  - 1.444249836
+  - -0.709334868
+  - 1.055675826
+  position_error: 6.0e-08
+  orientation_error: 1.04e-07
+  maximum_joint_jump_rad: 0.009098481999999963
+  minimum_limit_margin_rad: 0.255824174
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 209
+  maximum_joint_jump_from_previous_rad: 0.009098481999999963
+- sample_index: 3
+  position:
+  - 0.44160843151473583
+  - -0.17706846046655794
+  - 0.28200000000000003
+  joint_positions:
+  - -0.419338514
+  - 1.42665407
+  - 0.722740977
+  - 1.442577887
+  - -0.707982519
+  - 1.054286019
+  position_error: 6.3e-08
+  orientation_error: 1.09e-07
+  maximum_joint_jump_rad: 0.009151558999999976
+  minimum_limit_margin_rad: 0.25721398100000004
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 210
+  maximum_joint_jump_from_previous_rad: 0.009151558999999976
+- sample_index: 4
+  position:
+  - 0.4388112420196478
+  - -0.17609128062207727
+  - 0.28200000000000003
+  joint_positions:
+  - -0.420312892
+  - 1.417448218
+  - 0.715094564
+  - 1.440850682
+  - -0.706531731
+  - 1.052842661
+  position_error: 6.7e-08
+  orientation_error: 1.15e-07
+  maximum_joint_jump_rad: 0.009205852000000014
+  minimum_limit_margin_rad: 0.2586573390000002
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 211
+  maximum_joint_jump_from_previous_rad: 0.009205852000000014
+- sample_index: 5
+  position:
+  - 0.4360140525245597
+  - -0.1751141007775966
+  - 0.28200000000000003
+  joint_positions:
+  - -0.421310291
+  - 1.408186847
+  - 0.707497325
+  - 1.439065823
+  - -0.704981222
+  - 1.051343348
+  position_error: 7.0e-08
+  orientation_error: 1.21e-07
+  maximum_joint_jump_rad: 0.009261371000000018
+  minimum_limit_margin_rad: 0.26015665200000004
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 212
+  maximum_joint_jump_from_previous_rad: 0.009261371000000018
+- sample_index: 6
+  position:
+  - 0.43321686302947165
+  - -0.17413692093311592
+  - 0.28200000000000003
+  joint_positions:
+  - -0.422331535
+  - 1.398868723
+  - 0.699949611
+  - 1.437220775
+  - -0.703329693
+  - 1.049785536
+  position_error: 7.4e-08
+  orientation_error: 1.27e-07
+  maximum_joint_jump_rad: 0.009318123999999983
+  minimum_limit_margin_rad: 0.2617144640000002
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 213
+  maximum_joint_jump_from_previous_rad: 0.009318123999999983
+- sample_index: 7
+  position:
+  - 0.43041967353438365
+  - -0.17315974108863524
+  - 0.28200000000000003
+  joint_positions:
+  - -0.423377487
+  - 1.389492602
+  - 0.692451797
+  - 1.435312851
+  - -0.70157584
+  - 1.048166529
+  position_error: 7.9e-08
+  orientation_error: 1.34e-07
+  maximum_joint_jump_rad: 0.00937612100000007
+  minimum_limit_margin_rad: 0.26333347100000015
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 214
+  maximum_joint_jump_from_previous_rad: 0.00937612100000007
+- sample_index: 8
+  position:
+  - 0.4276224840392956
+  - -0.17218256124415457
+  - 0.28200000000000003
+  joint_positions:
+  - -0.424449052
+  - 1.380057235
+  - 0.685004276
+  - 1.433339205
+  - -0.699718348
+  - 1.04648347
+  position_error: 8.3e-08
+  orientation_error: 1.41e-07
+  maximum_joint_jump_rad: 0.009435367000000028
+  minimum_limit_margin_rad: 0.26501653000000003
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 215
+  maximum_joint_jump_from_previous_rad: 0.009435367000000028
+- sample_index: 9
+  position:
+  - 0.42482529454420753
+  - -0.17120538139967387
+  - 0.28200000000000003
+  joint_positions:
+  - -0.42554718
+  - 1.370561363
+  - 0.677607468
+  - 1.431296819
+  - -0.697755898
+  - 1.044733328
+  position_error: 8.8e-08
+  orientation_error: 1.49e-07
+  maximum_joint_jump_rad: 0.009495872000000016
+  minimum_limit_margin_rad: 0.26676667200000015
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 216
+  maximum_joint_jump_from_previous_rad: 0.009495872000000016
+- sample_index: 10
+  position:
+  - 0.4220281050491195
+  - -0.1702282015551932
+  - 0.28200000000000003
+  joint_positions:
+  - -0.426672867
+  - 1.36100372
+  - 0.670261812
+  - 1.429182492
+  - -0.695687167
+  - 1.04291289
+  position_error: 9.4e-08
+  orientation_error: 1.58e-07
+  maximum_joint_jump_rad: 0.009557642999999949
+  minimum_limit_margin_rad: 0.26858711000000013
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 217
+  maximum_joint_jump_from_previous_rad: 0.009557642999999949
+- sample_index: 11
+  position:
+  - 0.4192309155540314
+  - -0.16925102171071252
+  - 0.28200000000000003
+  joint_positions:
+  - -0.427827163
+  - 1.351383036
+  - 0.662967773
+  - 1.426992826
+  - -0.693510834
+  - 1.041018744
+  position_error: 9.9e-08
+  orientation_error: 1.67e-07
+  maximum_joint_jump_rad: 0.009620683999999935
+  minimum_limit_margin_rad: 0.27048125600000006
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 218
+  maximum_joint_jump_from_previous_rad: 0.009620683999999935
+- sample_index: 12
+  position:
+  - 0.41643372605894335
+  - -0.16827384186623184
+  - 0.28200000000000003
+  joint_positions:
+  - -0.429011166
+  - 1.341698034
+  - 0.655725837
+  - 1.424724212
+  - -0.691225577
+  - 1.039047263
+  position_error: 1.06e-07
+  orientation_error: 1.77e-07
+  maximum_joint_jump_rad: 0.00968500200000011
+  minimum_limit_margin_rad: 0.27245273700000006
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 219
+  maximum_joint_jump_from_previous_rad: 0.00968500200000011
+- sample_index: 13
+  position:
+  - 0.4136365365638553
+  - -0.16729666202175117
+  - 0.28200000000000003
+  joint_positions:
+  - -0.430226037
+  - 1.331947434
+  - 0.648536516
+  - 1.422372814
+  - -0.688830084
+  - 1.036994594
+  position_error: 1.13e-07
+  orientation_error: 1.88e-07
+  maximum_joint_jump_rad: 0.009750600000000054
+  minimum_limit_margin_rad: 0.27450540600000006
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 220
+  maximum_joint_jump_from_previous_rad: 0.009750600000000054
+- sample_index: 14
+  position:
+  - 0.41083934706876724
+  - -0.16631948217727047
+  - 0.28200000000000003
+  joint_positions:
+  - -0.431472993
+  - 1.322129954
+  - 0.641400343
+  - 1.419934552
+  - -0.686323053
+  - 1.034856639
+  position_error: 1.2e-07
+  orientation_error: 2.0e-07
+  maximum_joint_jump_rad: 0.009817479999999934
+  minimum_limit_margin_rad: 0.2766433610000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 221
+  maximum_joint_jump_from_previous_rad: 0.009817479999999934
+- sample_index: 15
+  position:
+  - 0.4080421575736792
+  - -0.1653423023327898
+  - 0.28200000000000003
+  joint_positions:
+  - -0.432753319
+  - 1.312244308
+  - 0.634317878
+  - 1.417405085
+  - -0.683703193
+  - 1.032629035
+  position_error: 1.29e-07
+  orientation_error: 2.13e-07
+  maximum_joint_jump_rad: 0.009885646000000081
+  minimum_limit_margin_rad: 0.2788709650000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 222
+  maximum_joint_jump_from_previous_rad: 0.009885646000000081
+- sample_index: 16
+  position:
+  - 0.4052449680785911
+  - -0.16436512248830912
+  - 0.28200000000000003
+  joint_positions:
+  - -0.434068367
+  - 1.30228921
+  - 0.627289703
+  - 1.41477979
+  - -0.680969237
+  - 1.030307137
+  position_error: 1.38e-07
+  orientation_error: 2.27e-07
+  maximum_joint_jump_rad: 0.009955097999999829
+  minimum_limit_margin_rad: 0.281192863
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 223
+  maximum_joint_jump_from_previous_rad: 0.009955097999999829
+- sample_index: 17
+  position:
+  - 0.40244777858350306
+  - -0.16338794264382844
+  - 0.28200000000000003
+  joint_positions:
+  - -0.435419564
+  - 1.292263376
+  - 0.620316427
+  - 1.412053738
+  - -0.678119939
+  - 1.027885994
+  position_error: 1.47e-07
+  orientation_error: 2.42e-07
+  maximum_joint_jump_rad: 0.010025834000000122
+  minimum_limit_margin_rad: 0.2836140060000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 224
+  maximum_joint_jump_from_previous_rad: 0.010025834000000122
+- sample_index: 18
+  position:
+  - 0.399650589088415
+  - -0.16241076279934777
+  - 0.28200000000000003
+  joint_positions:
+  - -0.436808416
+  - 1.282165524
+  - 0.613398684
+  - 1.409221677
+  - -0.675154087
+  - 1.025360326
+  position_error: 1.58e-07
+  orientation_error: 2.59e-07
+  maximum_joint_jump_rad: 0.010097851999999907
+  minimum_limit_margin_rad: 0.2861396740000002
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 225
+  maximum_joint_jump_from_previous_rad: 0.010097851999999907
+- sample_index: 19
+  position:
+  - 0.39685339959332694
+  - -0.1614335829548671
+  - 0.28200000000000003
+  joint_positions:
+  - -0.438236513
+  - 1.271994375
+  - 0.606537131
+  - 1.406277997
+  - -0.672070502
+  - 1.022724498
+  position_error: 1.7e-07
+  orientation_error: 2.77e-07
+  maximum_joint_jump_rad: 0.010171149000000046
+  minimum_limit_margin_rad: 0.288775502
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 226
+  maximum_joint_jump_from_previous_rad: 0.010171149000000046
+- sample_index: 20
+  position:
+  - 0.3940562100982389
+  - -0.1604564031103864
+  - 0.28200000000000003
+  joint_positions:
+  - -0.439705536
+  - 1.261748659
+  - 0.599732453
+  - 1.40321671
+  - -0.668868053
+  - 1.019972493
+  position_error: 1.83e-07
+  orientation_error: 2.97e-07
+  maximum_joint_jump_rad: 0.010245716000000016
+  minimum_limit_margin_rad: 0.2915275070000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 227
+  maximum_joint_jump_from_previous_rad: 0.010245716000000016
+- sample_index: 21
+  position:
+  - 0.3912590206031509
+  - -0.15947922326590572
+  - 0.28200000000000003
+  joint_positions:
+  - -0.441217263
+  - 1.25142711
+  - 0.59298536
+  - 1.400031417
+  - -0.665545659
+  - 1.01709788
+  position_error: 1.98e-07
+  orientation_error: 3.19e-07
+  maximum_joint_jump_rad: 0.01032154899999993
+  minimum_limit_margin_rad: 0.2944021200000002
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 228
+  maximum_joint_jump_from_previous_rad: 0.01032154899999993
+- sample_index: 22
+  position:
+  - 0.3884618311080628
+  - -0.15850204342142504
+  - 0.28200000000000003
+  joint_positions:
+  - -0.442773573
+  - 1.241028475
+  - 0.58629659
+  - 1.396715271
+  - -0.662102302
+  - 1.014093782
+  position_error: 2.13e-07
+  orientation_error: 3.42e-07
+  maximum_joint_jump_rad: 0.010398635000000045
+  minimum_limit_margin_rad: 0.2974062180000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 229
+  maximum_joint_jump_from_previous_rad: 0.010398635000000045
+- sample_index: 23
+  position:
+  - 0.38566464161297476
+  - -0.15752486357694437
+  - 0.28200000000000003
+  joint_positions:
+  - -0.444376462
+  - 1.230551512
+  - 0.579666904
+  - 1.393260947
+  - -0.658537033
+  - 1.010952839
+  position_error: 2.31e-07
+  orientation_error: 3.69e-07
+  maximum_joint_jump_rad: 0.010476963000000117
+  minimum_limit_margin_rad: 0.3005471610000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 230
+  maximum_joint_jump_from_previous_rad: 0.010476963000000117
+- sample_index: 24
+  position:
+  - 0.3828674521178867
+  - -0.1565476837324637
+  - 0.28200000000000003
+  joint_positions:
+  - -0.446028042
+  - 1.219994997
+  - 0.573097093
+  - 1.389660595
+  - -0.654848988
+  - 1.007667167
+  position_error: 2.5e-07
+  orientation_error: 3.97e-07
+  maximum_joint_jump_rad: 0.010556514999999989
+  minimum_limit_margin_rad: 0.3038328330000002
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 231
+  maximum_joint_jump_from_previous_rad: 0.010556514999999989
+- sample_index: 25
+  position:
+  - 0.38007026262279864
+  - -0.155570503887983
+  - 0.28200000000000003
+  joint_positions:
+  - -0.447730555
+  - 1.209357719
+  - 0.566587974
+  - 1.385905805
+  - -0.651037396
+  - 1.004228317
+  position_error: 2.72e-07
+  orientation_error: 4.29e-07
+  maximum_joint_jump_rad: 0.010637277999999917
+  minimum_limit_margin_rad: 0.3072716830000002
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 232
+  maximum_joint_jump_from_previous_rad: 0.010637277999999917
+- sample_index: 26
+  position:
+  - 0.3772730731277106
+  - -0.15459332404350232
+  - 0.28200000000000003
+  joint_positions:
+  - -0.449486383
+  - 1.198638492
+  - 0.560140391
+  - 1.38198755
+  - -0.647101595
+  - 1.000627224
+  position_error: 2.96e-07
+  orientation_error: 4.64e-07
+  maximum_joint_jump_rad: 0.010719227000000053
+  minimum_limit_margin_rad: 0.3108727760000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 233
+  maximum_joint_jump_from_previous_rad: 0.010719227000000053
+- sample_index: 27
+  position:
+  - 0.3744758836326225
+  - -0.15361614419902164
+  - 0.28200000000000003
+  joint_positions:
+  - -0.451298056
+  - 1.187836153
+  - 0.553755215
+  - 1.377896143
+  - -0.643041048
+  - 0.996854161
+  position_error: 3.22e-07
+  orientation_error: 5.03e-07
+  maximum_joint_jump_rad: 0.01080233900000005
+  minimum_limit_margin_rad: 0.3146458390000001
+  segment: PLACE_RETREAT
+  ik_mode: full
+  global_index: 234
+  maximum_joint_jump_from_previous_rad: 0.01080233900000005

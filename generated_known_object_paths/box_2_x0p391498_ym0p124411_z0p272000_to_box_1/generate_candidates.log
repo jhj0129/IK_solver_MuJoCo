@@ -1,0 +1,30 @@
+$ /usr/bin/python3 /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py --scene /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/planning_scene.xml --config /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/grasp_geometry.yaml --output /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/all_grasp_candidates.yaml
+
+========================================================================================
+CYLINDER GRASP GEOMETRY
+========================================================================================
+Cylinder radius : 0.030000 m
+Cylinder height : 0.080000 m
+Pickup center   : [0.391498, -0.124411, 0.272]
+Place center    : [0.45, 0.18, 0.272]
+Grasp ratio     : 0.625000
+Grasp z offset  : 0.010000 m
+Safe object z   : 0.322000 m
+Safe grasp z    : 0.332000 m
+Pregrasp travel : 0.080000 m
+Candidate count : 36
+
+TCP semantic frame validation
+  orthogonality error : 0.000e+00
+  determinant         : 1.000000000000
+
+First candidate
+  phi                 : 0.000 deg
+  approach world      : [-1.0, -0.0, -0.0]
+  closing world       : [0.0, -1.0, 0.0]
+  upright world       : [0.0, 0.0, 1.0]
+  pickup pregrasp TCP : [0.47149800000000003, -0.124411, 0.28200000000000003]
+  pickup grasp TCP    : [0.391498, -0.124411, 0.28200000000000003]
+
+Saved:
+/home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/all_grasp_candidates.yaml

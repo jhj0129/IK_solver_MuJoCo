@@ -1,0 +1,228 @@
+================================================================================================
+1. TRAJECTORY / POLY5 RELATED FILES
+================================================================================================
+src/drok_arm_control/include/drok_arm_control/pose_joint_trajectory_node.hpp
+src/drok_arm_control/src/pose_joint_trajectory_node.cpp
+src/drok_arm_control/src/trajectory_bridge.cpp
+src/drok_arm_trajectory/include/drok_arm_trajectory/poly5_trajectory.hpp
+src/drok_arm_trajectory/src/poly5_trajectory.cpp
+src/drok_arm_trajectory/src/test_poly5.cpp
+
+================================================================================================
+2. POLY5 / QUINTIC SYMBOLS
+================================================================================================
+
+[src/drok_arm_control/config/pick_place_task.yaml]
+   31: # For this first test it uses direct joint-space Poly5 motion.
+   74: # FK 검증에 사용했던 Poly5 샘플 수
+
+[src/drok_arm_control/include/drok_arm_control/pose_joint_trajectory_node.hpp]
+    6: #include "drok_arm_trajectory/poly5_trajectory.hpp"
+   21: class PoseJointTrajectoryNode : public rclcpp::Node
+   24: PoseJointTrajectoryNode();
+   39: trajectory_msgs::msg::JointTrajectory createTrajectoryMessage(
+   81: trajectory_msgs::msg::JointTrajectory>::SharedPtr
+
+[src/drok_arm_control/include/drok_arm_control/pose_motion_node.hpp]
+    6: #include "drok_arm_trajectory/poly5_trajectory.hpp"
+   93: drok_arm_trajectory::Poly5Trajectory trajectory_;
+
+[src/drok_arm_control/scripts/assemble_cylinder_full_path.py]
+  499: "mode": "joint_space_quintic",
+
+[src/drok_arm_control/scripts/check_v4_cable_limits.py]
+   29: def quintic_progress(ratio: float) -> float:
+   58: def interpolate_poly5(
+   77: progress = quintic_progress(ratio)
+  188: path = interpolate_poly5(
+
+[src/drok_arm_control/scripts/play_baseline_ik_plan.py]
+   15: from control_msgs.action import FollowJointTrajectory
+   19: from trajectory_msgs.msg import JointTrajectoryPoint
+   47: FollowJointTrajectory,
+  292: goal = FollowJointTrajectory.Goal()
+  318: point = JointTrajectoryPoint()
+  321: point.time_from_start = duration_message(
+
+[src/drok_arm_control/scripts/wrist_limit_collector.py]
+   16: from control_msgs.action import FollowJointTrajectory
+   21: from trajectory_msgs.msg import JointTrajectoryPoint
+   74: FollowJointTrajectory,
+  245: goal = FollowJointTrajectory.Goal()
+  248: point = JointTrajectoryPoint()
+  263: point.time_from_start = Duration(
+
+[src/drok_arm_control/scripts/wrist_manual_jogger.py]
+   16: from control_msgs.action import FollowJointTrajectory
+   21: from trajectory_msgs.msg import JointTrajectoryPoint
+   72: FollowJointTrajectory,
+  292: goal = FollowJointTrajectory.Goal()
+  295: point = JointTrajectoryPoint()
+  316: point.time_from_start = Duration(
+
+[src/drok_arm_control/src/pick_place_task_node.cpp]
+    4: #include "drok_arm_trajectory/poly5_trajectory.hpp"
+   36: using FollowJointTrajectory =
+   37: control_msgs::action::FollowJointTrajectory;
+   39: rclcpp_action::ClientGoalHandle<FollowJointTrajectory>;
+   79: rclcpp_action::create_client<FollowJointTrajectory>(
+   83: rclcpp_action::create_client<FollowJointTrajectory>(
+  668: static double quinticProgress(double ratio)
+  724: quinticProgress(ratio);
+  848: std::vector<std::vector<double>> buildJointPoly5Path(
+  882: quinticProgress(ratio);
+  927: "%s joint Poly5 path validated: "
+  968: quinticProgress(ratio);
+ 1045: quinticProgress(ratio);
+ 1213: buildJointPoly5Path(
+ 1312: trajectory_msgs::msg::JointTrajectory createPoly5Trajectory(
+ 1335: drok_arm_trajectory::Poly5Trajectory trajectory;
+ 1339: trajectory_msgs::msg::JointTrajectory message;
+ 1357: trajectory_msgs::msg::JointTrajectoryPoint point;
+ 1379: point.time_from_start.sec =
+ 1382: point.time_from_start.nanosec =
+ 1392: trajectory_msgs::msg::JointTrajectory createWaypointTrajectory(
+ 1409: trajectory_msgs::msg::JointTrajectory message;
+ 1420: trajectory_msgs::msg::JointTrajectoryPoint point;
+ 1426: point.time_from_start.sec =
+ 1429: point.time_from_start.nanosec =
+ 1440: const rclcpp_action::Client<FollowJointTrajectory>::SharedPtr & client,
+ 1441: const trajectory_msgs::msg::JointTrajectory & trajectory,
+ 1445: FollowJointTrajectory::Goal goal_message;
+ 1449: rclcpp_action::Client<FollowJointTrajectory>::SendGoalOptions();
+ 1471: FollowJointTrajectory::Result::SUCCESSFUL)
+... 추가 5개
+
+[src/drok_arm_control/src/pose_joint_trajectory_node.cpp]
+   20: PoseJointTrajectoryNode::PoseJointTrajectoryNode()
+  118: trajectory_msgs::msg::JointTrajectory>(
+  128: &PoseJointTrajectoryNode::jointStateCallback,
+  142: void PoseJointTrajectoryNode::jointStateCallback(
+  168: bool PoseJointTrajectoryNode::extractArmJointPositions(
+  207: PoseJointTrajectoryNode::createTargetTransform() const
+  226: void PoseJointTrajectoryNode::planAndPublish(
+  292: "Published %zu Poly5 points to %s",
+  297: trajectory_msgs::msg::JointTrajectory
+  298: PoseJointTrajectoryNode::createTrajectoryMessage(
+  302: drok_arm_trajectory::Poly5Trajectory trajectory;
+  309: trajectory_msgs::msg::JointTrajectory message;
+  331: trajectory_msgs::msg::JointTrajectoryPoint point;
+  358: point.time_from_start.sec =
+  362: point.time_from_start.nanosec =
+  381: drok_arm_control::PoseJointTrajectoryNode>();
+
+[src/drok_arm_control/src/pose_motion_node.cpp]
+  338: "Poly5 trajectory started: duration=%.3f s, rate=%.1f Hz",
+  388: "Poly5 trajectory completed. Final position hold=%s",
+
+[src/drok_arm_control/src/trajectory_bridge.cpp]
+   27: * 자체 IK, Poly5, VR 등의 제어 노드가 보내는 궤적
+   41: this->create_publisher<trajectory_msgs::msg::JointTrajectory>(
+   46: this->create_subscription<trajectory_msgs::msg::JointTrajectory>(
+   71: const trajectory_msgs::msg::JointTrajectory::SharedPtr msg)
+  105: trajectory_msgs::msg::JointTrajectory>::SharedPtr trajectory_pub_;
+  108: trajectory_msgs::msg::JointTrajectory>::SharedPtr trajectory_sub_;
+
+[src/drok_arm_mujoco/config/controllers.yaml]
+    9: type: joint_trajectory_controller/JointTrajectoryController
+   12: type: joint_trajectory_controller/JointTrajectoryController
+
+[src/drok_arm_trajectory/include/drok_arm_trajectory/poly5_trajectory.hpp]
+    1: #ifndef DROK_ARM_TRAJECTORY__POLY5_TRAJECTORY_HPP_
+    2: #define DROK_ARM_TRAJECTORY__POLY5_TRAJECTORY_HPP_
+   19: struct Poly5BoundaryCondition
+   32: class Poly5Trajectory
+   35: Poly5Trajectory() = default;
+   37: explicit Poly5Trajectory(
+   38: const Poly5BoundaryCondition & boundary_condition);
+   41: const Poly5BoundaryCondition & boundary_condition);
+   62: const Poly5BoundaryCondition & boundary_condition) const;
+   64: Poly5BoundaryCondition boundary_condition_;
+   73: #endif  // DROK_ARM_TRAJECTORY__POLY5_TRAJECTORY_HPP_
+
+[src/drok_arm_trajectory/src/poly5_trajectory.cpp]
+    1: #include "drok_arm_trajectory/poly5_trajectory.hpp"
+   11: Poly5Trajectory::Poly5Trajectory(
+   12: const Poly5BoundaryCondition & boundary_condition)
+   17: void Poly5Trajectory::validateBoundaryCondition(
+   18: const Poly5BoundaryCondition & boundary_condition) const
+   76: void Poly5Trajectory::configure(
+   77: const Poly5BoundaryCondition & boundary_condition)
+  112: "Failed to solve Poly5 coefficient matrix.");
+  181: void Poly5Trajectory::configureRestToRest(
+  191: Poly5BoundaryCondition boundary_condition;
+  216: TrajectoryState Poly5Trajectory::sample(
+  221: "Poly5 trajectory has not been configured.");
+  308: double Poly5Trajectory::duration() const noexcept
+  313: std::size_t Poly5Trajectory::jointCount() const noexcept
+  319: bool Poly5Trajectory::isConfigured() const noexcept
+
+[src/drok_arm_trajectory/src/test_poly5.cpp]
+    1: #include "drok_arm_trajectory/poly5_trajectory.hpp"
+   66: drok_arm_trajectory::Poly5Trajectory trajectory;
+   79: << " DROK Poly5 Trajectory Test\n"
+
+================================================================================================
+3. URDF JOINT LIMITS
+================================================================================================
+JOINT1: lower=-0.78540, upper=2.26893, velocity=1.2, effort=35
+JOINT2: lower=-0.50000, upper=3.14159, velocity=1.2, effort=35
+JOINT3: lower=0.00000, upper=3.14159, velocity=1.2, effort=35
+JOINT4: lower=-5.89101, upper=2.64243, velocity=1.2, effort=35
+JOINT5: lower=-1.52175, upper=1.31947, velocity=1.2, effort=35
+JOINT6: lower=-2.87729, upper=1.31150, velocity=1.0, effort=35
+
+================================================================================================
+4. ACCELERATION / JERK CONFIGURATION
+================================================================================================
+
+[src/drok_arm_control/src/pick_place_task_node.cpp]
+ 1360: point.accelerations.resize(start.size());
+ 1372: point.accelerations[joint_index] =
+ 1373: state.acceleration[eigen_index];
+
+[src/drok_arm_control/src/pose_joint_trajectory_node.cpp]
+  335: point.accelerations.resize(6);
+  350: point.accelerations[output_index] =
+  351: state.acceleration[joint_index];
+
+[src/drok_arm_trajectory/include/drok_arm_trajectory/poly5_trajectory.hpp]
+   16: Eigen::VectorXd acceleration;
+   23: Eigen::VectorXd start_acceleration;
+   27: Eigen::VectorXd goal_acceleration;
+
+[src/drok_arm_trajectory/src/poly5_trajectory.cpp]
+   60: boundary_condition.start_acceleration,
+   61: "start_acceleration");
+   72: boundary_condition.goal_acceleration,
+   73: "goal_acceleration");
+  126: boundary_condition_.start_acceleration[joint_index];
+  135: boundary_condition_.goal_acceleration[joint_index];
+  202: boundary_condition.start_acceleration =
+  208: boundary_condition.goal_acceleration =
+  246: state.acceleration =
+  298: state.acceleration[joint_index] =
+
+[src/drok_arm_trajectory/src/test_poly5.cpp]
+  106: printVector("ddq", state.acceleration);
+  135: const bool start_acceleration_ok =
+  137: start_state.acceleration,
+  153: const bool goal_acceleration_ok =
+  155: goal_state.acceleration,
+  162: start_acceleration_ok &&
+  165: goal_acceleration_ok;
+  177: << "Start acceleration : "
+  178: << start_acceleration_ok
+  186: << "Goal acceleration  : "
+  187: << goal_acceleration_ok
+
+================================================================================================
+5. CONTROLLER UPDATE RATE
+================================================================================================
+
+[src/drok_arm_mujoco/config/arm_controller.yaml]
+   18: state_publish_rate: 100.0
+   19: action_monitor_rate: 20.0
+
+[src/drok_arm_mujoco/config/controllers.yaml]
+    3: update_rate: 100

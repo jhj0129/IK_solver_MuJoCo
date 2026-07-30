@@ -1,0 +1,16 @@
+version: 1
+status: prepared
+mujoco_restart_required: true
+from_box: 1
+to_box: 2
+seed: 2
+safety_margin: 0.01
+speed_scale: 0.5
+object_center:
+  x: 0.522965
+  y: 0.251652
+  z: 0.272
+grasp_z: 0.282
+timed_path: /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/timed_joint_path.yaml
+posture_report: /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/link4_side_grasp_report.yaml
+output_directory: /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2

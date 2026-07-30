@@ -1,0 +1,22 @@
+========================================================================================
+CYLINDER PLACE RETREAT FULL-POSE IK
+========================================================================================
+Start TCP : +0.450000000, -0.180000000, +0.272000000
+Goal TCP  : +0.372566120, -0.159900394, +0.272000000
+Retreat direction: -0.967923505, +0.251245077, +0.000000000
+Distance  : 0.080000000 m
+Fixed RPY : +0.000000000, +0.000000000, -0.253966379
+
+[ALIGN] PLACE_GRASP에서 최종 yaw를 full-pose로 정확히 고정합니다.
+[PASS] alignment max jump=0.003834 deg
+
+[PLACE_RETREAT] samples=27, step<=0.003000 m
+
+========================================================================================
+OVERALL RESULT: PASS
+========================================================================================
+Samples             : 28
+Maximum joint jump  : 0.584737 deg
+Minimum limit margin: 11.793683 deg
+Saved:
+/home/hgui/IK_solver_MuJoCo/cylinder_place_retreat_full_path.yaml

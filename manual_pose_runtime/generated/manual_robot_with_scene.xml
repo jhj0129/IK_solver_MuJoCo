@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="DROK_ARM_MANUAL_PICK_PLACE">
+  <compiler angle="radian" meshdir="assets/" texturedir="assets/" />
+  <asset>
+    <mesh file="full/ARM_BASE_LINK/ARM_BASE_LINK.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_ARM_BASE_LINK" specular="0.20000000000000004" shininess="1.0" rgba="0.89803922 0.91764706 0.92941176 1.0" />
+    <mesh file="full/LINK1/LINK1.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_LINK1" specular="0.20000000000000004" shininess="1.0" rgba="0.89803922 0.91764706 0.92941176 1.0" />
+    <mesh file="full/LINK2/LINK2.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_LINK2" specular="0.20000000000000004" shininess="1.0" rgba="0.29803922 0.29803922 0.29803922 1.0" />
+    <mesh file="full/LINK3/LINK3.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_LINK3" specular="0.20000000000000004" shininess="1.0" rgba="0.29803922 0.29803922 0.29803922 1.0" />
+    <mesh file="full/LINK4/LINK4.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_LINK4" specular="0.20000000000000004" shininess="1.0" rgba="0.89803922 0.91764706 0.92941176 1.0" />
+    <mesh file="full/LINK5/LINK5.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_LINK5" specular="0.20000000000000004" shininess="1.0" rgba="0.20392157 0.20392157 0.20392157 1.0" />
+    <mesh file="full/LINK6/LINK6.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_LINK6" specular="0.20000000000000004" shininess="1.0" rgba="0.69803922 0.69803922 0.69803922 1.0" />
+    <mesh file="full/GRIPPER_BASE/GRIPPER_BASE.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_GRIPPER_BASE" specular="0.20000000000000004" shininess="1.0" rgba="0.69803922 0.69803922 0.69803922 1.0" />
+    <mesh file="full/GRIPPER_LEFT/GRIPPER_LEFT.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_GRIPPER_LEFT" specular="0.20000000000000004" shininess="1.0" rgba="0.69803922 0.69803922 0.69803922 1.0" />
+    <mesh file="full/GRIPPER_RIGH/GRIPPER_RIGH.obj" scale="1.0 1.0 1.0" />
+    <material name="mtl_GRIPPER_RIGH" specular="0.20000000000000004" shininess="1.0" rgba="0.69803922 0.69803922 0.69803922 1.0" />
+    <texture type="skybox" builtin="gradient" rgb1="0.35 0.45 0.60" rgb2="0.05 0.05 0.08" width="512" height="3072" />
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.20 0.25 0.30" rgb2="0.10 0.12 0.15" markrgb="0.8 0.8 0.8" width="300" height="300" />
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" />
+  </asset>
+  <worldbody>
+    <body name="ARM_BASE_LINK">
+      <inertial pos="2.9813e-07 2.5769e-05 -0.0063007" quat="0.00156553 0.707105 -0.0012727 0.707106" mass="0.68746" diaginertia="0.00078902 0.00047318 0.00047228" />
+      <body name="LINK1" pos="0 0 0.016">
+        <inertial pos="-6.5604e-05 0.00013328 0.05267" quat="0.495294 0.504662 0.504661 0.495295" mass="1.8725" diaginertia="0.0016195 0.00151872 0.00147168" />
+        <joint name="JOINT1" pos="0 0 0" axis="0 0 1" range="-0.7854 2.26893" actuatorfrcrange="-35 35" damping="2.0" frictionloss="0.3" />
+        <body name="LINK2" pos="0 0 0.07">
+          <inertial pos="-0.23683 -0.0027683 6.2911e-08" quat="0.501242 0.501256 0.498739 0.498756" mass="1.0336" diaginertia="0.00143981 0.0014082 0.000863376" />
+          <joint name="JOINT2" pos="0 0 0" axis="0 1 0" range="-0.5 3.14159" actuatorfrcrange="-35 35" damping="2.0" frictionloss="0.3" />
+          <body name="LINK3" pos="-0.35 -0.00025005 0">
+            <inertial pos="0.10819 -0.00014566 0.068578" quat="0.61682 0.344364 0.34595 0.617466" mass="0.61657" diaginertia="0.000810823 0.000681813 0.000302004" />
+            <joint name="JOINT3" pos="0 0 0" axis="0 -1 0" range="0 3.14159" actuatorfrcrange="-35 35" damping="2.0" frictionloss="0.3" />
+            <body name="LINK4" pos="0.29265 0 0.083467">
+              <inertial pos="0.020782 0 -0.0020268" quat="0.488484 0.488484 -0.511257 0.511257" mass="0.15667" diaginertia="6.33744e-05 5.98246e-05 4.862e-05" />
+              <joint name="JOINT4" pos="0 0 0" axis="1 0 0" range="-5.89101 2.64243" actuatorfrcrange="-35 35" damping="2.0" frictionloss="0.3" />
+              <body name="LINK5" pos="0.038 0 0">
+                <inertial pos="0.016203 -5.9624e-05 0.0040656" quat="0.447629 0.546934 -0.440504 0.553577" mass="0.31154" diaginertia="0.00015876 0.000107099 0.000106451" />
+                <joint name="JOINT5" pos="0 0 0" axis="0 0 -1" range="-1.52175 1.31947" actuatorfrcrange="-35 35" damping="2.0" frictionloss="0.3" />
+                <body name="LINK6" pos="0.081 0 0" quat="0.978147 -0.207912 0 0">
+                  <inertial pos="0.028305 -0.00023763 0.011044" quat="0.984775 0.164345 0.054756 -0.0144842" mass="0.093458" diaginertia="5.24553e-05 3.53503e-05 3.41764e-05" />
+                  <joint name="JOINT6" pos="0 0 0" axis="-1 0 0" range="-2.87729 1.3115" actuatorfrcrange="-35 35" damping="2.0" frictionloss="0.3" />
+                  <body name="GRIPPER_BASE" pos="0.08 0 0">
+                    <inertial pos="-0.015957 3.8498e-06 -6.7084e-05" quat="0.707093 0.707118 -0.00157763 0.00157051" mass="0.090747" diaginertia="0.00026818 0.0002532 3.2287e-05" />
+                    <body name="GRIPPER_LEFT" pos="0.0594 0.078 0">
+                      <inertial pos="-0.017307 0.0022021 -0.0021854" quat="0.544058 0.429147 0.531738 0.486918" mass="0.088523" diaginertia="0.000102287 8.38381e-05 6.389e-05" />
+                      <joint name="JOINT7" pos="0 0 0" axis="0 -1 0" type="slide" range="0 0.04" actuatorfrcrange="-100 100" damping="1.0" frictionloss="0.1" />
+                      <geom material="mtl_GRIPPER_LEFT" mesh="GRIPPER_LEFT" class="visual" type="mesh" pos="" quat="" />
+                      <geom mesh="GRIPPER_LEFT" class="collision" type="mesh" pos="" quat="" />
+                      <site name="GRIPPER_LEFT" pos="0 0 0" quat="1.0 0 0 0" />
+                    </body>
+                    <body name="GRIPPER_RIGH" pos="0.0594 -0.078 0">
+                      <inertial pos="-0.017307 -0.0022021 0.0021854" quat="0.531738 0.486918 0.544058 0.429147" mass="0.088523" diaginertia="0.000102287 8.38381e-05 6.389e-05" />
+                      <joint name="GRIPPER_RIGHT_JOINT" pos="0 0 0" axis="0 -1 0" type="slide" range="-0.04 0" actuatorfrcrange="-100 100" damping="1.0" frictionloss="0.1" />
+                      <geom material="mtl_GRIPPER_RIGH" mesh="GRIPPER_RIGH" class="visual" type="mesh" pos="" quat="" />
+                      <geom mesh="GRIPPER_RIGH" class="collision" type="mesh" pos="" quat="" />
+                      <site name="GRIPPER_RIGH" pos="0 0 0" quat="1.0 0 0 0" />
+                    </body>
+                    <body name="gripper_center" pos="0.0594 0 0">
+                      <body name="gripper_tcp" />
+                    </body>
+                    <geom material="mtl_GRIPPER_BASE" mesh="GRIPPER_BASE" class="visual" type="mesh" pos="" quat="" />
+                    <geom mesh="GRIPPER_BASE" class="collision" type="mesh" pos="" quat="" />
+                  </body>
+                  <geom material="mtl_LINK6" mesh="LINK6" class="visual" type="mesh" pos="" quat="" />
+                  <geom mesh="LINK6" class="collision" type="mesh" pos="" quat="" />
+                  <site name="LINK6" pos="0 0 0" quat="1.0 0 0 0" />
+                  <site name="GRIPPER_BASE" pos="0.08 0 0" quat="1.0 0 0 0" />
+                  <site name="gripper_center" pos="0.1394 0 0" quat="1.0 0 0 0" />
+                  <site name="gripper_tcp" pos="0.1394 0 0" quat="1.0 0 0 0" />
+                </body>
+                <geom material="mtl_LINK5" mesh="LINK5" class="visual" type="mesh" pos="" quat="" />
+                <geom mesh="LINK5" class="collision" type="mesh" pos="" quat="" />
+                <site name="LINK5" pos="0 0 0" quat="1.0 0 0 0" />
+              </body>
+              <geom material="mtl_LINK4" mesh="LINK4" class="visual" type="mesh" pos="" quat="" />
+              <geom mesh="LINK4" class="collision" type="mesh" pos="" quat="" />
+              <site name="LINK4" pos="0 0 0" quat="1.0 0 0 0" />
+            </body>
+            <geom material="mtl_LINK3" mesh="LINK3" class="visual" type="mesh" pos="" quat="" />
+            <geom mesh="LINK3" class="collision" type="mesh" pos="" quat="" />
+            <site name="LINK3" pos="0 0 0" quat="1.0 0 0 0" />
+          </body>
+          <geom material="mtl_LINK2" mesh="LINK2" class="visual" type="mesh" pos="" quat="" />
+          <geom mesh="LINK2" class="collision" type="mesh" pos="" quat="" />
+          <site name="LINK2" pos="0 0 0" quat="1.0 0 0 0" />
+        </body>
+        <geom material="mtl_LINK1" mesh="LINK1" class="visual" type="mesh" pos="" quat="" />
+        <geom mesh="LINK1" class="collision" type="mesh" pos="" quat="" />
+        <site name="LINK1" pos="0 0 0" quat="1.0 0 0 0" />
+      </body>
+      <geom material="mtl_ARM_BASE_LINK" mesh="ARM_BASE_LINK" class="visual" type="mesh" pos="" quat="" />
+      <geom mesh="ARM_BASE_LINK" class="collision" type="mesh" pos="" quat="" />
+    </body>
+    <site name="ARM_BASE_LINK" pos="0 0 0" quat="1.0 0 0 0" />
+    <light pos="0 0 2" dir="0 0 -1" directional="true" />
+    <geom name="floor" type="plane" size="3 3 0.1" material="groundplane" contype="1" conaffinity="1" />
+    <geom name="pickup_pedestal" type="box" pos="0.450 0.180 0.116" size="0.120 0.120 0.116" rgba="0.28 0.32 0.38 1" friction="1.0 0.005 0.0001" contype="1" conaffinity="1" />
+    <geom name="place_pedestal" type="box" pos="0.450 -0.180 0.116" size="0.120 0.120 0.116" rgba="0.28 0.32 0.38 1" friction="1.0 0.005 0.0001" contype="1" conaffinity="1" />
+    <body name="pickup_cube" pos="0.450 0.180 0.272">
+      <freejoint name="pickup_cube_freejoint" />
+      <geom name="pickup_cube_geom" type="box" size="0.040 0.040 0.040" density="500" rgba="0.85 0.25 0.15 1" friction="1.5 0.01 0.001" condim="4" contype="1" conaffinity="1" />
+    </body>
+  </worldbody>
+  <option integrator="implicitfast" timestep="0.002" gravity="0 0 -9.81" />
+  <compiler angle="radian" autolimits="true" />
+  <default>
+    <default class="visual">
+      <geom group="2" contype="0" conaffinity="0" />
+    </default>
+    <default class="collision">
+      <geom group="3" contype="1" conaffinity="1" />
+    </default>
+  </default>
+  <actuator>
+    <position name="JOINT1" joint="JOINT1" kp="3000" dampratio="1.0" ctrlrange="-0.78540 2.26893" />
+    <position name="JOINT2" joint="JOINT2" kp="2000" dampratio="1.0" ctrlrange="-0.50000 3.14159" />
+    <position name="JOINT3" joint="JOINT3" kp="2000" dampratio="1.0" ctrlrange="0.00000 3.14159" />
+    <position name="JOINT4" joint="JOINT4" kp="240" dampratio="1.0" ctrlrange="-5.89101 2.64243" />
+    <position name="JOINT5" joint="JOINT5" kp="160" dampratio="1.0" ctrlrange="-1.52175 1.31947" />
+    <position name="JOINT6" joint="JOINT6" kp="50" dampratio="1.0" ctrlrange="-2.87729 1.31150" />
+    <position name="JOINT7" joint="JOINT7" kp="3000" dampratio="1.0" ctrlrange="0.0 0.04" />
+    <position name="GRIPPER_RIGHT_JOINT" joint="GRIPPER_RIGHT_JOINT" kp="3000" dampratio="1.0" ctrlrange="-0.04 0.0" />
+  </actuator>
+  <contact>
+    <exclude name="exclude_base_link1" body1="ARM_BASE_LINK" body2="LINK1" />
+  </contact>
+  <statistic center="0 0 0.45" extent="1.2" />
+  <visual>
+    <headlight diffuse="0.7 0.7 0.7" ambient="0.25 0.25 0.25" specular="0.1 0.1 0.1" />
+    <rgba haze="0.15 0.20 0.25 1" />
+    <global azimuth="135" elevation="-20" />
+  </visual>
+</mujoco>

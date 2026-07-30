@@ -1,0 +1,30 @@
+version: 1
+
+frames:
+  end_effector_frame: gripper_tcp
+
+  # gripper_tcp 좌표계에서 정의한 의미론적 축
+  approach_axis_tcp: [1.0, 0.0, 0.0]
+  closing_axis_tcp:  [0.0, 1.0, 0.0]
+  upright_axis_tcp:  [0.0, 0.0, 1.0]
+
+  # gripper_tcp가 이미 두 패드 사이의 파지 중심이다.
+  tcp_to_grasp_center: [0.0, 0.0, 0.0]
+
+scene:
+  pickup_object_body: pickup_cube
+  pickup_pedestal_geom: pickup_pedestal
+  place_pedestal_geom: place_pedestal
+
+grasp:
+  # 0.0=바닥, 0.5=중앙, 1.0=상단
+  height_ratio: 0.5
+
+  # 원기둥 표면에서 pregrasp까지 추가 여유
+  pregrasp_surface_clearance: 0.050
+
+  # 운반 시 받침대 및 물체 상단보다 더 높게 확보할 거리
+  vertical_clearance: 0.050
+
+search:
+  azimuth_candidate_count: 36

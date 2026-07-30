@@ -1,0 +1,1128 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import math
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Any, Dict, List, Sequence, Tuple
+
+import numpy as np
+import yaml
+from scipy.interpolate import CubicSpline
+
+
+ROOT = Path.home() / "IK_solver_MuJoCo"
+
+ARM_JOINT_NAMES = [
+    "JOINT1",
+    "JOINT2",
+    "JOINT3",
+    "JOINT4",
+    "JOINT5",
+    "JOINT6",
+]
+
+
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--path",
+        default=str(
+            ROOT
+            / "cylinder_full_cartesian_ik_path.yaml"
+        ),
+    )
+
+    parser.add_argument(
+        "--timing-config",
+        default=str(
+            ROOT
+            / "src/drok_arm_control/config"
+            / "cylinder_trajectory_timing.yaml"
+        ),
+    )
+
+    parser.add_argument(
+        "--urdf",
+        default=str(
+            ROOT
+            / "src/drok_arm_mujoco/urdf"
+            / "drok_arm_mujoco.urdf"
+        ),
+    )
+
+    parser.add_argument(
+        "--controllers",
+        default=str(
+            ROOT
+            / "src/drok_arm_mujoco/config"
+            / "controllers.yaml"
+        ),
+    )
+
+    parser.add_argument(
+        "--output",
+        default=str(
+            ROOT
+            / "cylinder_timed_joint_path.yaml"
+        ),
+    )
+
+    return parser.parse_args()
+
+
+def load_yaml(path: Path) -> Dict[str, Any]:
+    with path.open(
+        "r",
+        encoding="utf-8",
+    ) as stream:
+        data = yaml.safe_load(stream)
+
+    if not isinstance(data, dict):
+        raise RuntimeError(
+            f"잘못된 YAML 문서입니다: {path}"
+        )
+
+    return data
+
+
+def recursive_find_number(
+    value: Any,
+    target_key: str,
+) -> float | None:
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if key == target_key:
+                try:
+                    result = float(child)
+                except (TypeError, ValueError):
+                    continue
+
+                if math.isfinite(result):
+                    return result
+
+            nested = recursive_find_number(
+                child,
+                target_key,
+            )
+
+            if nested is not None:
+                return nested
+
+    elif isinstance(value, list):
+        for child in value:
+            nested = recursive_find_number(
+                child,
+                target_key,
+            )
+
+            if nested is not None:
+                return nested
+
+    return None
+
+
+def read_controller_rate(
+    controllers_path: Path,
+) -> float:
+    document = load_yaml(
+        controllers_path
+    )
+
+    rate = recursive_find_number(
+        document,
+        "update_rate",
+    )
+
+    if rate is None or rate <= 0.0:
+        raise RuntimeError(
+            "controllers.yaml에서 유효한 "
+            "update_rate를 찾지 못했습니다."
+        )
+
+    return rate
+
+
+def read_urdf_limits(
+    urdf_path: Path,
+) -> Tuple[
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+]:
+    root = ET.parse(
+        urdf_path
+    ).getroot()
+
+    joint_map = {
+        joint.attrib.get("name", ""): joint
+        for joint in root.findall("joint")
+    }
+
+    lower = []
+    upper = []
+    velocity = []
+
+    for name in ARM_JOINT_NAMES:
+        joint = joint_map.get(name)
+
+        if joint is None:
+            raise RuntimeError(
+                f"URDF에서 {name}을 찾지 못했습니다."
+            )
+
+        limit = joint.find("limit")
+
+        if limit is None:
+            raise RuntimeError(
+                f"{name}에 limit이 없습니다."
+            )
+
+        values = (
+            float(limit.attrib["lower"]),
+            float(limit.attrib["upper"]),
+            float(limit.attrib["velocity"]),
+        )
+
+        if not all(
+            math.isfinite(value)
+            for value in values
+        ):
+            raise RuntimeError(
+                f"{name} limit에 유한하지 않은 "
+                "값이 있습니다."
+            )
+
+        if values[0] >= values[1]:
+            raise RuntimeError(
+                f"{name} lower/upper가 잘못됐습니다."
+            )
+
+        if values[2] <= 0.0:
+            raise RuntimeError(
+                f"{name} velocity가 양수가 아닙니다."
+            )
+
+        lower.append(values[0])
+        upper.append(values[1])
+        velocity.append(values[2])
+
+    return (
+        np.asarray(lower, dtype=float),
+        np.asarray(upper, dtype=float),
+        np.asarray(velocity, dtype=float),
+    )
+
+
+def quintic_progress(
+    tau: np.ndarray,
+) -> Tuple[
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+]:
+    progress = (
+        10.0 * tau**3
+        - 15.0 * tau**4
+        + 6.0 * tau**5
+    )
+
+    first = (
+        30.0 * tau**2
+        - 60.0 * tau**3
+        + 30.0 * tau**4
+    )
+
+    second = (
+        60.0 * tau
+        - 180.0 * tau**2
+        + 120.0 * tau**3
+    )
+
+    third = (
+        60.0
+        - 360.0 * tau
+        + 360.0 * tau**2
+    )
+
+    return (
+        progress,
+        first,
+        second,
+        third,
+    )
+
+
+def remove_duplicate_waypoints(
+    q_path: np.ndarray,
+    tolerance: float = 1.0e-12,
+) -> np.ndarray:
+    if q_path.ndim != 2:
+        raise RuntimeError(
+            "q_path는 2차원 배열이어야 합니다."
+        )
+
+    keep = [0]
+
+    for index in range(1, q_path.shape[0]):
+        difference = float(
+            np.max(
+                np.abs(
+                    q_path[index]
+                    - q_path[keep[-1]]
+                )
+            )
+        )
+
+        if difference > tolerance:
+            keep.append(index)
+
+    result = q_path[keep]
+
+    if result.shape[0] < 2:
+        raise RuntimeError(
+            "중복 제거 후 waypoint가 "
+            "2개 미만입니다."
+        )
+
+    return result
+
+
+def construct_path_parameter(
+    q_path: np.ndarray,
+    velocity_limits: np.ndarray,
+) -> np.ndarray:
+    delta_q = np.diff(
+        q_path,
+        axis=0,
+    )
+
+    # 느린 관절의 변화량이 path parameter에서
+    # 더 크게 반영되도록 velocity로 정규화한다.
+    weighted_step = np.sqrt(
+        np.sum(
+            (
+                delta_q
+                / velocity_limits[np.newaxis, :]
+            ) ** 2,
+            axis=1,
+        )
+    )
+
+    if np.any(
+        weighted_step <= 0.0
+    ):
+        raise RuntimeError(
+            "0 이하의 path parameter 간격이 있습니다."
+        )
+
+    cumulative = np.concatenate(
+        (
+            np.asarray([0.0]),
+            np.cumsum(weighted_step),
+        )
+    )
+
+    total = float(
+        cumulative[-1]
+    )
+
+    if total <= 0.0:
+        raise RuntimeError(
+            "전체 관절 경로 길이가 0입니다."
+        )
+
+    return cumulative / total
+
+
+def evaluate_spline_time_law(
+    spline: CubicSpline,
+    tau: np.ndarray,
+    duration: float,
+) -> Tuple[
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+    np.ndarray,
+]:
+    (
+        path_s,
+        ds_dtau,
+        d2s_dtau2,
+        d3s_dtau3,
+    ) = quintic_progress(tau)
+
+    q = spline(
+        path_s,
+        0,
+    )
+
+    q_s = spline(
+        path_s,
+        1,
+    )
+
+    q_ss = spline(
+        path_s,
+        2,
+    )
+
+    q_sss = spline(
+        path_s,
+        3,
+    )
+
+    s_dot = (
+        ds_dtau / duration
+    )
+
+    s_ddot = (
+        d2s_dtau2 / duration**2
+    )
+
+    s_jerk = (
+        d3s_dtau3 / duration**3
+    )
+
+    q_dot = (
+        q_s
+        * s_dot[:, np.newaxis]
+    )
+
+    q_ddot = (
+        q_ss
+        * s_dot[:, np.newaxis] ** 2
+        + q_s
+        * s_ddot[:, np.newaxis]
+    )
+
+    q_jerk = (
+        q_sss
+        * s_dot[:, np.newaxis] ** 3
+        + 3.0
+        * q_ss
+        * s_dot[:, np.newaxis]
+        * s_ddot[:, np.newaxis]
+        + q_s
+        * s_jerk[:, np.newaxis]
+    )
+
+    return (
+        q,
+        q_dot,
+        q_ddot,
+        q_jerk,
+    )
+
+
+def maximum_ratio(
+    values: np.ndarray,
+    limits: np.ndarray,
+) -> float:
+    ratio = np.abs(
+        values
+    ) / limits[np.newaxis, :]
+
+    return float(
+        np.max(ratio)
+    )
+
+
+def minimum_position_margin(
+    q: np.ndarray,
+    lower: np.ndarray,
+    upper: np.ndarray,
+) -> float:
+    lower_margin = (
+        q - lower[np.newaxis, :]
+    )
+
+    upper_margin = (
+        upper[np.newaxis, :] - q
+    )
+
+    return float(
+        np.min(
+            np.minimum(
+                lower_margin,
+                upper_margin,
+            )
+        )
+    )
+
+
+def as_joint_path(
+    records: Sequence[Dict[str, Any]],
+    start_index: int,
+    end_index: int,
+) -> np.ndarray:
+    selected = [
+        record
+        for record in records
+        if (
+            start_index
+            <= int(record["global_index"])
+            <= end_index
+        )
+    ]
+
+    expected_count = (
+        end_index - start_index + 1
+    )
+
+    if len(selected) != expected_count:
+        raise RuntimeError(
+            f"index {start_index}~{end_index}에서 "
+            f"{expected_count}개를 기대했지만 "
+            f"{len(selected)}개를 찾았습니다."
+        )
+
+    selected.sort(
+        key=lambda record: int(
+            record["global_index"]
+        )
+    )
+
+    q_path = np.asarray(
+        [
+            record["joint_positions"]
+            for record in selected
+        ],
+        dtype=float,
+    )
+
+    if q_path.shape[1] != len(
+        ARM_JOINT_NAMES
+    ):
+        raise RuntimeError(
+            "관절 경로 크기가 잘못됐습니다."
+        )
+
+    if not np.all(
+        np.isfinite(q_path)
+    ):
+        raise RuntimeError(
+            "관절 경로에 유한하지 않은 "
+            "값이 있습니다."
+        )
+
+    return q_path
+
+
+def make_motion_blocks(
+    path_document: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    records = path_document["path"]
+
+    final_index = max(
+        int(record["global_index"])
+        for record in records
+    )
+
+    events = sorted(
+        path_document["events"],
+        key=lambda event: int(
+            event["after_global_index"]
+        ),
+    )
+
+    boundaries = [0]
+
+    for event in events:
+        boundaries.append(
+            int(
+                event["after_global_index"]
+            )
+        )
+
+    boundaries.append(
+        final_index
+    )
+
+    if any(
+        second <= first
+        for first, second in zip(
+            boundaries[:-1],
+            boundaries[1:],
+        )
+    ):
+        raise RuntimeError(
+            "motion block 경계가 증가하지 않습니다."
+        )
+
+    blocks = []
+
+    for index, (
+        start_index,
+        end_index,
+    ) in enumerate(
+        zip(
+            boundaries[:-1],
+            boundaries[1:],
+        ),
+        start=1,
+    ):
+        blocks.append(
+            {
+                "name": (
+                    f"MOTION_BLOCK_{index}"
+                ),
+                "start_global_index": (
+                    start_index
+                ),
+                "end_global_index": (
+                    end_index
+                ),
+            }
+        )
+
+    return blocks
+
+
+def main() -> int:
+    arguments = parse_arguments()
+
+    path_file = Path(
+        arguments.path
+    ).expanduser().resolve()
+
+    config_file = Path(
+        arguments.timing_config
+    ).expanduser().resolve()
+
+    urdf_file = Path(
+        arguments.urdf
+    ).expanduser().resolve()
+
+    controllers_file = Path(
+        arguments.controllers
+    ).expanduser().resolve()
+
+    output_file = Path(
+        arguments.output
+    ).expanduser().resolve()
+
+    path_document = load_yaml(
+        path_file
+    )
+
+    config = load_yaml(
+        config_file
+    )
+
+    controller_rate = read_controller_rate(
+        controllers_file
+    )
+
+    (
+        joint_lower,
+        joint_upper,
+        urdf_velocity,
+    ) = read_urdf_limits(
+        urdf_file
+    )
+
+    limit_config = config["limits"]
+    scaling_config = config[
+        "time_scaling"
+    ]
+    validation_config = config[
+        "validation"
+    ]
+
+    velocity_scale = float(
+        limit_config["velocity_scale"]
+    )
+
+    acceleration_rise_time = float(
+        limit_config[
+            "acceleration_rise_time"
+        ]
+    )
+
+    jerk_rise_time = float(
+        limit_config["jerk_rise_time"]
+    )
+
+    duration_margin = float(
+        scaling_config["duration_margin"]
+    )
+
+    if not (
+        0.0 < velocity_scale <= 1.0
+    ):
+        raise RuntimeError(
+            "velocity_scale은 0보다 크고 "
+            "1 이하여야 합니다."
+        )
+
+    if (
+        acceleration_rise_time <= 0.0
+        or jerk_rise_time <= 0.0
+        or duration_margin < 1.0
+    ):
+        raise RuntimeError(
+            "시간화 파라미터가 잘못됐습니다."
+        )
+
+    velocity_limit = (
+        velocity_scale
+        * urdf_velocity
+    )
+
+    acceleration_limit = (
+        velocity_limit
+        / acceleration_rise_time
+    )
+
+    jerk_limit = (
+        acceleration_limit
+        / jerk_rise_time
+    )
+
+    minimum_dense_samples = int(
+        validation_config[
+            "minimum_dense_samples"
+        ]
+    )
+
+    samples_per_waypoint = int(
+        validation_config[
+            "dense_samples_per_waypoint"
+        ]
+    )
+
+    records = path_document["path"]
+
+    blocks = make_motion_blocks(
+        path_document
+    )
+
+    timed_blocks = []
+
+    total_duration = 0.0
+
+    print("=" * 96)
+    print("CYLINDER PATH TIME PARAMETERIZATION")
+    print("=" * 96)
+
+    print(
+        f"Controller rate : "
+        f"{controller_rate:.3f} Hz"
+    )
+
+    print()
+    print("Derived limits")
+
+    for index, name in enumerate(
+        ARM_JOINT_NAMES
+    ):
+        print(
+            f"  {name}: "
+            f"v={velocity_limit[index]:.6f} rad/s, "
+            f"a={acceleration_limit[index]:.6f} rad/s^2, "
+            f"j={jerk_limit[index]:.6f} rad/s^3"
+        )
+
+    for block_index, block in enumerate(
+        blocks,
+        start=1,
+    ):
+        start_index = int(
+            block["start_global_index"]
+        )
+
+        end_index = int(
+            block["end_global_index"]
+        )
+
+        q_waypoints = as_joint_path(
+            records,
+            start_index,
+            end_index,
+        )
+
+        q_waypoints = (
+            remove_duplicate_waypoints(
+                q_waypoints
+            )
+        )
+
+        path_parameter = (
+            construct_path_parameter(
+                q_waypoints,
+                velocity_limit,
+            )
+        )
+
+        spline = CubicSpline(
+            path_parameter,
+            q_waypoints,
+            axis=0,
+            bc_type="natural",
+        )
+
+        dense_count = max(
+            minimum_dense_samples,
+            samples_per_waypoint
+            * q_waypoints.shape[0],
+        )
+
+        dense_tau = np.linspace(
+            0.0,
+            1.0,
+            dense_count,
+        )
+
+        (
+            q_unit,
+            q_dot_unit,
+            q_ddot_unit,
+            q_jerk_unit,
+        ) = evaluate_spline_time_law(
+            spline,
+            dense_tau,
+            1.0,
+        )
+
+        position_margin = (
+            minimum_position_margin(
+                q_unit,
+                joint_lower,
+                joint_upper,
+            )
+        )
+
+        if position_margin <= 0.0:
+            raise RuntimeError(
+                f"{block['name']} spline이 "
+                "관절 위치 제한을 위반합니다. "
+                f"margin={position_margin:.9f} rad"
+            )
+
+        velocity_ratio_at_one_second = (
+            maximum_ratio(
+                q_dot_unit,
+                velocity_limit,
+            )
+        )
+
+        acceleration_ratio_at_one_second = (
+            maximum_ratio(
+                q_ddot_unit,
+                acceleration_limit,
+            )
+        )
+
+        jerk_ratio_at_one_second = (
+            maximum_ratio(
+                q_jerk_unit,
+                jerk_limit,
+            )
+        )
+
+        required_duration = max(
+            velocity_ratio_at_one_second,
+            math.sqrt(
+                acceleration_ratio_at_one_second
+            ),
+            np.cbrt(
+                jerk_ratio_at_one_second
+            ),
+        )
+
+        required_duration *= (
+            duration_margin
+        )
+
+        # controller period의 정수배가 되도록
+        # 위쪽으로 반올림한다.
+        interval_count = max(
+            5,
+            int(
+                math.ceil(
+                    required_duration
+                    * controller_rate
+                )
+            ),
+        )
+
+        duration = (
+            interval_count
+            / controller_rate
+        )
+
+        sample_count = (
+            interval_count + 1
+        )
+
+        sample_tau = np.linspace(
+            0.0,
+            1.0,
+            sample_count,
+        )
+
+        (
+            q_sample,
+            q_dot_sample,
+            q_ddot_sample,
+            q_jerk_sample,
+        ) = evaluate_spline_time_law(
+            spline,
+            sample_tau,
+            duration,
+        )
+
+        final_velocity_ratio = (
+            maximum_ratio(
+                q_dot_sample,
+                velocity_limit,
+            )
+        )
+
+        final_acceleration_ratio = (
+            maximum_ratio(
+                q_ddot_sample,
+                acceleration_limit,
+            )
+        )
+
+        final_jerk_ratio = (
+            maximum_ratio(
+                q_jerk_sample,
+                jerk_limit,
+            )
+        )
+
+        final_margin = minimum_position_margin(
+            q_sample,
+            joint_lower,
+            joint_upper,
+        )
+
+        if (
+            final_velocity_ratio > 1.0
+            or final_acceleration_ratio > 1.0
+            or final_jerk_ratio > 1.0
+            or final_margin <= 0.0
+        ):
+            raise RuntimeError(
+                f"{block['name']} 최종 검증 실패: "
+                f"velocity={final_velocity_ratio:.9f}, "
+                f"acceleration="
+                f"{final_acceleration_ratio:.9f}, "
+                f"jerk={final_jerk_ratio:.9f}, "
+                f"margin={final_margin:.9f}"
+            )
+
+        points = []
+
+        for sample_index in range(
+            sample_count
+        ):
+            points.append(
+                {
+                    "sample_index": sample_index,
+                    "time_from_start": (
+                        sample_index
+                        / controller_rate
+                    ),
+                    "positions": (
+                        q_sample[
+                            sample_index
+                        ].tolist()
+                    ),
+                    "velocities": (
+                        q_dot_sample[
+                            sample_index
+                        ].tolist()
+                    ),
+                    "accelerations": (
+                        q_ddot_sample[
+                            sample_index
+                        ].tolist()
+                    ),
+                }
+            )
+
+        timed_block = {
+            **block,
+            "duration": duration,
+            "controller_interval_count": (
+                interval_count
+            ),
+            "sample_count": sample_count,
+            "input_waypoint_count": int(
+                q_waypoints.shape[0]
+            ),
+            "minimum_joint_limit_margin_rad": (
+                final_margin
+            ),
+            "minimum_joint_limit_margin_deg": (
+                math.degrees(
+                    final_margin
+                )
+            ),
+            "maximum_velocity_ratio": (
+                final_velocity_ratio
+            ),
+            "maximum_acceleration_ratio": (
+                final_acceleration_ratio
+            ),
+            "maximum_jerk_ratio": (
+                final_jerk_ratio
+            ),
+            "points": points,
+        }
+
+        timed_blocks.append(
+            timed_block
+        )
+
+        total_duration += duration
+
+        print()
+        print(
+            f"[{block['name']}] "
+            f"index={start_index}->{end_index}"
+        )
+
+        print(
+            f"  waypoints       : "
+            f"{q_waypoints.shape[0]}"
+        )
+
+        print(
+            f"  duration        : "
+            f"{duration:.6f} s"
+        )
+
+        print(
+            f"  samples         : "
+            f"{sample_count}"
+        )
+
+        print(
+            f"  velocity ratio  : "
+            f"{final_velocity_ratio:.6f}"
+        )
+
+        print(
+            f"  accel ratio     : "
+            f"{final_acceleration_ratio:.6f}"
+        )
+
+        print(
+            f"  jerk ratio      : "
+            f"{final_jerk_ratio:.6f}"
+        )
+
+        print(
+            f"  limit margin    : "
+            f"{math.degrees(final_margin):.6f} deg"
+        )
+
+    limits_document = {}
+
+    for index, name in enumerate(
+        ARM_JOINT_NAMES
+    ):
+        limits_document[name] = {
+            "urdf_velocity_limit": float(
+                urdf_velocity[index]
+            ),
+            "used_velocity_limit": float(
+                velocity_limit[index]
+            ),
+            "used_acceleration_limit": float(
+                acceleration_limit[index]
+            ),
+            "used_jerk_limit": float(
+                jerk_limit[index]
+            ),
+            "lower_position_limit": float(
+                joint_lower[index]
+            ),
+            "upper_position_limit": float(
+                joint_upper[index]
+            ),
+        }
+
+    output_document = {
+        "version": 1,
+        "joint_names": ARM_JOINT_NAMES,
+        "source_files": {
+            "cartesian_ik_path": str(
+                path_file
+            ),
+            "timing_config": str(
+                config_file
+            ),
+            "urdf": str(
+                urdf_file
+            ),
+            "controllers": str(
+                controllers_file
+            ),
+        },
+        "controller_rate_hz": (
+            controller_rate
+        ),
+        "controller_period_sec": (
+            1.0 / controller_rate
+        ),
+        "limits": limits_document,
+        "events": path_document["events"],
+        "summary": {
+            "motion_block_count": (
+                len(timed_blocks)
+            ),
+            "total_arm_motion_duration_sec": (
+                total_duration
+            ),
+            "gripper_dwell_time_included": False,
+        },
+        "blocks": timed_blocks,
+    }
+
+    output_file.write_text(
+        yaml.safe_dump(
+            output_document,
+            sort_keys=False,
+            allow_unicode=True,
+        ),
+        encoding="utf-8",
+    )
+
+    print()
+    print("=" * 96)
+    print("OVERALL RESULT: PASS")
+    print("=" * 96)
+
+    print(
+        f"Motion blocks       : "
+        f"{len(timed_blocks)}"
+    )
+
+    print(
+        f"Arm motion duration : "
+        f"{total_duration:.6f} s"
+    )
+
+    print(
+        "Gripper dwell       : "
+        "not included"
+    )
+
+    print("Saved:")
+    print(output_file)
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

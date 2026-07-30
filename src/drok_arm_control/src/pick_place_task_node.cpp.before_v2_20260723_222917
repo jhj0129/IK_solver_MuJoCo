@@ -1,0 +1,631 @@
+#include "drok_arm_kinematics/inverse_kinematics.hpp"
+#include "drok_arm_kinematics/robot_model_loader.hpp"
+#include "drok_arm_kinematics/transform.hpp"
+#include "drok_arm_trajectory/poly5_trajectory.hpp"
+
+#include <control_msgs/action/follow_joint_trajectory.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp_action/rclcpp_action.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
+#include <trajectory_msgs/msg/joint_trajectory.hpp>
+#include <trajectory_msgs/msg/joint_trajectory_point.hpp>
+#include <yaml-cpp/yaml.h>
+
+#include <Eigen/Dense>
+
+#include <algorithm>
+#include <chrono>
+#include <cmath>
+#include <cstdint>
+#include <functional>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+namespace drok_arm_control
+{
+
+class PickPlaceTaskNode : public rclcpp::Node
+{
+public:
+  using FollowJointTrajectory =
+    control_msgs::action::FollowJointTrajectory;
+  using GoalHandle =
+    rclcpp_action::ClientGoalHandle<FollowJointTrajectory>;
+
+  PickPlaceTaskNode()
+  : Node("pick_place_task_node")
+  {
+    task_yaml_ =
+      declare_parameter<std::string>("task_yaml", "");
+    geometry_yaml_ =
+      declare_parameter<std::string>("geometry_yaml", "");
+
+    if (task_yaml_.empty()) {
+      throw std::invalid_argument("task_yaml must not be empty.");
+    }
+    if (geometry_yaml_.empty()) {
+      throw std::invalid_argument("geometry_yaml must not be empty.");
+    }
+
+    loadTaskConfiguration();
+
+    robot_model_ =
+      drok_arm_kinematics::RobotModelLoader::loadFromYaml(
+      geometry_yaml_);
+
+    if (robot_model_.movable_joint_count != 6) {
+      throw std::runtime_error(
+              "PickPlaceTaskNode requires exactly six arm joints.");
+    }
+
+    drok_arm_kinematics::IkOptions ik_options;
+    ik_options.max_iterations = 1500;
+    ik_options.position_tolerance = 1.0e-5;
+    ik_options.orientation_tolerance = 1.0e-5;
+    ik_options.damping = 1.0e-2;
+    ik_options.numerical_delta = 1.0e-6;
+    ik_options.position_weight = 1.0;
+    ik_options.orientation_weight = 0.5;
+    ik_options.maximum_joint_step = 0.05;
+
+    inverse_kinematics_ =
+      std::make_unique<drok_arm_kinematics::InverseKinematics>(
+      robot_model_, ik_options);
+
+    arm_client_ =
+      rclcpp_action::create_client<FollowJointTrajectory>(
+      this, arm_action_name_);
+
+    gripper_client_ =
+      rclcpp_action::create_client<FollowJointTrajectory>(
+      this, gripper_action_name_);
+
+    joint_state_subscription_ =
+      create_subscription<sensor_msgs::msg::JointState>(
+      joint_state_topic_,
+      rclcpp::SensorDataQoS(),
+      std::bind(
+        &PickPlaceTaskNode::jointStateCallback,
+        this,
+        std::placeholders::_1));
+
+    startup_timer_ = create_wall_timer(
+      std::chrono::milliseconds(200),
+      std::bind(&PickPlaceTaskNode::tryStartTask, this));
+
+    RCLCPP_INFO(
+      get_logger(),
+      "Loaded task '%s'. Waiting for joint states and action servers.",
+      task_name_.c_str());
+  }
+
+private:
+  struct PoseTarget
+  {
+    double x{0.0};
+    double y{0.0};
+    double z{0.0};
+    double roll{0.0};
+    double pitch{0.0};
+    double yaw{0.0};
+  };
+
+  static std::vector<double> readVector(
+    const YAML::Node & node,
+    const std::string & key,
+    std::size_t expected_size)
+  {
+    const YAML::Node value = node[key];
+    if (!value || !value.IsSequence() ||
+      value.size() != expected_size)
+    {
+      throw std::runtime_error(
+              key + " must contain exactly " +
+              std::to_string(expected_size) + " values.");
+    }
+
+    std::vector<double> result;
+    result.reserve(expected_size);
+    for (const auto & element : value) {
+      const double number = element.as<double>();
+      if (!std::isfinite(number)) {
+        throw std::runtime_error(key + " contains a non-finite value.");
+      }
+      result.push_back(number);
+    }
+    return result;
+  }
+
+  static PoseTarget readPose(
+    const YAML::Node & root,
+    const std::string & key)
+  {
+    const YAML::Node node = root[key];
+    if (!node) {
+      throw std::runtime_error("Missing YAML section: " + key);
+    }
+
+    const auto position = readVector(node, "position", 3);
+    const auto rpy = readVector(node, "orientation_rpy", 3);
+
+    PoseTarget pose;
+    pose.x = position[0];
+    pose.y = position[1];
+    pose.z = position[2];
+    pose.roll = rpy[0];
+    pose.pitch = rpy[1];
+    pose.yaw = rpy[2];
+    return pose;
+  }
+
+  void loadTaskConfiguration()
+  {
+    const YAML::Node root = YAML::LoadFile(task_yaml_);
+
+    task_name_ = root["task"]["name"].as<std::string>();
+
+    joint_state_topic_ =
+      root["interfaces"]["joint_state_topic"].as<std::string>();
+    arm_action_name_ =
+      root["interfaces"]["arm_action"].as<std::string>();
+    gripper_action_name_ =
+      root["interfaces"]["gripper_action"].as<std::string>();
+
+    home_positions_ =
+      readVector(root["home"], "joint_positions", 6);
+    pickup_pose_ = readPose(root, "pickup");
+    place_pose_ = readPose(root, "place");
+
+    gripper_open_positions_ =
+      readVector(root["gripper"], "open_positions", 2);
+    gripper_close_positions_ =
+      readVector(root["gripper"], "close_positions", 2);
+
+    arm_duration_ =
+      root["motion"]["arm_duration"].as<double>();
+    gripper_duration_ =
+      root["motion"]["gripper_duration"].as<double>();
+    point_rate_ =
+      root["motion"]["point_rate"].as<double>();
+
+    wait_after_arm_ =
+      root["timing"]["wait_after_arm"].as<double>();
+    wait_after_gripper_ =
+      root["timing"]["wait_after_gripper"].as<double>();
+
+    for (const double value : {
+        arm_duration_, gripper_duration_, point_rate_,
+        wait_after_arm_, wait_after_gripper_})
+    {
+      if (!std::isfinite(value) || value <= 0.0) {
+        throw std::runtime_error(
+                "All motion and timing values must be finite and positive.");
+      }
+    }
+  }
+
+  void jointStateCallback(
+    const sensor_msgs::msg::JointState::SharedPtr message)
+  {
+    if (message->name.size() != message->position.size()) {
+      return;
+    }
+
+    std::unordered_map<std::string, double> positions;
+    for (std::size_t index = 0;
+      index < message->name.size(); ++index)
+    {
+      positions[message->name[index]] = message->position[index];
+    }
+
+    std::vector<double> arm;
+    arm.reserve(arm_joint_names_.size());
+    for (const auto & joint_name : arm_joint_names_) {
+      const auto iterator = positions.find(joint_name);
+      if (iterator == positions.end() ||
+        !std::isfinite(iterator->second))
+      {
+        return;
+      }
+      arm.push_back(iterator->second);
+    }
+
+    std::vector<double> gripper;
+    gripper.reserve(gripper_joint_names_.size());
+    for (const auto & joint_name : gripper_joint_names_) {
+      const auto iterator = positions.find(joint_name);
+      if (iterator == positions.end() ||
+        !std::isfinite(iterator->second))
+      {
+        return;
+      }
+      gripper.push_back(iterator->second);
+    }
+
+    latest_arm_positions_ = std::move(arm);
+    latest_gripper_positions_ = std::move(gripper);
+    have_joint_state_ = true;
+  }
+
+  void tryStartTask()
+  {
+    if (task_started_ || task_failed_) {
+      return;
+    }
+
+    if (!have_joint_state_) {
+      return;
+    }
+
+    if (!arm_client_->wait_for_action_server(
+        std::chrono::seconds(0)) ||
+      !gripper_client_->wait_for_action_server(
+        std::chrono::seconds(0)))
+    {
+      return;
+    }
+
+    task_started_ = true;
+    startup_timer_->cancel();
+
+    try {
+      calculateIkSolutions();
+    } catch (const std::exception & exception) {
+      failTask(exception.what());
+      return;
+    }
+
+    RCLCPP_INFO(get_logger(), "Starting PICK operation.");
+    moveArm(
+      pickup_joint_positions_,
+      "MOVE_TO_PICKUP",
+      [this]() {
+        startDelay(wait_after_arm_, [this]() {closeGripper();});
+      });
+  }
+
+  Eigen::Matrix4d createTransform(const PoseTarget & pose) const
+  {
+    Eigen::Matrix4d transform = Eigen::Matrix4d::Identity();
+    transform.block<3, 3>(0, 0) =
+      drok_arm_kinematics::rotationFromRpy(
+      Eigen::Vector3d(pose.roll, pose.pitch, pose.yaw));
+    transform(0, 3) = pose.x;
+    transform(1, 3) = pose.y;
+    transform(2, 3) = pose.z;
+    return transform;
+  }
+
+  void calculateIkSolutions()
+  {
+    const auto pickup_result = inverse_kinematics_->solve(
+      createTransform(pickup_pose_), latest_arm_positions_);
+
+    if (!pickup_result.success) {
+      throw std::runtime_error(
+              "Pickup IK failed: " + pickup_result.message);
+    }
+
+    const auto place_result = inverse_kinematics_->solve(
+      createTransform(place_pose_), home_positions_);
+
+    if (!place_result.success) {
+      throw std::runtime_error(
+              "Place IK failed: " + place_result.message);
+    }
+
+    pickup_joint_positions_ = pickup_result.joint_positions;
+    place_joint_positions_ = place_result.joint_positions;
+
+    RCLCPP_INFO(
+      get_logger(),
+      "Pickup IK: position error %.9f m, orientation error %.9f rad",
+      pickup_result.position_error,
+      pickup_result.orientation_error);
+
+    RCLCPP_INFO(
+      get_logger(),
+      "Place IK: position error %.9f m, orientation error %.9f rad",
+      place_result.position_error,
+      place_result.orientation_error);
+  }
+
+  trajectory_msgs::msg::JointTrajectory createTrajectory(
+    const std::vector<std::string> & joint_names,
+    const std::vector<double> & start,
+    const std::vector<double> & goal,
+    double duration) const
+  {
+    if (start.size() != goal.size() ||
+      start.size() != joint_names.size())
+    {
+      throw std::invalid_argument(
+              "Trajectory vector dimensions do not match.");
+    }
+
+    Eigen::VectorXd start_vector(
+      static_cast<Eigen::Index>(start.size()));
+    Eigen::VectorXd goal_vector(
+      static_cast<Eigen::Index>(goal.size()));
+
+    for (std::size_t index = 0; index < start.size(); ++index) {
+      start_vector[static_cast<Eigen::Index>(index)] = start[index];
+      goal_vector[static_cast<Eigen::Index>(index)] = goal[index];
+    }
+
+    drok_arm_trajectory::Poly5Trajectory trajectory;
+    trajectory.configureRestToRest(
+      start_vector, goal_vector, duration);
+
+    trajectory_msgs::msg::JointTrajectory message;
+    message.header.stamp = now();
+    message.joint_names = joint_names;
+
+    const auto interval_count = static_cast<std::size_t>(
+      std::ceil(duration * point_rate_));
+    message.points.reserve(interval_count + 1);
+
+    for (std::size_t index = 0; index <= interval_count; ++index) {
+      const double time = std::min(
+        static_cast<double>(index) / point_rate_, duration);
+      const auto state = trajectory.sample(time);
+
+      trajectory_msgs::msg::JointTrajectoryPoint point;
+      point.positions.resize(start.size());
+      point.velocities.resize(start.size());
+      point.accelerations.resize(start.size());
+
+      for (std::size_t joint_index = 0;
+        joint_index < start.size(); ++joint_index)
+      {
+        const auto eigen_index =
+          static_cast<Eigen::Index>(joint_index);
+        point.positions[joint_index] = state.position[eigen_index];
+        point.velocities[joint_index] = state.velocity[eigen_index];
+        point.accelerations[joint_index] =
+          state.acceleration[eigen_index];
+      }
+
+      const auto nanoseconds = static_cast<int64_t>(
+        std::llround(time * 1.0e9));
+      point.time_from_start.sec = static_cast<int32_t>(
+        nanoseconds / 1000000000LL);
+      point.time_from_start.nanosec = static_cast<uint32_t>(
+        nanoseconds % 1000000000LL);
+
+      message.points.push_back(std::move(point));
+    }
+
+    return message;
+  }
+
+  void sendTrajectory(
+    const rclcpp_action::Client<FollowJointTrajectory>::SharedPtr & client,
+    const std::vector<std::string> & joint_names,
+    const std::vector<double> & start,
+    const std::vector<double> & goal,
+    double duration,
+    const std::string & label,
+    std::function<void()> on_success)
+  {
+    FollowJointTrajectory::Goal goal_message;
+    goal_message.trajectory =
+      createTrajectory(joint_names, start, goal, duration);
+
+    auto options =
+      rclcpp_action::Client<FollowJointTrajectory>::SendGoalOptions();
+
+    options.goal_response_callback =
+      [this, label](const GoalHandle::SharedPtr & goal_handle) {
+        if (!goal_handle) {
+          failTask(label + " goal was rejected.");
+          return;
+        }
+        RCLCPP_INFO(get_logger(), "%s goal accepted.", label.c_str());
+      };
+
+    options.result_callback =
+      [this, label, goal, on_success = std::move(on_success)](
+      const GoalHandle::WrappedResult & result) mutable {
+        if (result.code != rclcpp_action::ResultCode::SUCCEEDED ||
+          !result.result ||
+          result.result->error_code !=
+          FollowJointTrajectory::Result::SUCCESSFUL)
+        {
+          failTask(label + " action failed.");
+          return;
+        }
+
+        RCLCPP_INFO(get_logger(), "%s completed.", label.c_str());
+        on_success();
+      };
+
+    client->async_send_goal(goal_message, options);
+  }
+
+  void moveArm(
+    const std::vector<double> & goal,
+    const std::string & label,
+    std::function<void()> on_success)
+  {
+    const auto start = latest_arm_positions_;
+    sendTrajectory(
+      arm_client_, arm_joint_names_, start, goal,
+      arm_duration_, label,
+      [this, goal, on_success = std::move(on_success)]() mutable {
+        latest_arm_positions_ = goal;
+        on_success();
+      });
+  }
+
+  void moveGripper(
+    const std::vector<double> & goal,
+    const std::string & label,
+    std::function<void()> on_success)
+  {
+    const auto start = latest_gripper_positions_;
+    sendTrajectory(
+      gripper_client_, gripper_joint_names_, start, goal,
+      gripper_duration_, label,
+      [this, goal, on_success = std::move(on_success)]() mutable {
+        latest_gripper_positions_ = goal;
+        on_success();
+      });
+  }
+
+  void closeGripper()
+  {
+    RCLCPP_INFO(get_logger(), "Closing gripper.");
+    moveGripper(
+      gripper_close_positions_,
+      "CLOSE_GRIPPER",
+      [this]() {
+        startDelay(wait_after_gripper_, [this]() {moveHomeAfterPickup();});
+      });
+  }
+
+  void moveHomeAfterPickup()
+  {
+    RCLCPP_INFO(get_logger(), "Returning HOME with the object.");
+    moveArm(
+      home_positions_,
+      "MOVE_HOME_AFTER_PICKUP",
+      [this]() {moveToPlace();});
+  }
+
+  void moveToPlace()
+  {
+    RCLCPP_INFO(get_logger(), "Moving to PLACE.");
+    moveArm(
+      place_joint_positions_,
+      "MOVE_TO_PLACE",
+      [this]() {
+        startDelay(wait_after_arm_, [this]() {openGripper();});
+      });
+  }
+
+  void openGripper()
+  {
+    RCLCPP_INFO(get_logger(), "Opening gripper.");
+    moveGripper(
+      gripper_open_positions_,
+      "OPEN_GRIPPER",
+      [this]() {
+        startDelay(wait_after_gripper_, [this]() {moveFinalHome();});
+      });
+  }
+
+  void moveFinalHome()
+  {
+    RCLCPP_INFO(get_logger(), "Returning to final HOME.");
+    moveArm(
+      home_positions_,
+      "MOVE_FINAL_HOME",
+      [this]() {
+        task_completed_ = true;
+        RCLCPP_INFO(
+          get_logger(),
+          "Pick-and-place task '%s' completed successfully.",
+          task_name_.c_str());
+      });
+  }
+
+  void startDelay(double seconds, std::function<void()> callback)
+  {
+    const auto delay_duration =
+      std::chrono::duration_cast<std::chrono::nanoseconds>(
+      std::chrono::duration<double>(seconds));
+
+    delay_timer_ = create_wall_timer(
+      delay_duration,
+      [this, callback]() {
+        delay_timer_->cancel();
+        callback();
+      });
+  }
+
+  void failTask(const std::string & message)
+  {
+    if (task_failed_) {
+      return;
+    }
+    task_failed_ = true;
+    RCLCPP_FATAL(get_logger(), "%s", message.c_str());
+  }
+
+  const std::vector<std::string> arm_joint_names_{
+    "JOINT1", "JOINT2", "JOINT3",
+    "JOINT4", "JOINT5", "JOINT6"};
+
+  const std::vector<std::string> gripper_joint_names_{
+    "JOINT7", "GRIPPER_RIGHT_JOINT"};
+
+  std::string task_yaml_;
+  std::string geometry_yaml_;
+  std::string task_name_;
+  std::string joint_state_topic_;
+  std::string arm_action_name_;
+  std::string gripper_action_name_;
+
+  PoseTarget pickup_pose_;
+  PoseTarget place_pose_;
+
+  std::vector<double> home_positions_;
+  std::vector<double> pickup_joint_positions_;
+  std::vector<double> place_joint_positions_;
+  std::vector<double> gripper_open_positions_;
+  std::vector<double> gripper_close_positions_;
+  std::vector<double> latest_arm_positions_;
+  std::vector<double> latest_gripper_positions_;
+
+  double arm_duration_{3.0};
+  double gripper_duration_{1.0};
+  double point_rate_{100.0};
+  double wait_after_arm_{1.0};
+  double wait_after_gripper_{1.0};
+
+  bool have_joint_state_{false};
+  bool task_started_{false};
+  bool task_failed_{false};
+  bool task_completed_{false};
+
+  drok_arm_kinematics::RobotModel robot_model_;
+  std::unique_ptr<drok_arm_kinematics::InverseKinematics>
+    inverse_kinematics_;
+
+  rclcpp_action::Client<FollowJointTrajectory>::SharedPtr
+    arm_client_;
+  rclcpp_action::Client<FollowJointTrajectory>::SharedPtr
+    gripper_client_;
+
+  rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr
+    joint_state_subscription_;
+  rclcpp::TimerBase::SharedPtr startup_timer_;
+  rclcpp::TimerBase::SharedPtr delay_timer_;
+};
+
+}  // namespace drok_arm_control
+
+int main(int argc, char ** argv)
+{
+  rclcpp::init(argc, argv);
+
+  try {
+    const auto node =
+      std::make_shared<drok_arm_control::PickPlaceTaskNode>();
+    rclcpp::spin(node);
+  } catch (const std::exception & exception) {
+    RCLCPP_FATAL(
+      rclcpp::get_logger("pick_place_task_node"),
+      "%s", exception.what());
+    rclcpp::shutdown();
+    return 1;
+  }
+
+  rclcpp::shutdown();
+  return 0;
+}

@@ -1,0 +1,164 @@
+============================================================
+BOX PATH PIPELINE INPUT CHECK
+============================================================
+
+===== GRASP GEOMETRY CONFIG =====
+version: 1
+frames:
+  end_effector_frame: gripper_tcp
+  approach_axis_tcp:
+  - 1.0
+  - 0.0
+  - 0.0
+  closing_axis_tcp:
+  - 0.0
+  - 1.0
+  - 0.0
+  upright_axis_tcp:
+  - 0.0
+  - 0.0
+  - 1.0
+  tcp_to_grasp_center:
+  - 0.0
+  - 0.0
+  - 0.0
+scene:
+  pickup_object_body: pickup_cube
+  pickup_pedestal_geom: pickup_pedestal
+  place_pedestal_geom: place_pedestal
+grasp:
+  height_ratio: 0.625
+  pregrasp_surface_clearance: 0.05
+  vertical_clearance: 0.05
+search:
+  azimuth_candidate_count: 36
+
+===== GENERATE GRASP CANDIDATES HELP =====
+usage: generate_cylinder_grasp_candidates.py [-h] [--scene SCENE]
+                                             [--config CONFIG]
+                                             [--output OUTPUT]
+
+options:
+  -h, --help       show this help message and exit
+  --scene SCENE
+  --config CONFIG
+  --output OUTPUT
+
+===== HYBRID IK HELP =====
+usage: dry_run_cylinder_hybrid_ik.py [-h] [--candidate-file CANDIDATE_FILE]
+                                     [--candidate-index CANDIDATE_INDEX]
+                                     [--geometry GEOMETRY] [--urdf URDF]
+                                     [--cartesian-step CARTESIAN_STEP]
+                                     [--maximum-joint-jump-deg MAXIMUM_JOINT_JUMP_DEG]
+                                     [--joint-state-timeout JOINT_STATE_TIMEOUT]
+                                     [--solver-timeout SOLVER_TIMEOUT]
+                                     [--output OUTPUT]
+
+options:
+  -h, --help            show this help message and exit
+  --candidate-file CANDIDATE_FILE
+  --candidate-index CANDIDATE_INDEX
+  --geometry GEOMETRY
+  --urdf URDF
+  --cartesian-step CARTESIAN_STEP
+  --maximum-joint-jump-deg MAXIMUM_JOINT_JUMP_DEG
+  --joint-state-timeout JOINT_STATE_TIMEOUT
+  --solver-timeout SOLVER_TIMEOUT
+  --output OUTPUT
+
+===== RETREAT TARGET GENERATOR HELP =====
+usage: generate_cylinder_place_retreat_target.py [-h]
+                                                 [--hybrid-path HYBRID_PATH]
+                                                 [--candidate-file CANDIDATE_FILE]
+                                                 [--geometry GEOMETRY]
+                                                 [--output OUTPUT]
+
+options:
+  -h, --help            show this help message and exit
+  --hybrid-path HYBRID_PATH
+  --candidate-file CANDIDATE_FILE
+  --geometry GEOMETRY
+  --output OUTPUT
+
+===== RETREAT IK HELP =====
+usage: dry_run_cylinder_place_retreat.py [-h] [--target TARGET]
+                                         [--geometry GEOMETRY] [--urdf URDF]
+                                         [--cartesian-step CARTESIAN_STEP]
+                                         [--maximum-joint-jump-deg MAXIMUM_JOINT_JUMP_DEG]
+                                         [--solver-timeout SOLVER_TIMEOUT]
+                                         [--output OUTPUT]
+
+options:
+  -h, --help            show this help message and exit
+  --target TARGET
+  --geometry GEOMETRY
+  --urdf URDF
+  --cartesian-step CARTESIAN_STEP
+  --maximum-joint-jump-deg MAXIMUM_JOINT_JUMP_DEG
+  --solver-timeout SOLVER_TIMEOUT
+  --output OUTPUT
+
+===== FULL PATH ASSEMBLER HELP =====
+usage: assemble_cylinder_full_path.py [-h] [--hybrid-path HYBRID_PATH]
+                                      [--retreat-path RETREAT_PATH]
+                                      [--urdf URDF] [--output OUTPUT]
+
+options:
+  -h, --help            show this help message and exit
+  --hybrid-path HYBRID_PATH
+  --retreat-path RETREAT_PATH
+  --urdf URDF
+  --output OUTPUT
+
+===== TIME PARAMETERIZATION HELP =====
+usage: time_parameterize_cylinder_path.py [-h] [--path PATH]
+                                          [--timing-config TIMING_CONFIG]
+                                          [--urdf URDF]
+                                          [--controllers CONTROLLERS]
+                                          [--output OUTPUT]
+
+options:
+  -h, --help            show this help message and exit
+  --path PATH
+  --timing-config TIMING_CONFIG
+  --urdf URDF
+  --controllers CONTROLLERS
+  --output OUTPUT
+
+===== CURRENT BEST-CANDIDATE REFERENCES =====
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:44:            ROOT / "cylinder_grasp_candidates.yaml"
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:212:        candidate_index = int(
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:239:            f"candidate={candidate_index:02d}, "
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:403:            "candidate_index": candidate_index,
+src/drok_arm_control/scripts/scan_cylinder_pregrasp_candidates.py:487:            f"{best_candidate['candidate_index']}"
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:50:            / "cylinder_grasp_candidates.yaml"
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:211:    candidate_index: int,
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:222:        ) == candidate_index
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:227:            f"candidate {candidate_index}를 "
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:441:    candidate_index = int(
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:442:        path_document["candidate_index"]
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:447:        candidate_index,
+src/drok_arm_control/scripts/measure_gripper_gap_at_tcp.py:548:    print(f"Candidate         : {candidate_index}")
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:59:            root / "cylinder_grasp_candidates.yaml"
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:590:            arguments.candidate_index
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:598:            f"{arguments.candidate_index}"
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:653:        f"{arguments.candidate_index}"
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:974:                f"{arguments.candidate_index:02d}"
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:981:        "candidate_index": (
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py:982:            arguments.candidate_index
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:481:        "candidate_index": int(
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:482:            hybrid["candidate_index"]
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py:484:        "candidate_phi_deg": float(
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py:35:        default="cylinder_grasp_candidates.yaml",
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:59:            root / "cylinder_grasp_candidates.yaml"
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:536:            arguments.candidate_index
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:544:            f"{arguments.candidate_index}"
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:599:        f"{arguments.candidate_index}"
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:912:                f"{arguments.candidate_index:02d}"
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:919:        "candidate_index": (
+src/drok_arm_control/scripts/dry_run_cylinder_cartesian_ik.py:920:            arguments.candidate_index
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py:32:            ROOT / "cylinder_grasp_candidates.yaml"
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py:125:    candidate_index = int(
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py:126:        hybrid["candidate_index"]
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py:247:        "candidate_index": candidate_index,
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py:292:        f"{candidate_index}"

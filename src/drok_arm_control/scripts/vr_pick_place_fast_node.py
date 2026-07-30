@@ -1,0 +1,945 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import fcntl
+import math
+import os
+import subprocess
+import sys
+import threading
+import time
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Optional
+
+import rclpy
+import yaml
+from geometry_msgs.msg import PoseStamped
+from rclpy.node import Node
+from std_msgs.msg import Bool, String
+
+
+ROOT = Path.home() / "IK_solver_MuJoCo"
+
+BOX_LAYOUT_PATH = (
+    ROOT
+    / "src/drok_arm_control/config/box_layout.yaml"
+)
+
+GENERATOR = (
+    ROOT
+    / "src/drok_arm_control/scripts/"
+    "generate_fast_known_object_to_pose_path.py"
+)
+
+EXECUTOR = (
+    ROOT
+    / "src/drok_arm_control/scripts/execute_box_move_fast.py"
+)
+
+STATE_DIRECTORY = ROOT / "runtime_state"
+STATE_PATH = STATE_DIRECTORY / "vr_cylinder_state.yaml"
+LOCK_PATH = STATE_DIRECTORY / "vr_cylinder_state.lock"
+
+OUTPUT_ROOT = ROOT / "generated_vr_target_paths"
+LOG_ROOT = ROOT / "run_logs" / "vr_pick_place"
+
+EXECUTION_CONFIRMATION = "EXECUTE_MUJOCO_VR_PICK_PLACE"
+INNER_EXECUTION_CONFIRMATION = "EXECUTE_MUJOCO_BOX_MOVE"
+
+DEFAULT_TOPIC = "/vr/place_target"
+STATUS_TOPIC = "/pick_place/status"
+BUSY_TOPIC = "/pick_place/busy"
+CYLINDER_POSE_TOPIC = "/pick_place/cylinder_pose"
+VISUAL_POSE_RATE_HZ = 10.0
+
+FAST_CANDIDATE_SHORTLISTS = {
+    # FAST v0.3.2:
+    # BOX 번호만 좌/우 두 그룹으로 묶지 않고, 실제 받침대 방향에
+    # 맞는 후보를 먼저 시도한다. 첫 후보 실패 시 36개 전체가 아니라
+    # 짧은 후보 목록만 순서대로 재시도한다.
+    1: [21, 20, 22],
+    2: [13, 14, 15, 16],
+    3: [13, 12, 14],
+    4: [23, 22, 24, 21, 20, 18],
+}
+
+
+
+def now_string() -> str:
+    return datetime.now().astimezone().isoformat(
+        timespec="seconds"
+    )
+
+
+def load_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        raise RuntimeError(f"파일이 없습니다: {path}")
+
+    document = yaml.safe_load(
+        path.read_text(encoding="utf-8")
+    )
+
+    if not isinstance(document, dict):
+        raise RuntimeError(
+            f"YAML root가 mapping이 아닙니다: {path}"
+        )
+
+    return document
+
+
+def atomic_save_yaml(path: Path, document: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+
+    temporary.write_text(
+        yaml.safe_dump(
+            document,
+            allow_unicode=True,
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+
+    os.replace(temporary, path)
+
+
+def normalized_boxes(layout: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    raw_boxes = layout.get("boxes")
+
+    if not isinstance(raw_boxes, dict):
+        raise RuntimeError("box_layout.yaml에 boxes가 없습니다.")
+
+    boxes: dict[int, dict[str, Any]] = {}
+
+    for raw_id, value in raw_boxes.items():
+        box_id = int(raw_id)
+
+        if not isinstance(value, dict):
+            raise RuntimeError(
+                f"BOX {box_id} 설정이 mapping이 아닙니다."
+            )
+
+        boxes[box_id] = value
+
+    return boxes
+
+
+def initial_state(layout: dict[str, Any]) -> dict[str, Any]:
+    boxes = normalized_boxes(layout)
+    initial_box = int(layout.get("initial_cylinder_box", 1))
+    box = boxes[initial_box]
+    position = box["position"]
+    geometry = layout["geometry"]["cylinder"]
+
+    return {
+        "version": 1,
+        "current_box": initial_box,
+        "object_center_world": {
+            "x": float(position["x"]),
+            "y": float(position["y"]),
+            "z": float(geometry["initial_center_z"]),
+        },
+        "updated_at": now_string(),
+        "update_reason": "mujoco_initial_state",
+        "last_successful_move": None,
+        "warning": (
+            "MuJoCo Reset 또는 재실행 후에는 "
+            "--reset-state를 실행해야 합니다."
+        ),
+    }
+
+
+def read_or_create_state(layout: dict[str, Any]) -> dict[str, Any]:
+    STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+
+    if not STATE_PATH.exists():
+        state = initial_state(layout)
+        atomic_save_yaml(STATE_PATH, state)
+        return state
+
+    state = load_yaml(STATE_PATH)
+
+    current_box = int(state.get("current_box", -1))
+    if current_box not in normalized_boxes(layout):
+        raise RuntimeError(
+            f"저장된 current_box가 올바르지 않습니다: {current_box}"
+        )
+
+    center = state.get("object_center_world")
+    if not isinstance(center, dict):
+        raise RuntimeError(
+            "저장된 object_center_world가 올바르지 않습니다."
+        )
+
+    for axis in ("x", "y", "z"):
+        value = float(center[axis])
+        if not math.isfinite(value):
+            raise RuntimeError(
+                f"저장된 {axis} 좌표가 유한하지 않습니다."
+            )
+
+    return state
+
+
+def print_state(state: dict[str, Any]) -> None:
+    center = state["object_center_world"]
+
+    print("=" * 72)
+    print("VR CYLINDER STATE")
+    print("=" * 72)
+    print(f"Current BOX : {int(state['current_box'])}")
+    print(
+        "Center      : "
+        f"[{float(center['x']):.6f}, "
+        f"{float(center['y']):.6f}, "
+        f"{float(center['z']):.6f}]"
+    )
+    print(f"Updated at  : {state.get('updated_at', 'unknown')}")
+    print(f"Reason      : {state.get('update_reason', 'unknown')}")
+
+
+def coordinate_token(value: float) -> str:
+    return (
+        f"{value:.4f}"
+        .replace("-", "m")
+        .replace(".", "p")
+    )
+
+
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Quest /vr/place_target을 받아 정확한 목표 좌표용 "
+            "Pick-and-Place 경로를 생성하고 MuJoCo에서 실행합니다."
+        )
+    )
+
+    parser.add_argument(
+        "--topic",
+        default=DEFAULT_TOPIC,
+    )
+
+    parser.add_argument(
+        "--speed-scale",
+        type=float,
+        default=2.5,
+    )
+
+    parser.add_argument(
+        "--candidate-index",
+        type=int,
+        default=None,
+        help=(
+            "고정 candidate를 사용합니다. 생략하면 검증된 이동은 "
+            "우선 candidate를 먼저 시도하고 실패 시 전체 검색합니다."
+        ),
+    )
+
+    parser.add_argument(
+        "--allow-fallback",
+        action="store_true",
+        help=(
+            "FAST candidate 실패 시에만 전체 candidate 검색을 허용합니다. "
+            "기본값은 즉시 실패로 계산 지연을 막습니다."
+        ),
+    )
+
+    parser.add_argument(
+        "--execute",
+        action="store_true",
+        help="경로 생성 후 실제 MuJoCo Pick-and-Place 실행",
+    )
+
+    parser.add_argument(
+        "--confirmation",
+        default="",
+    )
+
+    parser.add_argument(
+        "--reset-state",
+        action="store_true",
+    )
+
+    parser.add_argument(
+        "--fresh-mujoco",
+        action="store_true",
+        help=(
+            "MuJoCo를 새로 실행한 직후 사용합니다. "
+            "상태를 BOX 1로 초기화한 뒤 실행 노드를 계속 시작합니다."
+        ),
+    )
+
+    parser.add_argument(
+        "--show-state",
+        action="store_true",
+    )
+
+    parser.add_argument(
+        "--safety-margin",
+        type=float,
+        default=0.010,
+        help="원기둥 외곽과 받침대 경계 사이 최소 여유 [m]",
+    )
+
+    parser.add_argument(
+        "--duplicate-window",
+        type=float,
+        default=2.0,
+        help="같은 A 입력 중복 억제 시간 [s]",
+    )
+
+    return parser.parse_args()
+
+
+class VrPickPlaceNode(Node):
+    def __init__(self, arguments: argparse.Namespace) -> None:
+        super().__init__("vr_pick_place_executor")
+
+        self.arguments = arguments
+        self.layout = load_yaml(BOX_LAYOUT_PATH)
+        self.boxes = normalized_boxes(self.layout)
+        self.state_lock = threading.Lock()
+        self.busy = False
+        self.last_target: Optional[tuple[float, float, float]] = None
+        self.last_target_time = 0.0
+
+        self.subscription = self.create_subscription(
+            PoseStamped,
+            arguments.topic,
+            self.target_callback,
+            10,
+        )
+
+        self.status_publisher = self.create_publisher(
+            String,
+            STATUS_TOPIC,
+            10,
+        )
+
+        self.busy_publisher = self.create_publisher(
+            Bool,
+            BUSY_TOPIC,
+            10,
+        )
+
+        self.cylinder_pose_publisher = self.create_publisher(
+            PoseStamped,
+            CYLINDER_POSE_TOPIC,
+            10,
+        )
+
+        initial_visual_state = read_or_create_state(self.layout)
+        initial_visual_center = initial_visual_state[
+            "object_center_world"
+        ]
+
+        self.visual_cylinder_position = (
+            float(initial_visual_center["x"]),
+            float(initial_visual_center["y"]),
+            float(initial_visual_center["z"]),
+        )
+
+        self.visual_pose_timer = self.create_timer(
+            1.0 / VISUAL_POSE_RATE_HZ,
+            self.publish_visual_cylinder_pose,
+        )
+
+        self.publish_busy(False)
+        self.publish_status("IDLE")
+
+        mode = "EXECUTE" if arguments.execute else "PLAN_ONLY"
+
+        self.get_logger().info(
+            f"VR FAST Pick-and-Place node ready: mode={mode}, "
+            f"topic={arguments.topic}, speed_scale={arguments.speed_scale:.3f}"
+        )
+
+        startup_state = read_or_create_state(self.layout)
+        startup_center = startup_state["object_center_world"]
+
+        self.get_logger().info(
+            "LOGICAL_CYLINDER_STATE: "
+            f"BOX {int(startup_state['current_box'])}, "
+            f"center=["
+            f"{float(startup_center['x']):.4f}, "
+            f"{float(startup_center['y']):.4f}, "
+            f"{float(startup_center['z']):.4f}]"
+        )
+
+        self.get_logger().warn(
+            "MuJoCo를 방금 재실행했다면 --fresh-mujoco로 "
+            "시작해야 실제 원기둥과 VR 상태가 일치합니다."
+        )
+
+    def publish_visual_cylinder_pose(self) -> None:
+        x, y, z = self.visual_cylinder_position
+
+        message = PoseStamped()
+        message.header.stamp = self.get_clock().now().to_msg()
+        message.header.frame_id = "world"
+
+        message.pose.position.x = float(x)
+        message.pose.position.y = float(y)
+        message.pose.position.z = float(z)
+
+        message.pose.orientation.x = 0.0
+        message.pose.orientation.y = 0.0
+        message.pose.orientation.z = 0.0
+        message.pose.orientation.w = 1.0
+
+        self.cylinder_pose_publisher.publish(message)
+
+    def publish_status(self, text: str) -> None:
+        message = String()
+        message.data = text
+        self.status_publisher.publish(message)
+        self.get_logger().info(text)
+
+    def publish_busy(self, value: bool) -> None:
+        message = Bool()
+        message.data = bool(value)
+        self.busy_publisher.publish(message)
+
+    def detect_target_box(
+        self,
+        x: float,
+        y: float,
+        z: float,
+    ) -> int:
+        geometry = self.layout["geometry"]
+        pedestal_half = geometry["pedestal_half_size"]
+        cylinder = geometry["cylinder"]
+
+        half_x = float(pedestal_half["x"])
+        half_y = float(pedestal_half["y"])
+        cylinder_radius = float(cylinder["radius"])
+        expected_z = float(cylinder["initial_center_z"])
+
+        allowed_x = (
+            half_x
+            - cylinder_radius
+            - self.arguments.safety_margin
+        )
+        allowed_y = (
+            half_y
+            - cylinder_radius
+            - self.arguments.safety_margin
+        )
+
+        if allowed_x <= 0.0 or allowed_y <= 0.0:
+            raise RuntimeError(
+                "safety-margin이 너무 커서 유효 영역이 없습니다."
+            )
+
+        if abs(z - expected_z) > 0.015:
+            raise RuntimeError(
+                f"목표 z가 받침대 배치 높이와 다릅니다: "
+                f"received={z:.6f}, expected={expected_z:.6f}"
+            )
+
+        matches: list[int] = []
+
+        for box_id, box in self.boxes.items():
+            position = box["position"]
+            center_x = float(position["x"])
+            center_y = float(position["y"])
+
+            if (
+                abs(x - center_x) <= allowed_x
+                and abs(y - center_y) <= allowed_y
+            ):
+                matches.append(box_id)
+
+        if len(matches) != 1:
+            raise RuntimeError(
+                "목표가 안전한 받침대 내부에 있지 않습니다. "
+                f"matched_boxes={matches}, target=[{x:.6f}, {y:.6f}, {z:.6f}]"
+            )
+
+        return matches[0]
+
+    def target_callback(self, message: PoseStamped) -> None:
+        target = (
+            float(message.pose.position.x),
+            float(message.pose.position.y),
+            float(message.pose.position.z),
+        )
+
+        if not all(math.isfinite(value) for value in target):
+            self.publish_status("REJECTED: non-finite target")
+            return
+
+        now = time.monotonic()
+
+        if (
+            self.last_target is not None
+            and now - self.last_target_time
+            <= self.arguments.duplicate_window
+            and max(
+                abs(a - b)
+                for a, b in zip(target, self.last_target)
+            )
+            <= 0.001
+        ):
+            self.get_logger().warning(
+                "Duplicate VR target ignored."
+            )
+            return
+
+        self.last_target = target
+        self.last_target_time = now
+
+        with self.state_lock:
+            if self.busy:
+                self.publish_status("REJECTED: executor busy")
+                return
+
+            self.busy = True
+
+        self.publish_busy(True)
+
+        worker = threading.Thread(
+            target=self.process_target,
+            args=(target,),
+            daemon=True,
+        )
+        worker.start()
+
+    def run_command(
+        self,
+        label: str,
+        command: list[str],
+        log_path: Path,
+    ) -> int:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+
+        self.get_logger().info(
+            f"[{label}] COMMAND: {' '.join(command)}"
+        )
+
+        with log_path.open("w", encoding="utf-8") as log_stream:
+            process = subprocess.Popen(
+                command,
+                cwd=ROOT,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1,
+                env=os.environ.copy(),
+            )
+
+            assert process.stdout is not None
+
+            for line in process.stdout:
+                log_stream.write(line)
+                log_stream.flush()
+
+                stripped = line.strip()
+                if stripped and (
+                    "PASS" in stripped
+                    or "FAIL" in stripped
+                    or "Candidate" in stripped
+                    or "[현재 동작]" in stripped
+                    or "[실패]" in stripped
+                ):
+                    self.get_logger().info(
+                        f"[{label}] {stripped}"
+                    )
+
+            return process.wait()
+
+    def generator_command(
+        self,
+        state: dict[str, Any],
+        target_box: int,
+        target: tuple[float, float, float],
+        output_directory: Path,
+        candidate_index: Optional[int],
+    ) -> list[str]:
+        center = state["object_center_world"]
+
+        command = [
+            sys.executable,
+            str(GENERATOR),
+            "--from-box",
+            str(int(state["current_box"])),
+            "--object-x",
+            f"{float(center['x']):.9f}",
+            "--object-y",
+            f"{float(center['y']):.9f}",
+            "--object-z",
+            f"{float(center['z']):.9f}",
+            "--to-box",
+            str(target_box),
+            "--target-x",
+            f"{target[0]:.9f}",
+            "--target-y",
+            f"{target[1]:.9f}",
+            "--target-z",
+            f"{target[2]:.9f}",
+            "--output-dir",
+            str(output_directory),
+            "--overwrite",
+        ]
+
+        if candidate_index is not None:
+            command.extend(
+                ["--candidate-index", str(candidate_index)]
+            )
+
+        return command
+
+    def process_target(
+        self,
+        target: tuple[float, float, float],
+    ) -> None:
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        log_directory = LOG_ROOT / stamp
+
+        try:
+            target_box = self.detect_target_box(*target)
+
+            STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+
+            with LOCK_PATH.open("a+", encoding="utf-8") as lock_file:
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+                state = read_or_create_state(self.layout)
+
+                source_box = int(state["current_box"])
+                source_center = state["object_center_world"]
+
+                source_xyz = (
+                    float(source_center["x"]),
+                    float(source_center["y"]),
+                    float(source_center["z"]),
+                )
+
+                if source_box == target_box:
+                    raise RuntimeError(
+                        "현재 v0.1에서는 같은 받침대 내부 이동을 지원하지 않습니다."
+                    )
+
+                if max(
+                    abs(a - b)
+                    for a, b in zip(source_xyz, target)
+                ) < 0.005:
+                    raise RuntimeError(
+                        "목표 위치가 현재 원기둥 위치와 거의 같습니다."
+                    )
+
+                output_name = (
+                    f"{stamp}_box_{source_box}_to_{target_box}_"
+                    f"x{coordinate_token(target[0])}_"
+                    f"y{coordinate_token(target[1])}_"
+                    f"z{coordinate_token(target[2])}"
+                )
+
+                output_directory = OUTPUT_ROOT / output_name
+
+                self.publish_status(
+                    "TARGET_ACCEPTED: "
+                    f"BOX {source_box} -> BOX {target_box}, "
+                    f"target=[{target[0]:.4f}, {target[1]:.4f}, {target[2]:.4f}]"
+                )
+
+                if self.arguments.candidate_index is not None:
+                    candidate_indices = [
+                        int(self.arguments.candidate_index)
+                    ]
+                else:
+                    candidate_indices = list(
+                        FAST_CANDIDATE_SHORTLISTS.get(
+                            source_box,
+                            [],
+                        )
+                    )
+
+                self.publish_status(
+                    "FAST_PLANNING: candidates "
+                    + str(candidate_indices)
+                )
+
+                planning_status = 1
+                selected_candidate: Optional[int] = None
+
+                for attempt_number, candidate_index in enumerate(
+                    candidate_indices,
+                    start=1,
+                ):
+                    self.publish_status(
+                        "FAST_ATTEMPT: "
+                        f"{attempt_number}/{len(candidate_indices)}, "
+                        f"candidate {candidate_index}"
+                    )
+
+                    planning_status = self.run_command(
+                        f"PLAN_C{candidate_index:02d}",
+                        self.generator_command(
+                            state=state,
+                            target_box=target_box,
+                            target=target,
+                            output_directory=output_directory,
+                            candidate_index=candidate_index,
+                        ),
+                        (
+                            log_directory
+                            / (
+                                f"01_plan_candidate_"
+                                f"{candidate_index:02d}.log"
+                            )
+                        ),
+                    )
+
+                    if planning_status == 0:
+                        selected_candidate = candidate_index
+                        self.publish_status(
+                            "FAST_CANDIDATE_SELECTED: "
+                            f"{candidate_index}"
+                        )
+                        break
+
+                    self.publish_status(
+                        "FAST_RETRY: "
+                        f"candidate {candidate_index} failed"
+                    )
+
+                if (
+                    planning_status != 0
+                    and self.arguments.candidate_index is None
+                    and self.arguments.allow_fallback
+                ):
+                    self.publish_status(
+                        "FAST_FALLBACK: scanning all candidates"
+                    )
+
+                    planning_status = self.run_command(
+                        "PLAN_FALLBACK",
+                        self.generator_command(
+                            state=state,
+                            target_box=target_box,
+                            target=target,
+                            output_directory=output_directory,
+                            candidate_index=None,
+                        ),
+                        log_directory / "02_plan_fallback.log",
+                    )
+
+                if planning_status != 0:
+                    raise RuntimeError(
+                        "빠른 후보 목록에서 경로를 생성하지 못했습니다. "
+                        f"candidates={candidate_indices}, "
+                        f"logs={log_directory}"
+                    )
+
+                timed_path = output_directory / "timed_joint_path.yaml"
+
+                if not timed_path.exists():
+                    raise RuntimeError(
+                        f"timed path가 생성되지 않았습니다: {timed_path}"
+                    )
+
+                if not self.arguments.execute:
+                    self.publish_status(
+                        "PLAN_READY: "
+                        f"{timed_path}"
+                    )
+                    return
+
+                self.publish_status("EXECUTING")
+
+                execution_command = [
+                    sys.executable,
+                    str(EXECUTOR),
+                    "--from-box",
+                    str(source_box),
+                    "--to-box",
+                    str(target_box),
+                    "--timed-path",
+                    str(timed_path),
+                    "--speed-scale",
+                    f"{self.arguments.speed_scale:.6f}",
+                    "--execute",
+                    "--confirmation",
+                    INNER_EXECUTION_CONFIRMATION,
+                ]
+
+                execution_status = self.run_command(
+                    "EXECUTE",
+                    execution_command,
+                    log_directory / "03_execute.log",
+                )
+
+                if execution_status != 0:
+                    raise RuntimeError(
+                        f"MuJoCo 실행 실패. 로그: {log_directory}"
+                    )
+
+                updated_state = {
+                    "version": 1,
+                    "current_box": target_box,
+                    "object_center_world": {
+                        "x": float(target[0]),
+                        "y": float(target[1]),
+                        "z": float(target[2]),
+                    },
+                    "updated_at": now_string(),
+                    "update_reason": "successful_vr_pick_place",
+                    "last_successful_move": {
+                        "from_box": source_box,
+                        "to_box": target_box,
+                        "source_center_world": {
+                            "x": source_xyz[0],
+                            "y": source_xyz[1],
+                            "z": source_xyz[2],
+                        },
+                        "target_center_world": {
+                            "x": target[0],
+                            "y": target[1],
+                            "z": target[2],
+                        },
+                        "speed_scale": float(
+                            self.arguments.speed_scale
+                        ),
+                        "completed_at": now_string(),
+                        "timed_path": str(timed_path),
+                        "log_directory": str(log_directory),
+                    },
+                    "warning": (
+                        "MuJoCo Reset 또는 재실행 후에는 "
+                        "--reset-state를 실행해야 합니다."
+                    ),
+                }
+
+                atomic_save_yaml(STATE_PATH, updated_state)
+
+                self.visual_cylinder_position = (
+                    float(target[0]),
+                    float(target[1]),
+                    float(target[2]),
+                )
+                self.publish_visual_cylinder_pose()
+
+                # 기존 BOX 상태 파일도 현재 BOX 번호만 동기화한다.
+                legacy_state_path = (
+                    STATE_DIRECTORY / "cylinder_box_state.yaml"
+                )
+
+                legacy_state = {
+                    "version": 1,
+                    "current_box": target_box,
+                    "updated_at": now_string(),
+                    "update_reason": "successful_vr_pick_place",
+                    "last_successful_move": {
+                        "from_box": source_box,
+                        "to_box": target_box,
+                        "speed_scale": float(
+                            self.arguments.speed_scale
+                        ),
+                        "completed_at": now_string(),
+                    },
+                    "warning": (
+                        "정확한 원기둥 좌표는 "
+                        "vr_cylinder_state.yaml을 사용하십시오."
+                    ),
+                }
+
+                atomic_save_yaml(
+                    legacy_state_path,
+                    legacy_state,
+                )
+
+                self.publish_status(
+                    "COMPLETE: "
+                    f"BOX {source_box} -> BOX {target_box}, "
+                    f"target=[{target[0]:.4f}, {target[1]:.4f}, {target[2]:.4f}]"
+                )
+
+        except Exception as exception:
+            self.publish_status(f"FAILED: {exception}")
+
+        finally:
+            with self.state_lock:
+                self.busy = False
+
+            self.publish_busy(False)
+
+
+def main() -> int:
+    arguments = parse_arguments()
+
+    if not (0.0 < arguments.speed_scale <= 3.0):
+        raise RuntimeError(
+            "speed-scale은 0보다 크고 3 이하여야 합니다."
+        )
+
+    if arguments.safety_margin < 0.0:
+        raise RuntimeError(
+            "safety-margin은 0 이상이어야 합니다."
+        )
+
+    if arguments.execute and (
+        arguments.confirmation != EXECUTION_CONFIRMATION
+    ):
+        raise RuntimeError(
+            "실행 확인 문자열이 올바르지 않습니다. "
+            f"필요한 값: {EXECUTION_CONFIRMATION}"
+        )
+
+    for required in (
+        BOX_LAYOUT_PATH,
+        GENERATOR,
+        EXECUTOR,
+    ):
+        if not required.exists():
+            raise RuntimeError(
+                f"필수 파일이 없습니다: {required}"
+            )
+
+    layout = load_yaml(BOX_LAYOUT_PATH)
+
+    if arguments.reset_state:
+        state = initial_state(layout)
+        atomic_save_yaml(STATE_PATH, state)
+        print("VR 원기둥 상태를 MuJoCo 초기 BOX 1로 초기화했습니다.")
+        print_state(state)
+        return 0
+
+    if arguments.fresh_mujoco:
+        state = initial_state(layout)
+        state["update_reason"] = "fresh_mujoco_fast_start"
+        atomic_save_yaml(STATE_PATH, state)
+        print(
+            "MuJoCo 재실행 상태로 간주하고 "
+            "VR 원기둥 상태를 BOX 1로 초기화했습니다."
+        )
+        print_state(state)
+
+    if arguments.show_state:
+        state = read_or_create_state(layout)
+        print_state(state)
+        return 0
+
+    rclpy.init()
+    node = VrPickPlaceNode(arguments)
+
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
+
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as exception:
+        print(f"[실패] {exception}", file=sys.stderr)
+        raise SystemExit(1)

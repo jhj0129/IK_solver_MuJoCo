@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+
+import xml.etree.ElementTree as ET
+
+import rclpy
+from rclpy.node import Node
+from rclpy.qos import (
+    DurabilityPolicy,
+    HistoryPolicy,
+    QoSProfile,
+    ReliabilityPolicy,
+)
+from std_msgs.msg import String
+
+
+class GripperCollisionPatcher(Node):
+    def __init__(self) -> None:
+        super().__init__("drok_gripper_collision_patcher")
+
+        qos = QoSProfile(
+            history=HistoryPolicy.KEEP_LAST,
+            depth=1,
+            reliability=ReliabilityPolicy.RELIABLE,
+            durability=DurabilityPolicy.TRANSIENT_LOCAL,
+        )
+
+        self.publisher = self.create_publisher(
+            String,
+            "/mujoco_robot_description",
+            qos,
+        )
+
+        self.subscription = self.create_subscription(
+            String,
+            "/mujoco_robot_description_raw",
+            self.description_callback,
+            qos,
+        )
+
+        self.get_logger().info(
+            "Waiting for /mujoco_robot_description_raw"
+        )
+
+    @staticmethod
+    def find_body(
+        root: ET.Element,
+        body_name: str,
+    ) -> ET.Element:
+        body = root.find(
+            f".//body[@name='{body_name}']"
+        )
+
+        if body is None:
+            raise RuntimeError(
+                f"MJCF body not found: {body_name}"
+            )
+
+        return body
+
+    @staticmethod
+    def remove_collision_geoms(
+        body: ET.Element,
+    ) -> int:
+        removed = 0
+
+        for geom in list(body.findall("geom")):
+            if geom.attrib.get("class") != "collision":
+                continue
+
+            body.remove(geom)
+            removed += 1
+
+        return removed
+
+    @staticmethod
+    def append_box_collision(
+        body: ET.Element,
+        name: str,
+        position: str,
+    ) -> None:
+        # MJCF box size는 URDF와 달리 half-size이다.
+        #
+        # 실제 전체 크기:
+        # X = 40 mm
+        # Y = 3 mm
+        # Z = 40 mm
+        ET.SubElement(
+            body,
+            "geom",
+            {
+                "name": name,
+                "class": "collision",
+                "type": "box",
+                "size": "0.020 0.0015 0.020",
+                "pos": position,
+                "friction": "1.5 0.01 0.001",
+                "condim": "4",
+            },
+        )
+
+    def description_callback(
+        self,
+        message: String,
+    ) -> None:
+        try:
+            root = ET.fromstring(message.data)
+
+            base = self.find_body(
+                root,
+                "GRIPPER_BASE",
+            )
+            left = self.find_body(
+                root,
+                "GRIPPER_LEFT",
+            )
+            right = self.find_body(
+                root,
+                "GRIPPER_RIGH",
+            )
+
+            base_removed = self.remove_collision_geoms(
+                base
+            )
+            left_removed = self.remove_collision_geoms(
+                left
+            )
+            right_removed = self.remove_collision_geoms(
+                right
+            )
+
+            self.append_box_collision(
+                left,
+                "GRIPPER_LEFT_collision_box",
+                "0 0.0015 0",
+            )
+
+            self.append_box_collision(
+                right,
+                "GRIPPER_RIGHT_collision_box",
+                "0 -0.0015 0",
+            )
+
+            patched_message = String()
+            patched_message.data = ET.tostring(
+                root,
+                encoding="unicode",
+            )
+
+            self.publisher.publish(
+                patched_message
+            )
+
+            self.get_logger().info(
+                "Published patched MJCF: "
+                f"base_removed={base_removed}, "
+                f"left_removed={left_removed}, "
+                f"right_removed={right_removed}"
+            )
+
+        except Exception as error:
+            self.get_logger().error(
+                f"Failed to patch MJCF: {error}"
+            )
+
+
+def main(args=None) -> None:
+    rclpy.init(args=args)
+
+    node = GripperCollisionPatcher()
+
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()

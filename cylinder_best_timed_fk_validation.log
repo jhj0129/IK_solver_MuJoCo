@@ -1,0 +1,70 @@
+============================================================
+ TIMED CYLINDER PATH FK VALIDATION
+============================================================
+
+[MOTION_BLOCK_1_PICK_APPROACH]
+  segment            : PICK_APPROACH
+  samples            : 162
+  cross-track error  : 0.000002209 m
+  start endpoint     : 0.000000234 m
+  goal endpoint      : 0.000000028 m
+  overshoot          : 0.000000147 m
+  backtrack          : 0.000000000 m
+  orientation/tilt   : 0.000003243 rad
+  result             : PASS
+
+[MOTION_BLOCK_2_PICK_LIFT]
+  segment            : PICK_LIFT
+  samples            : 138
+  cross-track error  : 0.000001741 m
+  start endpoint     : 0.000000028 m
+  goal endpoint      : 0.000000233 m
+  overshoot          : 0.000000022 m
+  backtrack          : 0.000000000 m
+  orientation/tilt   : 0.000005287 rad
+  result             : PASS
+
+[MOTION_BLOCK_3_TRANSFER]
+  segment            : TRANSFER
+  samples            : 364
+  cross-track error  : 0.000011004 m
+  start endpoint     : 0.000000233 m
+  goal endpoint      : 0.000010830 m
+  overshoot          : 0.000001171 m
+  backtrack          : 0.000000000 m
+  orientation/tilt   : 0.000001103 rad
+  result             : PASS
+
+[MOTION_BLOCK_4_PLACE_DESCEND]
+  segment            : PLACE_DESCEND
+  samples            : 139
+  cross-track error  : 0.000016087 m
+  start endpoint     : 0.000010830 m
+  goal endpoint      : 0.000019314 m
+  overshoot          : 0.000000000 m
+  backtrack          : 0.000000000 m
+  orientation/tilt   : 0.000015070 rad
+  result             : PASS
+
+[MOTION_BLOCK_5_PLACE_RETREAT]
+  segment            : PLACE_RETREAT
+  samples            : 162
+  cross-track error  : 0.000011181 m
+  start endpoint     : 0.000019314 m
+  goal endpoint      : 0.000000503 m
+  overshoot          : 0.000000000 m
+  backtrack          : 0.000000000 m
+  orientation/tilt   : 0.000012611 rad
+  result             : PASS
+
+============================================================
+OVERALL RESULT: PASS
+============================================================
+Samples                    : 965
+Maximum cross-track error  : 0.000016087 m
+Maximum endpoint error     : 0.000019314 m
+Maximum overshoot          : 0.000001171 m
+Maximum backtrack          : 0.000000000 m
+Maximum orientation error  : 0.000015070 rad
+Saved:
+"cylinder_best_timed_fk_validation_report.yaml"

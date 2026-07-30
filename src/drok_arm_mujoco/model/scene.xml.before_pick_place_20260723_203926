@@ -1,0 +1,62 @@
+<mujoco model="drok_arm_scene">
+
+  <statistic
+    center="0 0 0.45"
+    extent="1.2"/>
+
+  <visual>
+    <headlight
+      diffuse="0.7 0.7 0.7"
+      ambient="0.25 0.25 0.25"
+      specular="0.1 0.1 0.1"/>
+
+    <rgba haze="0.15 0.20 0.25 1"/>
+
+    <global
+      azimuth="135"
+      elevation="-20"/>
+  </visual>
+
+  <asset>
+    <texture
+      type="skybox"
+      builtin="gradient"
+      rgb1="0.35 0.45 0.60"
+      rgb2="0.05 0.05 0.08"
+      width="512"
+      height="3072"/>
+
+    <texture
+      type="2d"
+      name="groundplane"
+      builtin="checker"
+      mark="edge"
+      rgb1="0.20 0.25 0.30"
+      rgb2="0.10 0.12 0.15"
+      markrgb="0.8 0.8 0.8"
+      width="300"
+      height="300"/>
+
+    <material
+      name="groundplane"
+      texture="groundplane"
+      texuniform="true"
+      texrepeat="5 5"/>
+  </asset>
+
+  <worldbody>
+    <light
+      pos="0 0 2"
+      dir="0 0 -1"
+      directional="true"/>
+
+    <geom
+      name="floor"
+      type="plane"
+      size="3 3 0.1"
+      material="groundplane"
+      contype="1"
+      conaffinity="1"/>
+  </worldbody>
+
+</mujoco>

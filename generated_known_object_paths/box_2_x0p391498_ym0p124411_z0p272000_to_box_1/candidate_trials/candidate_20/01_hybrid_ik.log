@@ -1,0 +1,38 @@
+$ /usr/bin/python3 /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py --candidate-file /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/all_grasp_candidates.yaml --candidate-index 20 --geometry /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics/config/robot_geometry.yaml --urdf /home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf --output /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_20/hybrid_path.yaml
+
+========================================================================================
+CYLINDER HYBRID CARTESIAN IK DRY RUN
+========================================================================================
+Candidate index : 20
+Candidate phi   : 200.000 deg
+Target RPY      : +0.000000000, -0.000000000, +0.349065850
+Cartesian step  : 0.003000 m
+
+현재 /joint_states를 기다립니다.
+Current q [rad] : -0.000045622, +0.295663834, +0.294624481, -0.000413885, -0.000008253, -0.001249254
+
+[INITIAL 1/2] Position-only solve at PICK_PREGRASP
+[PASS] q = -0.309040, +0.973235, +0.648217, -0.039842, +0.220304, -0.001249
+
+[INITIAL 2/2] Full-pose orientation alignment
+
+[PICK_APPROACH] mode=full, distance=0.080000 m, samples=27
+[PASS] max jump=0.669389 deg, minimum margin=2.075204 deg
+
+[PICK_LIFT] mode=full, distance=0.050000 m, samples=17
+[PASS] max jump=0.584459 deg, minimum margin=14.390904 deg
+
+[TRANSFER] mode=upright, distance=0.309982 m, samples=104
+[PASS] max jump=0.454468 deg, minimum margin=14.603075 deg
+
+[PLACE_DESCEND] mode=upright, distance=0.050000 m, samples=17
+[PASS] max jump=0.487050 deg, minimum margin=13.881334 deg
+
+========================================================================================
+OVERALL RESULT: PASS
+========================================================================================
+Total samples       : 166
+Maximum joint jump  : 0.669389 deg
+Minimum limit margin: 1.565959 deg
+Saved:
+/home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_20/hybrid_path.yaml

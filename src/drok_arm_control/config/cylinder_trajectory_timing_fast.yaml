@@ -1,0 +1,11 @@
+version: 1
+mode: mujoco_fast_runtime
+limits:
+  velocity_scale: 0.35
+  acceleration_rise_time: 0.5
+  jerk_rise_time: 0.2
+time_scaling:
+  duration_margin: 1.0
+validation:
+  minimum_dense_samples: 80
+  dense_samples_per_waypoint: 3

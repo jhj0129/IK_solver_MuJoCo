@@ -1,0 +1,844 @@
+RANDOM KNOWN-POSE PICK PIPELINE INVENTORY
+Repository: /home/hgui/IK_solver_MuJoCo
+Branch: unknown
+
+[DISCOVERED FILES]
+src/drok_arm_control/scripts/assemble_cylinder_full_path.py
+src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py
+src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py
+src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py
+src/drok_arm_control/scripts/generate_box_to_box_path.py
+src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py
+src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py
+src/drok_arm_control/scripts/time_parameterize_cylinder_path.py
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/assemble_cylinder_full_path.py
+========================================================================================
+
+[FUNCTIONS]
+L0027: parse_arguments()
+L0066: load_yaml(path)
+L0081: read_joint_limits(urdf_path)
+L0138: maximum_difference(first, second)
+L0156: minimum_limit_margin(joint_positions, limits)
+L0173: as_vector(record, key)
+L0197: normalize_record(source, segment, ik_mode)
+L0224: main()
+
+[CLI ARGUMENTS]
+L0030: add_argument('--hybrid-path') {'default': "str(ROOT / 'cylinder_candidate_21_hybrid_path.yaml')"}
+L0038: add_argument('--retreat-path') {'default': "str(ROOT / 'cylinder_place_retreat_full_path.yaml')"}
+L0046: add_argument('--urdf') {'default': "str(ROOT / 'src/drok_arm_mujoco' / 'urdf/drok_arm_mujoco.urdf')"}
+L0055: add_argument('--output') {'default': "str(ROOT / 'cylinder_full_cartesian_ik_path.yaml')"}
+
+[RELEVANT SOURCE LINES]
+L0034:             / "cylinder_candidate_21_hybrid_path.yaml"
+L0042:             / "cylinder_place_retreat_full_path.yaml"
+L0059:             / "cylinder_full_cartesian_ik_path.yaml"
+L0157:     joint_positions: Sequence[float],
+L0167:             joint_positions,
+L0210:     record["joint_positions"] = [
+L0212:         for value in record["joint_positions"]
+L0215:     if "position" in record:
+L0216:         record["position"] = [
+L0218:             for value in record["position"]
+L0271:     hybrid_last_position = as_vector(
+L0273:         "position",
+L0276:     retreat_first_position = as_vector(
+L0278:         "position",
+L0281:     position_gap = float(
+L0283:             hybrid_last_position
+L0284:             - retreat_first_position
+L0289:         hybrid_last["joint_positions"],
+L0290:         retreat_first["joint_positions"],
+L0294:     if position_gap > 1.0e-8:
+L0296:             "PLACE_DESCEND와 PLACE_RETREAT의 "
+L0298:             f"{position_gap:.9e} m"
+L0323:     # retreat record 0은 PLACE_GRASP와 중복이므로 제거한다.
+L0328:                 segment="PLACE_RETREAT",
+L0362:                 "joint_positions"
+L0406:         "PICK_PREGRASP",
+L0407:         "PICK_APPROACH",
+L0408:         "PICK_LIFT",
+L0410:         "PLACE_DESCEND",
+L0411:         "PLACE_RETREAT",
+L0427:         "PICK_APPROACH"
+L0431:         "PLACE_DESCEND"
+L0441:                 "PICK_APPROACH가 완료된 후 "
+L0451:                 "PLACE_DESCEND가 완료된 후 "
+L0457:     initial_joint_positions = [
+L0460:             "initial_joint_positions"
+L0464:     pregrasp_joint_positions = [
+L0467:             "joint_positions"
+L0473:             initial_joint_positions,
+L0474:             pregrasp_joint_positions,
+L0481:         "candidate_index": int(
+L0482:             hybrid["candidate_index"]
+L0484:         "candidate_phi_deg": float(
+L0502:             "goal_joint_positions": (
+L0503:                 pregrasp_joint_positions
+L0505:             "dry_run_initial_joint_positions": (
+L0506:                 initial_joint_positions
+L0539:             "place_connection_position_gap_m": (
+L0540:                 position_gap
+L0542:             "place_connection_joint_gap_rad": (
+L0545:             "place_connection_joint_gap_deg": (
+L0562:     print("CYLINDER FULL CARTESIAN IK PATH")
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py
+========================================================================================
+
+[FUNCTIONS]
+L0051: parse_arguments()
+L0120: __init__(self)
+L0134: callback(self, message)
+L0167: read_current_joint_positions(timeout)
+L0205: read_joint_limits(urdf_path)
+L0259: matrix_to_rpy(rotation)
+L0336: run_ik_solver(geometry_path, position, rpy, seed, mode, timeout)
+L0488: interpolate_segment(start, goal, maximum_step)
+L0522: minimum_limit_margin(joint_positions, limits)
+L0539: maximum_joint_difference(first, second)
+L0552: main()
+
+[CLI ARGUMENTS]
+L0056: add_argument('--candidate-file') {'default': "str(root / 'cylinder_grasp_candidates.yaml')"}
+L0063: add_argument('--candidate-index') {'type': 'int', 'default': '0'}
+L0069: add_argument('--geometry') {'default': "str(root / 'src/drok_arm_kinematics' / 'config/robot_geometry.yaml')"}
+L0078: add_argument('--urdf') {'default': "str(root / 'src/drok_arm_mujoco' / 'urdf/drok_arm_mujoco.urdf')"}
+L0087: add_argument('--cartesian-step') {'type': 'float', 'default': '0.003'}
+L0093: add_argument('--maximum-joint-jump-deg') {'type': 'float', 'default': '5.0'}
+L0099: add_argument('--joint-state-timeout') {'type': 'float', 'default': '10.0'}
+L0105: add_argument('--solver-timeout') {'type': 'float', 'default': '15.0'}
+L0111: add_argument('--output') {'default': "''"}
+
+[RELEVANT SOURCE LINES]
+L0009: import subprocess
+L0040: POSITION_ERROR_PATTERN = re.compile(
+L0041:     r"Position error\s*:\s*"
+L0057:         "--candidate-file",
+L0059:             root / "cylinder_grasp_candidates.yaml"
+L0064:         "--candidate-index",
+L0122:             "cylinder_ik_dry_run_joint_state_reader"
+L0125:         self.positions: Dict[str, float] | None = None
+L0138:         if len(message.name) != len(message.position):
+L0144:                 message.position,
+L0164:         self.positions = result
+L0167: def read_current_joint_positions(
+L0179:             and node.positions is None
+L0187:         if node.positions is None:
+L0194:             node.positions[name]
+L0338:     position: Sequence[float],
+L0345:         command = [
+L0353:                 for value in position
+L0361:         command = [
+L0369:                 for value in position
+L0387:             "DROK_UPRIGHT_POSITION_TOLERANCE",
+L0421:     completed = subprocess.run(
+L0422:         command,
+L0424:         stdout=subprocess.PIPE,
+L0425:         stderr=subprocess.STDOUT,
+L0457:     joint_positions = [
+L0463:     position_match = (
+L0464:         POSITION_ERROR_PATTERN.search(output)
+L0473:         "joint_positions": joint_positions,
+L0474:         "position_error": (
+L0475:             float(position_match.group(1))
+L0476:             if position_match is not None
+L0523:     joint_positions: Sequence[float],
+L0533:             joint_positions,
+L0555:     candidate_path = Path(
+L0556:         arguments.candidate_file
+L0578:     with candidate_path.open(
+L0584:     candidates = document["candidates"]
+L0588:     for candidate in candidates:
+L0589:         if int(candidate["index"]) == (
+L0590:             arguments.candidate_index
+L0592:             selected = candidate
+L0597:             "요청한 candidate index가 없습니다: "
+L0598:             f"{arguments.candidate_index}"
+L0602:         selected["rotation_world_tcp"],
+L0610:     pickup = selected["pickup"]
+L0613:     pickup_pregrasp = np.asarray(
+L0614:         pickup["pregrasp_tcp_xyz"],
+L0618:     pickup_grasp = np.asarray(
+L0619:         pickup["grasp_tcp_xyz"],
+L0623:     pickup_lift = np.asarray(
+L0624:         pickup["lift_tcp_xyz"],
+L0628:     place_lift = np.asarray(
+L0629:         place["lift_tcp_xyz"],
+L0633:     place_grasp = np.asarray(
+L0634:         place["grasp_tcp_xyz"],
+L0638:     place_pregrasp = np.asarray(
+L0639:         place["pregrasp_tcp_xyz"],
+L0648:     print("CYLINDER HYBRID CARTESIAN IK DRY RUN")
+L0652:         f"Candidate index : "
+L0653:         f"{arguments.candidate_index}"
+L0657:         f"Candidate phi   : "
+L0679:     current_q = read_current_joint_positions(
+L0692:     # 선택된 원기둥 grasp orientation을 맞춘다.
+L0695:         "[INITIAL 1/2] Position-only "
+L0696:         "solve at PICK_PREGRASP"
+L0699:     initial_position_result = run_ik_solver(
+L0701:         pickup_pregrasp,
+L0704:         "position",
+L0708:     if not initial_position_result["success"]:
+L0709:         print("[FAIL] Position-only initial IK")
+L0710:         print(initial_position_result["output"])
+L0713:     q_previous = initial_position_result[
+L0714:         "joint_positions"
+L0733:         pickup_pregrasp,
+L0746:         "joint_positions"
+L0751:             "segment": "PICK_PREGRASP",
+L0753:             "position": (
+L0754:                 pickup_pregrasp.tolist()
+L0756:             "joint_positions": list(
+L0776:     # 운반 및 하강에서는 TCP local +Z만 world +Z에 고정하고,
+L0779:     # PLACE_RETREAT은 여기서 계산하지 않는다.
+L0780:     # PLACE_GRASP에서 결정된 최종 yaw를 읽은 뒤,
+L0784:             "PICK_APPROACH",
+L0785:             pickup_pregrasp,
+L0786:             pickup_grasp,
+L0790:             "PICK_LIFT",
+L0791:             pickup_grasp,
+L0792:             pickup_lift,
+L0797:             pickup_lift,
+L0798:             place_lift,
+L0802:             "PLACE_DESCEND",
+L0803:             place_lift,
+L0804:             place_grasp,
+L0812:         positions = interpolate_segment(
+L0824:             f"samples={len(positions)}"
+L0832:         for sample_index, position in enumerate(
+L0833:             positions,
+L0838:                 position,
+L0849:                     f"{len(positions)}"
+L0853:                     "Position = "
+L0856:                         for value in position
+L0865:                 "joint_positions"
+L0930:                     "position": (
+L0931:                         position.tolist()
+L0933:                     "joint_positions": list(
+L0936:                     "position_error": (
+L0937:                         result["position_error"]
+L0973:                 "cylinder_candidate_"
+L0974:                 f"{arguments.candidate_index:02d}"
+L0981:         "candidate_index": (
+L0982:             arguments.candidate_index
+L0990:         "initial_joint_positions": (
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py
+========================================================================================
+
+[FUNCTIONS]
+L0037: parse_arguments()
+L0095: main()
+
+[CLI ARGUMENTS]
+L0040: add_argument('--target') {'default': "str(ROOT / 'cylinder_place_retreat_target.yaml')"}
+L0048: add_argument('--geometry') {'default': "str(ROOT / 'src/drok_arm_kinematics' / 'config/robot_geometry.yaml')"}
+L0057: add_argument('--urdf') {'default': "str(ROOT / 'src/drok_arm_mujoco' / 'urdf/drok_arm_mujoco.urdf')"}
+L0066: add_argument('--cartesian-step') {'type': 'float', 'default': '0.003'}
+L0072: add_argument('--maximum-joint-jump-deg') {'type': 'float', 'default': '5.0'}
+L0078: add_argument('--solver-timeout') {'type': 'float', 'default': '15.0'}
+L0084: add_argument('--output') {'default': "str(ROOT / 'cylinder_place_retreat_full_path.yaml')"}
+
+[RELEVANT SOURCE LINES]
+L0020:     / "dry_run_cylinder_cartesian_ik.py"
+L0024:     "cylinder_ik_helper",
+L0044:             / "cylinder_place_retreat_target.yaml"
+L0088:             / "cylinder_place_retreat_full_path.yaml"
+L0125:     start_position = np.asarray(
+L0126:         target["place_grasp_tcp_xyz"],
+L0130:     goal_position = np.asarray(
+L0131:         target["place_retreat_tcp_xyz"],
+L0143:             "place_grasp_joint_positions"
+L0153:         goal_position - start_position
+L0191:     print("CYLINDER PLACE RETREAT FULL-POSE IK")
+L0195:         "Start TCP : "
+L0198:             for value in start_position
+L0203:         "Goal TCP  : "
+L0206:             for value in goal_position
+L0232:         "[ALIGN] PLACE_GRASP에서 최종 yaw를 "
+L0238:         start_position,
+L0246:         print("[FAIL] PLACE_GRASP full-pose alignment")
+L0253:             "joint_positions"
+L0281:     positions = HELPER.interpolate_segment(
+L0282:         start_position,
+L0283:         goal_position,
+L0290:             "position": start_position.tolist(),
+L0291:             "joint_positions": q_previous,
+L0309:         f"[PLACE_RETREAT] samples={len(positions)}, "
+L0313:     for sample_index, position in enumerate(
+L0314:         positions,
+L0319:             position,
+L0329:                 f"{len(positions)}"
+L0333:                 "Position = "
+L0336:                     for value in position
+L0346:                 "joint_positions"
+L0392:                 "position": position.tolist(),
+L0393:                 "joint_positions": q_current,
+L0394:                 "position_error": result[
+L0395:                     "position_error"
+L0409:         "segment": "PLACE_RETREAT",
+L0411:         "start_tcp_xyz": (
+L0412:             start_position.tolist()
+L0414:         "goal_tcp_xyz": (
+L0415:             goal_position.tolist()
+L0439:         "final_joint_positions": (
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/execute_cylinder_place_retreat_only.py
+========================================================================================
+
+[FUNCTIONS]
+L0044: parse_arguments()
+L0077: load_yaml(path)
+L0092: duration_message(seconds)
+L0108: trajectory_duration(trajectory)
+L0121: maximum_error(actual, target)
+L0135: __init__(self, action_name, joint_state_topic)
+L0161: joint_state_callback(self, message)
+L0199: wait_for_state(self, timeout_sec)
+L0227: refresh_state(self)
+L0244: execute(self, trajectory, server_timeout, result_timeout)
+L0345: create_transfer_trajectory(block, speed_scale)
+L0408: main()
+
+[CLI ARGUMENTS]
+L0047: add_argument('--timed-path') {'default': "str(ROOT / 'cylinder_best_timed_joint_path_segmented.yaml')"}
+L0055: add_argument('--config') {'default': "str(ROOT / 'src/drok_arm_control/config' / 'cylinder_timed_path_executor.yaml')"}
+L0064: add_argument('--execute') {'action': "'store_true'"}
+L0069: add_argument('--confirmation') {'default': "''"}
+
+[RELEVANT SOURCE LINES]
+L0041: CONFIRMATION_TEXT = "EXECUTE_PLACE_RETREAT_ONLY"
+L0051:             / "cylinder_best_timed_joint_path_segmented.yaml"
+L0060:             / "cylinder_timed_path_executor.yaml"
+L0141:             "cylinder_place_retreat_only_executor"
+L0166:             message.position
+L0171:             name: float(position)
+L0172:             for name, position in zip(
+L0174:                 message.position,
+L0261:             f"PLACE_RETREAT_ONLY: "
+L0293:             "PLACE_RETREAT_ONLY: goal accepted"
+L0341:             "PLACE_RETREAT_ONLY: completed"
+L0364:     # 첫 point는 현재 PICK_GRASP 경계점이므로
+L0369:         point.positions = [
+L0372:                 "positions"
+L0436:         == "PLACE_RETREAT"
+L0492:         ][0]["positions"]
+L0499:         ][-1]["positions"]
+L0507:     print("CYLINDER PLACE RETREAT ONLY")
+L0532:         "Gripper command : 전송하지 않음"
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/generate_box_to_box_path.py
+========================================================================================
+
+[FUNCTIONS]
+L0105: load_yaml(path)
+L0118: save_yaml(path, document)
+L0132: normalized_boxes(document)
+L0157: require_files(paths)
+L0171: make_planning_scene(source_box, cylinder_center_z, output_path)
+L0215: make_grasp_config(source_box, target_box, output_path)
+L0248: collect_candidate_indices(value, result)
+L0274: run_command(label, command, log_path)
+L0329: read_path_score(full_path)
+L0365: copy_selected_outputs(selected_directory, candidate_file, output_directory)
+L0414: parse_arguments()
+L0465: main()
+
+[CLI ARGUMENTS]
+L0423: add_argument('--from-box') {'type': 'int', 'required': 'True', 'choices': '[1, 2, 3, 4]', 'help': "'원기둥이 현재 놓여 있는 상자'"}
+L0431: add_argument('--to-box') {'type': 'int', 'required': 'True', 'choices': '[1, 2, 3, 4]', 'help': "'원기둥을 옮길 목표 상자'"}
+L0439: add_argument('--candidate-index') {'type': 'int', 'default': 'None', 'help': "'특정 grasp candidate만 시험합니다. 생략하면 모든 candidate를 검사합니다.'"}
+L0449: add_argument('--output-dir') {'type': 'Path', 'default': 'None', 'help': "'경로 생성 결과 폴더'"}
+L0456: add_argument('--overwrite') {'action': "'store_true'", 'help': "'기존 생성 폴더를 삭제하고 다시 만듭니다.'"}
+
+[RELEVANT SOURCE LINES]
+L0007: import subprocess
+L0038: BOX_LAYOUT_PATH = (
+L0040:     / "box_layout.yaml"
+L0048: BASE_GRASP_CONFIG_PATH = (
+L0050:     / "cylinder_grasp_geometry.yaml"
+L0070:     / "cylinder_trajectory_timing.yaml"
+L0074: GENERATE_CANDIDATES_SCRIPT = (
+L0076:     / "generate_cylinder_grasp_candidates.py"
+L0081:     / "dry_run_cylinder_hybrid_ik.py"
+L0086:     / "generate_cylinder_place_retreat_target.py"
+L0091:     / "dry_run_cylinder_place_retreat.py"
+L0096:     / "assemble_cylinder_full_path.py"
+L0101:     / "time_parameterize_cylinder_path.py"
+L0139:             "box_layout.yaml에 boxes가 없습니다."
+L0171: def make_planning_scene(
+L0173:     cylinder_center_z: float,
+L0180:         ".//body[@name='pickup_cube']"
+L0185:             "scene.xml에서 pickup_cube body를 "
+L0189:     position = source_box["position"]
+L0191:     source_x = float(position["x"])
+L0192:     source_y = float(position["y"])
+L0199:             f"{cylinder_center_z:.6f}"
+L0215: def make_grasp_config(
+L0221:         BASE_GRASP_CONFIG_PATH
+L0228:             "cylinder_grasp_geometry.yaml의 "
+L0232:     scene["pickup_object_body"] = "pickup_cube"
+L0234:     scene["pickup_pedestal_geom"] = str(
+L0238:     scene["place_pedestal_geom"] = str(
+L0248: def collect_candidate_indices(
+L0253:         candidate_index = value.get(
+L0254:             "candidate_index"
+L0257:         if isinstance(candidate_index, int):
+L0258:             result.add(candidate_index)
+L0261:             collect_candidate_indices(
+L0268:             collect_candidate_indices(
+L0274: def run_command(
+L0276:     command: Sequence[str],
+L0284:     result = subprocess.run(
+L0285:         list(command),
+L0288:         stdout=subprocess.PIPE,
+L0289:         stderr=subprocess.STDOUT,
+L0298:         + " ".join(command)
+L0367:     candidate_file: Path,
+L0371:         candidate_file: (
+L0373:             / "grasp_candidates.yaml"
+L0440:         "--candidate-index",
+L0444:             "특정 grasp candidate만 시험합니다. "
+L0445:             "생략하면 모든 candidate를 검사합니다."
+L0478:             BOX_LAYOUT_PATH,
+L0480:             BASE_GRASP_CONFIG_PATH,
+L0485:             GENERATE_CANDIDATES_SCRIPT,
+L0495:         BOX_LAYOUT_PATH
+L0508:     cylinder_center_z = float(
+L0509:         layout["geometry"]["cylinder"][
+L0510:             "initial_center_z"
+L0559:         / "candidate_trials"
+L0567:     planning_scene = (
+L0569:         / "planning_scene.xml"
+L0572:     planning_grasp_config = (
+L0574:         / "grasp_geometry.yaml"
+L0577:     candidate_file = (
+L0579:         / "all_grasp_candidates.yaml"
+L0582:     make_planning_scene(
+L0584:         cylinder_center_z=cylinder_center_z,
+L0585:         output_path=planning_scene,
+L0588:     make_grasp_config(
+L0591:         output_path=planning_grasp_config,
+L0614:     success, _ = run_command(
+L0615:         "GRASP CANDIDATES",
+L0619:                 GENERATE_CANDIDATES_SCRIPT
+L0622:             str(planning_scene),
+L0624:             str(planning_grasp_config),
+L0626:             str(candidate_file),
+L0629:         / "generate_candidates.log",
+L0634:             "Grasp candidate 생성 실패",
+L0640:     candidate_document = load_yaml(
+L0641:         candidate_file
+L0646:     collect_candidate_indices(
+L0647:         candidate_document,
+L0651:     if arguments.candidate_index is not None:
+L0652:         candidate_indices = [
+L0653:             arguments.candidate_index
+L0656:         candidate_indices = sorted(
+L0660:         candidate_count = int(
+L0662:                 planning_grasp_config
+L0666:                 "azimuth_candidate_count",
+L0671:         candidate_indices = list(
+L0672:             range(candidate_count)
+L0677:         "Candidate indices:",
+L0678:         candidate_indices,
+L0681:     successful_candidates: List[
+L0685:     failed_candidates: List[
+L0689:     for candidate_index in candidate_indices:
+L0693:             f"CANDIDATE {candidate_index}"
+L0697:         candidate_directory = (
+L0699:             / f"candidate_{candidate_index:02d}"
+L0702:         candidate_directory.mkdir(
+L0708:             candidate_directory
+L0713:             candidate_directory
+L0718:             candidate_directory
+L0723:             candidate_directory
+L0728:             candidate_directory
+L0738:                     "--candidate-file",
+L0739:                     str(candidate_file),
+L0740:                     "--candidate-index",
+L0741:                     str(candidate_index),
+L0749:                 candidate_directory
+L0761:                     "--candidate-file",
+L0762:                     str(candidate_file),
+L0768:                 candidate_directory
+L0785:                 candidate_directory
+L0802:                 candidate_directory
+L0823:                 candidate_directory
+L0832:             command,
+L0835:             stage_success, _ = run_command(
+L0837:                 command,
+L0846:             failed_candidates.append(
+L0848:                     "candidate_index": (
+L0849:                         candidate_index
+L0861:         successful_candidates.append(
+L0863:                 "candidate_index": (
+L0864:                     candidate_index
+L0867:                     candidate_directory
+L0885:             "  Candidate result: PASS"
+L0898:     if not successful_candidates:
+L0904:             "successful_candidates": [],
+L0905:             "failed_candidates": (
+L0906:                 failed_candidates
+L0930:     successful_candidates.sort(
+L0945:     selected = successful_candidates[0]
+L0953:         candidate_file=candidate_file,
+L0968:         "selected_candidate": selected,
+L0969:         "successful_candidates": (
+L0970:             successful_candidates
+L0972:         "failed_candidates": (
+L0973:             failed_candidates
+L0976:             "grasp_candidates": (
+L0977:                 "grasp_candidates.yaml"
+L1009:         "Selected candidate :",
+L1010:         selected["candidate_index"],
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/generate_cylinder_grasp_candidates.py
+========================================================================================
+
+[FUNCTIONS]
+L0015: parse_arguments()
+L0041: parse_vector(text, size, default)
+L0071: normalize(vector)
+L0084: find_named_element(root, tag, name)
+L0098: read_box_top_z(geom)
+L0128: read_cylinder(body)
+L0176: rotation_to_list(rotation)
+L0188: vector_to_list(vector)
+L0197: make_tcp_position(grasp_center_world, rotation_world_tcp, tcp_to_grasp_center)
+L0209: main()
+
+[CLI ARGUMENTS]
+L0018: add_argument('--scene') {'default': "'src/drok_arm_mujoco/model/scene.xml'"}
+L0025: add_argument('--config') {'default': "'src/drok_arm_control/config/cylinder_grasp_geometry.yaml'"}
+L0033: add_argument('--output') {'default': "'cylinder_grasp_candidates.yaml'"}
+
+[RELEVANT SOURCE LINES]
+L0029:             "cylinder_grasp_geometry.yaml"
+L0035:         default="cylinder_grasp_candidates.yaml",
+L0112:     position = parse_vector(
+L0124:         position[2] + size[2]
+L0128: def read_cylinder(
+L0131:     body_position = parse_vector(
+L0137:     cylinder_geom = None
+L0140:         if geom.attrib.get("type") == "cylinder":
+L0141:             cylinder_geom = geom
+L0144:     if cylinder_geom is None:
+L0146:             "pickup object 내부에서 "
+L0147:             "cylinder geom을 찾지 못했습니다."
+L0150:     geom_position = parse_vector(
+L0151:         cylinder_geom.attrib.get("pos"),
+L0157:         cylinder_geom.attrib.get("size"),
+L0164:     center = (
+L0165:         body_position
+L0166:         + geom_position
+L0170:         center,
+L0197: def make_tcp_position(
+L0198:     grasp_center_world: np.ndarray,
+L0199:     rotation_world_tcp: np.ndarray,
+L0200:     tcp_to_grasp_center: np.ndarray,
+L0203:         grasp_center_world
+L0204:         - rotation_world_tcp
+L0205:         @ tcp_to_grasp_center
+L0236:     grasp_config = config["grasp"]
+L0239:     pickup_body = find_named_element(
+L0242:         scene_config["pickup_object_body"],
+L0245:     pickup_pedestal = find_named_element(
+L0248:         scene_config["pickup_pedestal_geom"],
+L0251:     place_pedestal = find_named_element(
+L0254:         scene_config["place_pedestal_geom"],
+L0258:         pickup_object_center,
+L0259:         cylinder_radius,
+L0260:         cylinder_height,
+L0261:     ) = read_cylinder(
+L0262:         pickup_body
+L0265:     pickup_pedestal_position = parse_vector(
+L0266:         pickup_pedestal.attrib.get("pos"),
+L0271:     place_pedestal_position = parse_vector(
+L0272:         place_pedestal.attrib.get("pos"),
+L0277:     pickup_top_z = read_box_top_z(
+L0278:         pickup_pedestal
+L0281:     place_top_z = read_box_top_z(
+L0282:         place_pedestal
+L0285:     place_object_center = np.array(
+L0287:             place_pedestal_position[0],
+L0288:             place_pedestal_position[1],
+L0289:             place_top_z
+L0290:             + 0.5 * cylinder_height,
+L0295:     approach_axis_tcp = normalize(
+L0298:                 "approach_axis_tcp"
+L0304:     closing_axis_tcp = normalize(
+L0307:                 "closing_axis_tcp"
+L0313:     upright_axis_tcp = normalize(
+L0316:                 "upright_axis_tcp"
+L0323:     # semantic grasp frame의 각 축을
+L0324:     # TCP 좌표계에서 표현한 회전행렬
+L0325:     rotation_tcp_semantic = np.column_stack(
+L0327:             approach_axis_tcp,
+L0328:             closing_axis_tcp,
+L0329:             upright_axis_tcp,
+L0335:             rotation_tcp_semantic.T
+L0336:             @ rotation_tcp_semantic
+L0343:             rotation_tcp_semantic
+L0349:             "TCP 의미론적 축이 직교하지 않습니다."
+L0354:             "TCP 의미론적 축이 오른손 좌표계가 아닙니다."
+L0357:     tcp_to_grasp_center = np.asarray(
+L0359:             "tcp_to_grasp_center"
+L0365:         grasp_config["height_ratio"]
+L0370:             "grasp.height_ratio는 "
+L0376:     grasp_vertical_offset = (
+L0378:     ) * cylinder_height
+L0381:         grasp_config[
+L0382:             "pregrasp_surface_clearance"
+L0387:         grasp_config["vertical_clearance"]
+L0390:     candidate_count = int(
+L0392:             "azimuth_candidate_count"
+L0396:     if candidate_count < 1:
+L0398:             "azimuth_candidate_count는 "
+L0407:     pickup_grasp_center = (
+L0408:         pickup_object_center
+L0410:         * grasp_vertical_offset
+L0413:     place_grasp_center = (
+L0414:         place_object_center
+L0416:         * grasp_vertical_offset
+L0420:     safe_object_center_z = (
+L0422:             pickup_top_z,
+L0423:             place_top_z,
+L0425:         + 0.5 * cylinder_height
+L0430:     # TCP의 LIFT 높이도 같은 offset만큼 올려야 한다.
+L0431:     safe_center_z = (
+L0432:         safe_object_center_z
+L0433:         + grasp_vertical_offset
+L0436:     pregrasp_distance = (
+L0437:         cylinder_radius
+L0441:     candidates: List[Dict[str, Any]] = []
+L0443:     for index in range(candidate_count):
+L0448:             / candidate_count
+L0483:         rotation_world_tcp = (
+L0485:             @ rotation_tcp_semantic.T
+L0490:                 rotation_world_tcp.T
+L0491:                 @ rotation_world_tcp
+L0498:                 rotation_world_tcp
+L0516:         pickup_grasp_tcp = make_tcp_position(
+L0517:             pickup_grasp_center,
+L0518:             rotation_world_tcp,
+L0519:             tcp_to_grasp_center,
+L0522:         pickup_pregrasp_tcp = (
+L0523:             pickup_grasp_tcp
+L0524:             - pregrasp_distance
+L0528:         pickup_lift_center = (
+L0529:             pickup_grasp_center.copy()
+L0532:         pickup_lift_center[2] = (
+L0533:             safe_center_z
+L0536:         pickup_lift_tcp = make_tcp_position(
+L0537:             pickup_lift_center,
+L0538:             rotation_world_tcp,
+L0539:             tcp_to_grasp_center,
+L0542:         place_grasp_tcp = make_tcp_position(
+L0543:             place_grasp_center,
+L0544:             rotation_world_tcp,
+L0545:             tcp_to_grasp_center,
+L0548:         place_pregrasp_tcp = (
+L0549:             place_grasp_tcp
+L0550:             - pregrasp_distance
+L0554:         place_lift_center = (
+L0555:             place_grasp_center.copy()
+L0558:         place_lift_center[2] = (
+L0559:             safe_center_z
+L0562:         place_lift_tcp = make_tcp_position(
+L0563:             place_lift_center,
+L0564:             rotation_world_tcp,
+L0565:             tcp_to_grasp_center,
+L0568:         candidates.append(
+L0586:                 "rotation_world_tcp": (
+L0588:                         rotation_world_tcp
+L0591:                 "pickup": {
+L0592:                     "grasp_tcp_xyz": (
+L0594:                             pickup_grasp_tcp
+L0597:                     "pregrasp_tcp_xyz": (
+L0599:                             pickup_pregrasp_tcp
+L0602:                     "lift_tcp_xyz": (
+L0604:                             pickup_lift_tcp
+L0609:                     "grasp_tcp_xyz": (
+L0611:                             place_grasp_tcp
+L0614:                     "pregrasp_tcp_xyz": (
+L0616:                             place_pregrasp_tcp
+L0619:                     "lift_tcp_xyz": (
+L0621:                             place_lift_tcp
+L0635:             "cylinder_radius": (
+L0636:                 cylinder_radius
+L0638:             "cylinder_height": (
+L0639:                 cylinder_height
+L0641:             "pickup_object_center": (
+L0643:                     pickup_object_center
+L0646:             "place_object_center": (
+L0648:                     place_object_center
+L0651:             "pickup_pedestal_top_z": (
+L0652:                 pickup_top_z
+L0654:             "place_pedestal_top_z": (
+L0655:                 place_top_z
+L0657:             "safe_object_center_z": (
+L0658:                 safe_object_center_z
+L0660:             "safe_grasp_center_z": (
+L0661:                 safe_center_z
+L0663:             "grasp_height_ratio": (
+L0666:             "grasp_vertical_offset": (
+L0667:                 grasp_vertical_offset
+L0669:             "pregrasp_distance": (
+L0670:                 pregrasp_distance
+L0674:             "rotation_tcp_semantic": (
+L0676:                     rotation_tcp_semantic
+L0684:         "candidates": candidates,
+L0697:     print("CYLINDER GRASP GEOMETRY")
+L0701:         "Cylinder radius : "
+L0702:         f"{cylinder_radius:.6f} m"
+L0706:         "Cylinder height : "
+L0707:         f"{cylinder_height:.6f} m"
+L0711:         "Pickup center   : "
+L0712:         f"{pickup_object_center.tolist()}"
+L0716:         "Place center    : "
+L0717:         f"{place_object_center.tolist()}"
+L0721:         "Grasp ratio     : "
+L0726:         "Grasp z offset  : "
+L0727:         f"{grasp_vertical_offset:.6f} m"
+L0731:         "Safe object z   : "
+L0732:         f"{safe_object_center_z:.6f} m"
+L0736:         "Safe grasp z    : "
+L0737:         f"{safe_center_z:.6f} m"
+L0741:         "Pregrasp travel : "
+L0742:         f"{pregrasp_distance:.6f} m"
+L0746:         "Candidate count : "
+L0747:         f"{candidate_count}"
+L0751:     print("TCP semantic frame validation")
+L0762:     print("First candidate")
+L0764:     first = candidates[0]
+L0787:         "  pickup pregrasp TCP : "
+L0788:         f"{first['pickup']['pregrasp_tcp_xyz']}"
+L0792:         "  pickup grasp TCP    : "
+L0793:         f"{first['pickup']['grasp_tcp_xyz']}"
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/generate_cylinder_place_retreat_target.py
+========================================================================================
+
+[FUNCTIONS]
+L0019: parse_arguments()
+L0056: load_yaml(path)
+L0073: main()
+
+[CLI ARGUMENTS]
+L0022: add_argument('--hybrid-path') {'default': "str(ROOT / 'cylinder_best_hybrid_path.yaml')"}
+L0029: add_argument('--candidate-file') {'default': "str(ROOT / 'cylinder_grasp_candidates.yaml')"}
+L0036: add_argument('--geometry') {'default': "str(ROOT / 'src/drok_arm_kinematics/config' / 'robot_geometry.yaml')"}
+L0045: add_argument('--output') {'default': "str(ROOT / 'cylinder_best_place_retreat_target.yaml')"}
+
+[RELEVANT SOURCE LINES]
+L0009: import subprocess
+L0025:             ROOT / "cylinder_best_hybrid_path.yaml"
+L0030:         "--candidate-file",
+L0032:             ROOT / "cylinder_grasp_candidates.yaml"
+L0049:             / "cylinder_best_place_retreat_target.yaml"
+L0080:     candidate_path = Path(
+L0081:         arguments.candidate_file
+L0096:     candidates = load_yaml(
+L0097:         candidate_path
+L0100:     place_records = [
+L0103:         if record["segment"] == "PLACE_DESCEND"
+L0106:     if not place_records:
+L0108:             "PLACE_DESCEND record가 없습니다."
+L0111:     final_record = place_records[-1]
+L0113:     final_position = [
+L0115:         for value in final_record["position"]
+L0121:             "joint_positions"
+L0125:     candidate_index = int(
+L0126:         hybrid["candidate_index"]
+L0129:     pregrasp_distance = float(
+L0130:         candidates["derived_geometry"][
+L0131:             "pregrasp_distance"
+L0135:     command = [
+L0143:             for value in final_position
+L0155:             "DROK_UPRIGHT_POSITION_TOLERANCE":
+L0175:     completed = subprocess.run(
+L0176:         command,
+L0178:         stdout=subprocess.PIPE,
+L0179:         stderr=subprocess.STDOUT,
+L0192:         r"Solved TCP yaw\s*:\s*"
+L0204:             "Solved TCP yaw를 찾지 못했습니다."
+L0222:     # TCP local +X가 원기둥을 향하는 접근축이다.
+L0235:     retreat_position = [
+L0236:         final_position[index]
+L0237:         + pregrasp_distance
+L0247:         "candidate_index": candidate_index,
+L0248:         "place_grasp_tcp_xyz": (
+L0249:             final_position
+L0251:         "place_grasp_joint_positions": (
+L0254:         "final_tcp_yaw_rad": final_yaw,
+L0255:         "final_tcp_yaw_deg": (
+L0265:             pregrasp_distance
+L0267:         "place_retreat_tcp_xyz": (
+L0268:             retreat_position
+L0291:         "Candidate index : "
+L0292:         f"{candidate_index}"
+L0301:         "Place grasp TCP : "
+L0304:             for value in final_position
+L0309:         "Retreat TCP     : "
+L0312:             for value in retreat_position
+
+========================================================================================
+FILE: src/drok_arm_control/scripts/time_parameterize_cylinder_path.py
+========================================================================================
+
+[FUNCTIONS]
+L0028: parse_arguments()
+L0077: load_yaml(path)
+L0092: recursive_find_number(value, target_key)
+L0128: read_controller_rate(controllers_path)
+L0149: read_urdf_limits(urdf_path)
+L0220: quintic_progress(tau)
+L0260: remove_duplicate_waypoints(q_path, tolerance)
+L0295: construct_path_parameter(q_path, velocity_limits)
+L0342: evaluate_spline_time_law(spline, tau, duration)
+L0422: maximum_ratio(values, limits)
+L0435: minimum_position_margin(q, lower, upper)
+L0458: as_joint_path(records, start_index, end_index)
+L0516: make_motion_blocks(path_document)
+L0658: main()
+
+[CLI ARGUMENTS]
+L0031: add_argument('--path') {'default': "str(ROOT / 'cylinder_full_cartesian_ik_path.yaml')"}
+L0039: add_argument('--timing-config') {'default': "str(ROOT / 'src/drok_arm_control/config' / 'cylinder_trajectory_timing.yaml')"}
+L0048: add_argument('--urdf') {'default': "str(ROOT / 'src/drok_arm_mujoco/urdf' / 'drok_arm_mujoco.urdf')"}
+L0057: add_argument('--controllers') {'default': "str(ROOT / 'src/drok_arm_mujoco/config' / 'controllers.yaml')"}
+L0066: add_argument('--output') {'default': "str(ROOT / 'cylinder_timed_joint_path.yaml')"}
+
+[RELEVANT SOURCE LINES]
+L0035:             / "cylinder_full_cartesian_ik_path.yaml"
+L0044:             / "cylinder_trajectory_timing.yaml"
+L0070:             / "cylinder_timed_joint_path.yaml"
+L0435: def minimum_position_margin(
+L0492:             record["joint_positions"]
+L0527:       PICK_APPROACH : 0   -> 27
+L0528:       PICK_LIFT     : 27  -> 44
+L0530:       PLACE_DESCEND : 164 -> 181
+L0531:       PLACE_RETREAT : 181 -> 208
+L0583:     # 최초 PICK_PREGRASP index가 block 시작점이다.
+L0613:         # PICK_PREGRASP처럼 waypoint가 하나뿐인
+L0782:     print("CYLINDER PATH TIME PARAMETERIZATION")
+L0864:         position_margin = (
+L0865:             minimum_position_margin(
+L0872:         if position_margin <= 0.0:
+L0876:                 f"margin={position_margin:.9f} rad"
+L0973:         final_margin = minimum_position_margin(
+L1006:                     "positions": (
+L1119:             "lower_position_limit": float(
+L1122:             "upper_position_limit": float(

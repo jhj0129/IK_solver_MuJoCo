@@ -1,0 +1,42 @@
+task:
+  name: cube_80mm_pick_place
+
+interfaces:
+  joint_state_topic: /joint_states
+  arm_action: /arm_controller/follow_joint_trajectory
+  gripper_action: /gripper_controller/follow_joint_trajectory
+
+home:
+  joint_positions:
+    - -0.000001628
+    - 0.297361544
+    - 0.296742637
+    - -0.000030712
+    - 0.000061231
+    - 0.000102331
+
+pickup:
+  position: [0.450, 0.180, 0.272]
+  orientation_rpy: [-2.711593, 0.001, 0.000]
+
+place:
+  position: [0.450, -0.180, 0.272]
+  orientation_rpy: [-0.419, 0.001, 0.000]
+
+object:
+  size_xyz: [0.080, 0.080, 0.080]
+
+# JOINT7 is the left slider and GRIPPER_RIGHT_JOINT is the right slider.
+# The first trial uses the full closing range so an 80 mm cube is firmly contacted.
+gripper:
+  open_positions: [0.000, 0.000]
+  close_positions: [0.040, -0.040]
+
+motion:
+  arm_duration: 3.0
+  gripper_duration: 1.0
+  point_rate: 100.0
+
+timing:
+  wait_after_arm: 1.0
+  wait_after_gripper: 1.0

@@ -1,0 +1,24 @@
+$ /usr/bin/python3 /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/scripts/dry_run_cylinder_place_retreat.py --target /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_14/retreat_target.yaml --geometry /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics/config/robot_geometry.yaml --urdf /home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf --output /home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_14/retreat_path.yaml
+
+========================================================================================
+CYLINDER PLACE RETREAT FULL-POSE IK
+========================================================================================
+Start TCP : +0.450000000, +0.180000000, +0.282000000
+Goal TCP  : +0.370007413, +0.181089027, +0.282000000
+Retreat direction: -0.999907341, +0.013612842, +0.000000000
+Distance  : 0.080000000 m
+Fixed RPY : +0.000000000, +0.000000000, -0.013613262
+
+[ALIGN] PLACE_GRASP에서 최종 yaw를 full-pose로 정확히 고정합니다.
+[PASS] alignment max jump=0.002922 deg
+
+[PLACE_RETREAT] samples=27, step<=0.003000 m
+
+========================================================================================
+OVERALL RESULT: PASS
+========================================================================================
+Samples             : 28
+Maximum joint jump  : 0.557547 deg
+Minimum limit margin: 14.070559 deg
+Saved:
+/home/hgui/IK_solver_MuJoCo/generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/candidate_trials/candidate_14/retreat_path.yaml

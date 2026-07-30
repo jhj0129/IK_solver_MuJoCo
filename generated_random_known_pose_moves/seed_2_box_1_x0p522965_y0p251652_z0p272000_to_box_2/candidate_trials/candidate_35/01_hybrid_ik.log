@@ -1,0 +1,72 @@
+$ /usr/bin/python3 /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/scripts/dry_run_cylinder_hybrid_ik.py --candidate-file /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/all_grasp_candidates.yaml --candidate-index 35 --geometry /home/hgui/IK_solver_MuJoCo/src/drok_arm_kinematics/config/robot_geometry.yaml --urdf /home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf --output /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_35/hybrid_path.yaml
+
+========================================================================================
+CYLINDER HYBRID CARTESIAN IK DRY RUN
+========================================================================================
+Candidate index : 35
+Candidate phi   : 350.000 deg
+Target RPY      : +0.000000000, -0.000000000, +2.967059728
+Cartesian step  : 0.003000 m
+
+현재 /joint_states를 기다립니다.
+Current q [rad] : +0.000073195, +0.295663779, +0.294649212, -0.001254635, +0.000215415, -0.004529591
+
+[INITIAL 1/2] Position-only solve at PICK_PREGRASP
+[PASS] q = +0.337230, +1.882961, +1.479325, +0.085112, -0.116450, -0.004530
+
+[INITIAL 2/2] Full-pose orientation alignment
+[FAIL] Full-pose initial IK
+========================================
+ DROK TCP Pose IK Solver
+========================================
+IK mode: full
+----------------------------------------
+Target position [m]
+x = 0.601749620
+y = 0.237760146
+z = 0.282000000
+----------------------------------------
+Target RPY [rad]
+roll  = 0.000000000
+pitch = -0.000000000
+yaw   = 2.967059728
+----------------------------------------
+Initial joint positions [rad]
+q1 = 0.337229616
+q2 = 1.882960739
+q3 = 1.479325435
+q4 = 0.085111514
+q5 = -0.116450231
+q6 = -0.004529591
+----------------------------------------
+IK result joint positions [rad]
+q1 = 0.007204064
+q2 = 2.942836091
+q3 = 2.928616606
+q4 = -0.017374583
+q5 = -1.521750000
+q6 = -0.389734079
+----------------------------------------
+Target transform
+-0.984807753 -0.173648178  0.000000000  0.601749620
+ 0.173648178 -0.984807753  0.000000000  0.237760146
+ 0.000000000  0.000000000  1.000000000  0.282000000
+ 0.000000000  0.000000000  0.000000000  1.000000000
+----------------------------------------
+Solved transform
+ 0.041579451 -0.999022171 -0.015028352  0.684061288
+ 0.998972178  0.041296260  0.018687060  0.224785498
+-0.018048173 -0.015789903  0.999712430  0.229886915
+ 0.000000000  0.000000000  0.000000000  1.000000000
+----------------------------------------
+Success           : false
+Iterations        : 1500
+Position error    : 0.098281869 m
+Orientation error : 1.437883403 rad
+Message           : IK reached the maximum iteration count.
+----------------------------------------
+Machine-readable joint result
+JOINT_RESULT=0.007204064,2.942836091,2.928616606,-0.017374583,-1.521750000,-0.389734079
+========================================
+[ros2run]: Process exited with failure 2
+

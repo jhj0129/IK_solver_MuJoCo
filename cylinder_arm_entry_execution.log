@@ -1,0 +1,23 @@
+========================================================================================
+CYLINDER TIMED ARM PATH EXECUTOR
+========================================================================================
+Timed path       : /home/hgui/IK_solver_MuJoCo/cylinder_timed_joint_path_segmented.yaml
+Arm action       : /arm_controller/follow_joint_trajectory
+Controller rate  : 100.000 Hz
+Speed scale      : 0.500
+Stop after block : 0
+Selected blocks  : ENTRY ONLY
+Scaled block time: 0.000 s
+
+GRIPPER COMMAND  : DISABLED
+
+Current q        : -0.000007, +0.297053, +0.296239, -0.000070, -0.000327, +0.000021
+PICK_PREGRASP q  : +0.157000, +1.229874, +0.547135, +1.024104, -0.760787, +0.736758
+Entry max change : 58.681 deg
+Entry duration   : 10.060 s
+[INFO] [1785177243.139343796] [cylinder_timed_arm_executor]: ENTRY_TO_PICK_PREGRASP: 1006 points 전송
+[INFO] [1785177243.143231890] [cylinder_timed_arm_executor]: ENTRY_TO_PICK_PREGRASP: goal accepted
+[INFO] [1785177253.244350525] [cylinder_timed_arm_executor]: ENTRY_TO_PICK_PREGRASP: completed
+Entry goal error : 0.344127 deg
+
+EXECUTION RESULT: PASS — ENTRY ONLY

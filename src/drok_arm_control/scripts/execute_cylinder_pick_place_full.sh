@@ -1,0 +1,897 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT="${HOME}/IK_solver_MuJoCo"
+SCRIPT_DIR="${ROOT}/src/drok_arm_control/scripts"
+CONFIG_DIR="${ROOT}/src/drok_arm_control/config"
+
+TIMED_PATH="${ROOT}/cylinder_best_timed_joint_path_segmented.yaml"
+GRIPPER_CONFIG="${CONFIG_DIR}/cylinder_gripper_grasp.yaml"
+
+APPROACH_SCRIPT="${SCRIPT_DIR}/execute_cylinder_timed_arm_path.py"
+LIFT_SCRIPT="${SCRIPT_DIR}/execute_cylinder_pick_lift_only.py"
+TRANSFER_SCRIPT="${SCRIPT_DIR}/execute_cylinder_transfer_only.py"
+DESCEND_SCRIPT="${SCRIPT_DIR}/execute_cylinder_place_descend_only.py"
+RETREAT_SCRIPT="${SCRIPT_DIR}/execute_cylinder_place_retreat_only.py"
+
+ARM_ACTION="/arm_controller/follow_joint_trajectory"
+GRIPPER_ACTION="/gripper_controller/follow_joint_trajectory"
+
+CONFIRMATION_TOKEN="EXECUTE_MUJOCO_CYLINDER_PICK_PLACE"
+
+EXECUTE=0
+CONFIRMATION=""
+
+usage()
+{
+  cat <<EOF
+사용법:
+
+Dry-run:
+  $0
+
+실제 MuJoCo 실행:
+  $0 \\
+    --execute \\
+    --confirmation ${CONFIRMATION_TOKEN}
+
+주의:
+  이 실행기는 MuJoCo 검증 전용입니다.
+  실제 로봇 하드웨어에는 사용하지 마십시오.
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --execute)
+      EXECUTE=1
+      shift
+      ;;
+
+    --confirmation)
+      if [[ $# -lt 2 ]]; then
+        echo "--confirmation 값이 없습니다." >&2
+        exit 2
+      fi
+
+      CONFIRMATION="$2"
+      shift 2
+      ;;
+
+    --help|-h)
+      usage
+      exit 0
+      ;;
+
+    *)
+      echo "알 수 없는 인자: $1" >&2
+      usage
+      exit 2
+      ;;
+  esac
+done
+
+cd "${ROOT}"
+
+required_files=(
+  "${TIMED_PATH}"
+  "${GRIPPER_CONFIG}"
+  "${APPROACH_SCRIPT}"
+  "${LIFT_SCRIPT}"
+  "${TRANSFER_SCRIPT}"
+  "${DESCEND_SCRIPT}"
+  "${RETREAT_SCRIPT}"
+)
+
+for path in "${required_files[@]}"; do
+  if [[ ! -f "${path}" ]]; then
+    echo "필수 파일을 찾지 못했습니다: ${path}" >&2
+    exit 1
+  fi
+done
+
+mapfile -t GRIPPER_TARGETS < <(
+  python3 - "${GRIPPER_CONFIG}" <<'PY'
+from pathlib import Path
+import sys
+import yaml
+
+path = Path(sys.argv[1])
+
+document = yaml.safe_load(
+    path.read_text(encoding="utf-8")
+)
+
+targets = document["positions"]["initial_grasp"]
+
+if (
+    not isinstance(targets, list)
+    or len(targets) != 2
+):
+    raise RuntimeError(
+        "positions.initial_grasp는 두 값이어야 합니다."
+    )
+
+print(float(targets[0]))
+print(float(targets[1]))
+PY
+)
+
+if [[ ${#GRIPPER_TARGETS[@]} -ne 2 ]]; then
+  echo "그리퍼 파지값을 읽지 못했습니다." >&2
+  exit 1
+fi
+
+CLOSE_LEFT="${GRIPPER_TARGETS[0]}"
+CLOSE_RIGHT="${GRIPPER_TARGETS[1]}"
+
+if [[ "${EXECUTE}" -eq 0 ]]; then
+  cat <<EOF
+================================================================================
+MUJOCO CYLINDER PICK-AND-PLACE FULL SEQUENCE
+================================================================================
+Mode                 : DRY-RUN
+Timed path           : ${TIMED_PATH}
+Gripper close target : ${CLOSE_LEFT}, ${CLOSE_RIGHT}
+
+실행 순서:
+  1. controller/action server 확인
+  2. gripper 완전 개방
+  3. HOME 및 gripper 상태 확인
+  4. PICK_APPROACH
+  5. gripper close
+  6. 파지 상태 확인
+  7. PICK_LIFT
+  8. TRANSFER
+  9. PLACE_DESCEND
+ 10. gripper 1차 해제: +0.0400 / -0.0400 m
+ 11. gripper 완전 개방
+ 12. PLACE_RETREAT
+
+DRY-RUN RESULT: PASS
+
+실제 실행:
+  ${0} \\
+    --execute \\
+    --confirmation ${CONFIRMATION_TOKEN}
+EOF
+
+  exit 0
+fi
+
+if [[ "${CONFIRMATION}" != "${CONFIRMATION_TOKEN}" ]]; then
+  echo "실행 확인 문자열이 일치하지 않습니다." >&2
+  echo "필요한 값: ${CONFIRMATION_TOKEN}" >&2
+  exit 2
+fi
+
+set +u
+source /opt/ros/humble/setup.bash
+source "${ROOT}/install/setup.bash"
+set -u
+
+LOG_DIR="${ROOT}/run_logs"
+mkdir -p "${LOG_DIR}"
+
+STAMP="$(date +%Y%m%d_%H%M%S)"
+LOG_FILE="${LOG_DIR}/cylinder_pick_place_full_${STAMP}.log"
+
+CURRENT_STAGE="INITIALIZATION"
+
+failure_handler()
+{
+  local status=$?
+
+  {
+    echo
+    echo "FULL SEQUENCE: FAILED"
+    echo "Stage : ${CURRENT_STAGE}"
+    echo "Status: ${status}"
+    echo "Log   : ${LOG_FILE}"
+  } >> "${LOG_FILE}"
+
+  echo
+  printf '[실패] %s\n' \
+    "${CURRENT_STAGE_DISPLAY:-${CURRENT_STAGE}}"
+
+  printf '[로그] %s\n' \
+    "${LOG_FILE}"
+
+  exit "${status}"
+}
+
+trap failure_handler ERR
+
+stage_display_name()
+{
+  local label="$1"
+
+  case "${label}" in
+    "STAGE 0 —"*)
+      echo "제어기 및 액션 서버 확인"
+      ;;
+
+    "STAGE 1 —"*)
+      echo "그리퍼 초기 개방"
+      ;;
+
+    "STAGE 2 —"*)
+      echo "홈 위치 및 개방 상태 확인"
+      ;;
+
+    "STAGE 3 —"*)
+      echo "원기둥 파지 위치로 접근"
+      ;;
+
+    "STAGE 4 —"*)
+      echo "원기둥 파지"
+      ;;
+
+    "STAGE 5 —"*)
+      echo "파지 상태 확인"
+      ;;
+
+    "STAGE 6 —"*)
+      echo "원기둥 들어 올리기"
+      ;;
+
+    "STAGE 7 —"*)
+      echo "원기둥 운반"
+      ;;
+
+    "STAGE 8 —"*)
+      echo "원기둥 내려놓기"
+      ;;
+
+    "STAGE 9 —"*)
+      echo "그리퍼 1차 해제"
+      ;;
+
+    "STAGE 10 —"*)
+      echo "원기둥 안정화 대기"
+      ;;
+
+    "STAGE 11 —"*)
+      echo "그리퍼 완전 개방"
+      ;;
+
+    "STAGE 12 —"*)
+      echo "원기둥에서 후퇴"
+      ;;
+
+    *)
+      echo "${label}"
+      ;;
+  esac
+}
+
+
+run_step()
+{
+  local label="$1"
+  shift
+
+  local display_name
+  local status
+
+  CURRENT_STAGE="${label}"
+
+  display_name="$(
+    stage_display_name "${label}"
+  )"
+
+  CURRENT_STAGE_DISPLAY="${display_name}"
+
+  if [[ "${label}" == "STAGE 0 —"* ]]; then
+    printf '[시작 대기] %s\n' \
+      "${display_name}"
+  else
+    printf '[현재 동작] %s\n' \
+      "${display_name}"
+  fi
+
+  {
+    echo
+    echo "================================================================================"
+    echo "${label}"
+    echo "================================================================================"
+  } >> "${LOG_FILE}"
+
+  set +e
+
+  "$@" >> "${LOG_FILE}" 2>&1
+  status=$?
+
+  set -e
+
+  if [[ "${status}" -ne 0 ]]; then
+    echo \
+      "${label}: exit status ${status}" \
+      >> "${LOG_FILE}"
+
+    return "${status}"
+  fi
+
+  echo \
+    "${label}: PASS" \
+    >> "${LOG_FILE}"
+}
+
+check_interfaces()
+{
+  local timeout_sec=5
+  local attempt=1
+
+  local controllers=""
+  local actions=""
+
+  local controllers_ok=0
+  local actions_ok=0
+
+  echo "ROS controller와 action server를 확인합니다."
+  echo "Maximum timeout: ${timeout_sec} sec"
+
+  while (( attempt <= timeout_sec )); do
+    controllers="$(
+      ros2 control list_controllers \
+        2>/dev/null \
+        || true
+    )"
+
+    actions="$(
+      ros2 action list \
+        2>/dev/null \
+        || true
+    )"
+
+    # ROS CLI 출력에 포함될 수 있는 ANSI 제어문자를 제거한다.
+    controllers="$(
+      printf '%s\n' "${controllers}" |
+      python3 -c '
+import re
+import sys
+
+text = sys.stdin.read()
+text = re.sub(
+    r"\x1b\[[0-?]*[ -/]*[@-~]",
+    "",
+    text,
+)
+
+sys.stdout.write(text)
+'
+    )"
+
+    actions="$(
+      printf '%s\n' "${actions}" |
+      python3 -c '
+import re
+import sys
+
+text = sys.stdin.read()
+text = re.sub(
+    r"\x1b\[[0-?]*[ -/]*[@-~]",
+    "",
+    text,
+)
+
+for line in text.splitlines():
+    line = line.strip()
+
+    if line:
+        print(line)
+'
+    )"
+
+    controllers_ok=1
+
+    for controller_name in \
+      arm_controller \
+      gripper_controller \
+      joint_state_broadcaster
+    do
+      if ! awk \
+        -v target="${controller_name}" \
+        '
+          $1 == target && $NF == "active" {
+            found = 1
+          }
+
+          END {
+            exit(found ? 0 : 1)
+          }
+        ' <<< "${controllers}"
+      then
+        controllers_ok=0
+        break
+      fi
+    done
+
+    actions_ok=1
+
+    for action_name in \
+      "${ARM_ACTION}" \
+      "${GRIPPER_ACTION}"
+    do
+      if ! grep -Fxq \
+        "${action_name}" \
+        <<< "${actions}"
+      then
+        actions_ok=0
+        break
+      fi
+    done
+
+    if ((
+      controllers_ok == 1
+      && actions_ok == 1
+    )); then
+      echo
+      echo "===== ACTIVE CONTROLLERS ====="
+      printf '%s\n' "${controllers}"
+
+      echo
+      echo "===== AVAILABLE ACTIONS ====="
+      printf '%s\n' "${actions}"
+
+      echo
+      echo "Controller/action precheck: PASS"
+      echo "Attempts: ${attempt}"
+
+      return 0
+    fi
+
+    if (( attempt < timeout_sec )); then
+      printf '.'
+      sleep 1
+    fi
+
+    ((attempt += 1))
+  done
+
+  echo
+  echo
+  echo "Controller/action 확인에 실패했습니다."
+
+  echo
+  echo "===== LAST CONTROLLER STATE ====="
+  printf '%s\n' "${controllers:-정보 없음}"
+
+  echo
+  echo "===== LAST ACTION LIST ====="
+  printf '%s\n' "${actions:-정보 없음}"
+
+  echo
+  echo "판정 결과:"
+  echo "  controllers_ok=${controllers_ok}"
+  echo "  actions_ok=${actions_ok}"
+
+  return 1
+}
+
+send_gripper_goal()
+{
+  local left="$1"
+  local right="$2"
+  local duration_sec="$3"
+
+  local goal
+  local result_file
+
+  goal="{
+    trajectory: {
+      joint_names: [
+        'JOINT7',
+        'GRIPPER_RIGHT_JOINT'
+      ],
+      points: [
+        {
+          positions: [
+            ${left},
+            ${right}
+          ],
+          velocities: [
+            0.0,
+            0.0
+          ],
+          time_from_start: {
+            sec: ${duration_sec},
+            nanosec: 0
+          }
+        }
+      ]
+    }
+  }"
+
+  result_file="$(mktemp)"
+
+  ros2 action send_goal \
+    "${GRIPPER_ACTION}" \
+    control_msgs/action/FollowJointTrajectory \
+    "${goal}" \
+    2>&1 | tee "${result_file}"
+
+  local action_status=${PIPESTATUS[0]}
+
+  if [[ "${action_status}" -ne 0 ]]; then
+    rm -f "${result_file}"
+    return "${action_status}"
+  fi
+
+  if ! grep -q 'error_code: 0' "${result_file}"; then
+    echo "그리퍼 action 결과의 error_code가 0이 아닙니다."
+    rm -f "${result_file}"
+    return 1
+  fi
+
+  if ! grep -q 'Goal finished with status: SUCCEEDED' \
+    "${result_file}"
+  then
+    echo "그리퍼 action이 SUCCEEDED로 끝나지 않았습니다."
+    rm -f "${result_file}"
+    return 1
+  fi
+
+  rm -f "${result_file}"
+}
+
+check_joint_state()
+{
+  local mode="$1"
+
+  python3 - \
+    "${mode}" \
+    "${CLOSE_LEFT}" \
+    "${CLOSE_RIGHT}" <<'PY'
+from __future__ import annotations
+
+import math
+import sys
+import time
+
+import rclpy
+from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
+from sensor_msgs.msg import JointState
+
+
+mode = sys.argv[1]
+close_left = float(sys.argv[2])
+close_right = float(sys.argv[3])
+
+arm_names = [
+    "JOINT1",
+    "JOINT2",
+    "JOINT3",
+    "JOINT4",
+    "JOINT5",
+    "JOINT6",
+]
+
+gripper_names = [
+    "JOINT7",
+    "GRIPPER_RIGHT_JOINT",
+]
+
+home = [
+    -0.000001628,
+    +0.297361544,
+    +0.296742637,
+    -0.000030712,
+    +0.000061231,
+    +0.000102331,
+]
+
+
+rclpy.init()
+
+node = Node(
+    f"cylinder_full_sequence_check_{mode}"
+)
+
+received: dict[str, JointState | None] = {
+    "message": None
+}
+
+
+def callback(message: JointState) -> None:
+    received["message"] = message
+
+
+node.create_subscription(
+    JointState,
+    "/joint_states",
+    callback,
+    qos_profile_sensor_data,
+)
+
+deadline = time.monotonic() + 5.0
+
+while (
+    rclpy.ok()
+    and received["message"] is None
+    and time.monotonic() < deadline
+):
+    rclpy.spin_once(
+        node,
+        timeout_sec=0.1,
+    )
+
+message = received["message"]
+
+if message is None:
+    node.destroy_node()
+    rclpy.shutdown()
+
+    raise SystemExit(
+        "/joint_states를 5초 안에 받지 못했습니다."
+    )
+
+values = dict(
+    zip(
+        message.name,
+        message.position,
+    )
+)
+
+missing = [
+    name
+    for name in arm_names + gripper_names
+    if name not in values
+]
+
+if missing:
+    node.destroy_node()
+    rclpy.shutdown()
+
+    raise SystemExit(
+        "누락된 joint: "
+        + ", ".join(missing)
+    )
+
+print(f"Check mode: {mode}")
+
+for name in arm_names:
+    print(
+        f"{name:24s}: "
+        f"{values[name]:+.9f} rad"
+    )
+
+for name in gripper_names:
+    print(
+        f"{name:24s}: "
+        f"{values[name]:+.9f} m"
+    )
+
+if mode == "home_open":
+    arm_error = max(
+        abs(values[name] - target)
+        for name, target in zip(
+            arm_names,
+            home,
+        )
+    )
+
+    open_error = max(
+        abs(values[name])
+        for name in gripper_names
+    )
+
+    print(
+        "Maximum HOME error     : "
+        f"{math.degrees(arm_error):.6f} deg"
+    )
+
+    print(
+        "Maximum gripper error  : "
+        f"{open_error * 1000.0:.3f} mm"
+    )
+
+    if arm_error > 0.060:
+        raise SystemExit(
+            "팔이 HOME 허용범위 0.060 rad 밖에 있습니다."
+        )
+
+    if open_error > 0.002:
+        raise SystemExit(
+            "그리퍼가 완전 개방 허용범위 2 mm 밖에 있습니다."
+        )
+
+elif mode == "grasp":
+    left = values["JOINT7"]
+    right = values["GRIPPER_RIGHT_JOINT"]
+
+    left_error = abs(
+        close_left - left
+    )
+
+    right_error = abs(
+        close_right - right
+    )
+
+    symmetry_error = abs(
+        left - abs(right)
+    )
+
+    print(
+        "Left target error      : "
+        f"{left_error * 1000.0:.3f} mm"
+    )
+
+    print(
+        "Right target error     : "
+        f"{right_error * 1000.0:.3f} mm"
+    )
+
+    print(
+        "Left/right asymmetry   : "
+        f"{symmetry_error * 1000.0:.3f} mm"
+    )
+
+    if not 0.045 <= left <= 0.051:
+        raise SystemExit(
+            "JOINT7이 정상 파지 범위 밖에 있습니다."
+        )
+
+    if not -0.051 <= right <= -0.045:
+        raise SystemExit(
+            "GRIPPER_RIGHT_JOINT가 정상 파지 범위 밖에 있습니다."
+        )
+
+    if symmetry_error > 0.003:
+        raise SystemExit(
+            "그리퍼 좌우 비대칭이 3 mm를 초과했습니다."
+        )
+
+elif mode == "open":
+    open_error = max(
+        abs(values[name])
+        for name in gripper_names
+    )
+
+    print(
+        "Maximum gripper error  : "
+        f"{open_error * 1000.0:.3f} mm"
+    )
+
+    if open_error > 0.002:
+        raise SystemExit(
+            "그리퍼가 완전 개방 허용범위 2 mm 밖에 있습니다."
+        )
+
+else:
+    raise SystemExit(
+        f"알 수 없는 검사 모드: {mode}"
+    )
+
+node.destroy_node()
+rclpy.shutdown()
+PY
+}
+
+SEQUENCE_START_EPOCH="$(date +%s)"
+
+{
+  echo "================================================================================"
+  echo "MUJOCO CYLINDER PICK-AND-PLACE FULL SEQUENCE"
+  echo "================================================================================"
+  echo "Start time           : $(date --iso-8601=seconds)"
+  echo "Timed path           : ${TIMED_PATH}"
+  echo "Gripper close target : ${CLOSE_LEFT}, ${CLOSE_RIGHT}"
+  echo "Log file             : ${LOG_FILE}"
+  echo
+  echo "실제 하드웨어가 아닌 MuJoCo 전용 실행입니다."
+} > "${LOG_FILE}"
+
+echo "[시작] MuJoCo 원기둥 Pick-and-Place"
+printf '[로그] %s\n' "${LOG_FILE}"
+
+run_step \
+  "STAGE 0 — CONTROLLER/ACTION PRECHECK" \
+  check_interfaces
+
+run_step \
+  "STAGE 1 — GRIPPER FULL OPEN" \
+  send_gripper_goal \
+  0.0 \
+  0.0 \
+  2
+
+run_step \
+  "STAGE 2 — HOME/OPEN STATE CHECK" \
+  check_joint_state \
+  home_open
+
+run_step \
+  "STAGE 3 — PICK APPROACH" \
+  python3 -u \
+  "${APPROACH_SCRIPT}" \
+  --timed-path "${TIMED_PATH}" \
+  --stop-after-block 1 \
+  --execute-arm-only \
+  --confirmation EXECUTE_ARM_ONLY
+
+run_step \
+  "STAGE 4 — CYLINDER GRASP" \
+  send_gripper_goal \
+  "${CLOSE_LEFT}" \
+  "${CLOSE_RIGHT}" \
+  4
+
+run_step \
+  "STAGE 5 — GRASP STATE CHECK" \
+  check_joint_state \
+  grasp
+
+run_step \
+  "STAGE 6 — PICK LIFT" \
+  python3 -u \
+  "${LIFT_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_PICK_LIFT_ONLY
+
+run_step \
+  "STAGE 7 — TRANSFER" \
+  python3 -u \
+  "${TRANSFER_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_TRANSFER_ONLY
+
+run_step \
+  "STAGE 8 — PLACE DESCEND" \
+  python3 -u \
+  "${DESCEND_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_PLACE_DESCEND_ONLY
+
+run_step \
+  "STAGE 9 — PARTIAL RELEASE" \
+  send_gripper_goal \
+  0.0400 \
+  -0.0400 \
+  2
+
+run_step \
+  "STAGE 10 — RELEASE SETTLE WAIT" \
+  sleep 1
+
+run_step \
+  "STAGE 11 — GRIPPER FULL OPEN" \
+  send_gripper_goal \
+  0.0 \
+  0.0 \
+  2
+
+run_step \
+  "STAGE 12 — PLACE RETREAT" \
+  python3 -u \
+  "${RETREAT_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_PLACE_RETREAT_ONLY
+
+CURRENT_STAGE="COMPLETED"
+CURRENT_STAGE_DISPLAY="완료"
+
+SEQUENCE_END_EPOCH="$(date +%s)"
+SEQUENCE_ELAPSED_SEC=$((SEQUENCE_END_EPOCH - SEQUENCE_START_EPOCH))
+
+{
+  echo
+  echo "================================================================================"
+  echo "FULL PICK-AND-PLACE RESULT: PASS"
+  echo "================================================================================"
+  echo "End time     : $(date --iso-8601=seconds)"
+  echo "Elapsed time : ${SEQUENCE_ELAPSED_SEC} sec"
+  echo "Log file     : ${LOG_FILE}"
+  echo
+  echo "완료 위치: PLACE_RETREAT 종료점"
+  echo "최종 HOME 복귀는 아직 실행하지 않았습니다."
+} >> "${LOG_FILE}"
+
+echo
+printf '[종료] Pick-and-Place 완료 (%s초)\n' \
+  "${SEQUENCE_ELAPSED_SEC}"
+
+echo "[최종 위치] PLACE_RETREAT 종료점"
+printf '[로그] %s\n' "${LOG_FILE}"

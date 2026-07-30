@@ -1,0 +1,23 @@
+========================================================================================
+CYLINDER PLACE DESCEND ONLY
+========================================================================================
+Timed path      : /home/hgui/IK_solver_MuJoCo/cylinder_best_timed_joint_path_segmented.yaml
+Block           : MOTION_BLOCK_4_PLACE_DESCEND
+Speed scale     : 0.500
+Lift duration   : 2.760 s
+Expected motion : PLACE 상공에서 받침대까지 수직 50 mm 하강
+Gripper command : 전송하지 않음
+
+Arm start error : 0.317526 deg
+JOINT7                  : +0.047133376 m (error=1.667 mm)
+GRIPPER_RIGHT_JOINT     : -0.047143738 m (error=1.656 mm)
+[INFO] [1785236204.222331894] [cylinder_place_descend_only_executor]: PLACE_DESCEND_ONLY: 138 points 전송
+[INFO] [1785236204.225852138] [cylinder_place_descend_only_executor]: PLACE_DESCEND_ONLY: goal accepted
+[INFO] [1785236207.025559136] [cylinder_place_descend_only_executor]: PLACE_DESCEND_ONLY: completed
+Arm goal error  : 0.045593 deg
+Final JOINT7            : +0.048451958 m (error=0.348 mm)
+Final GRIPPER_RIGHT_JOINT: -0.047629133 m (error=1.171 mm)
+
+========================================================================================
+PLACE DESCEND RESULT: PASS
+========================================================================================

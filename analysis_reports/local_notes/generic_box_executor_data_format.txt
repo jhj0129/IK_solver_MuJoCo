@@ -1,0 +1,165 @@
+============================================================
+GENERIC BOX EXECUTOR DATA FORMAT
+============================================================
+
+===== TIMED PATH POINT FORMAT =====
+Joint names:
+['JOINT1', 'JOINT2', 'JOINT3', 'JOINT4', 'JOINT5', 'JOINT6']
+
+Controller rate:
+100.0
+
+Limits:
+{'JOINT1': {'urdf_velocity_limit': 1.2,
+            'used_velocity_limit': 0.42,
+            'used_acceleration_limit': 0.84,
+            'used_jerk_limit': 4.199999999999999,
+            'lower_position_limit': -6.5,
+            'upper_position_limit': 6.5},
+ 'JOINT2': {'urdf_velocity_limit': 1.2,
+            'used_velocity_limit': 0.42,
+            'used_acceleration_limit': 0.84,
+            'used_jerk_limit': 4.199999999999999,
+            'lower_position_limit': -0.5,
+            'upper_position_limit': 3.14159},
+ 'JOINT3': {'urdf_velocity_limit': 1.2,
+            'used_velocity_limit': 0.42,
+            'used_acceleration_limit': 0.84,
+            'used_jerk_limit': 4.199999999999999,
+            'lower_position_limit': 0.0,
+            'upper_position_limit': 3.14159},
+ 'JOINT4': {'urdf_velocity_limit': 1.2,
+            'used_velocity_limit': 0.42,
+            'used_acceleration_limit': 0.84,
+            'used_jerk_limit': 4.199999999999999,
+            'lower_position_limit': -5.89101,
+            'upper_position_limit': 2.64243},
+ 'JOINT5': {'urdf_velocity_limit': 1.2,
+            'used_velocity_limit': 0.42,
+            'used_acceleration_limit': 0.84,
+            'used_jerk_limit': 4.199999999999999,
+            'lower_position_limit': -1.52175,
+            'upper_position_limit': 1.31947},
+ 'JOINT6': {'urdf_velocity_limit': 1.0,
+            'used_velocity_limit': 0.35,
+            'used_acceleration_limit': 0.7,
+            'used_jerk_limit': 3.4999999999999996,
+            'lower_position_limit': -2.87729,
+            'upper_position_limit': 1.3115}}
+
+===== BLOCK 1 FIRST =====
+Keys:
+['sample_index', 'time_from_start', 'positions', 'velocities', 'accelerations']
+{'sample_index': 0,
+ 'time_from_start': 0.0,
+ 'positions': [0.193624406,
+               1.445018501,
+               0.738272993,
+               -0.344284592,
+               1.194373808,
+               -1.191825549],
+ 'velocities': [-0.0, 0.0, 0.0, -0.0, -0.0, -0.0],
+ 'accelerations': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+
+===== BLOCK 2 FIRST =====
+Keys:
+['sample_index', 'time_from_start', 'positions', 'velocities', 'accelerations']
+{'sample_index': 0,
+ 'time_from_start': 0.0,
+ 'positions': [-0.035381164,
+               1.582935463,
+               0.867213627,
+               -0.534053687,
+               1.041176486,
+               -1.28269767],
+ 'velocities': [-0.0, -0.0, 0.0, 0.0, -0.0, 0.0],
+ 'accelerations': [-0.0, -0.0, 0.0, 0.0, 0.0, 0.0]}
+
+===== BLOCK 2 LAST =====
+Keys:
+['sample_index', 'time_from_start', 'positions', 'velocities', 'accelerations']
+{'sample_index': 146,
+ 'time_from_start': 1.46,
+ 'positions': [-0.035381245,
+               1.524013716,
+               0.968022938,
+               -0.443997951,
+               0.965939472,
+               -1.115487084],
+ 'velocities': [-0.0, -0.0, 0.0, 0.0, -0.0, 0.0],
+ 'accelerations': [-0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+
+===== BLOCK 5 LAST =====
+Keys:
+['sample_index', 'time_from_start', 'positions', 'velocities', 'accelerations']
+{'sample_index': 143,
+ 'time_from_start': 1.43,
+ 'positions': [-0.429310307,
+               1.726906905,
+               1.0250397690000002,
+               -0.34114666599999993,
+               1.193992722,
+               -1.186405855],
+ 'velocities': [0.0, -0.0, -0.0, 0.0, 0.0, 0.0],
+ 'accelerations': [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+
+===== GRIPPER GRASP CONFIG =====
+version: 1
+joint_names:
+- JOINT7
+- GRIPPER_RIGHT_JOINT
+geometry:
+  fully_open_gap_m: 0.156
+  cylinder_diameter_m: 0.06
+  gap_equation: gap = 0.156 - (JOINT7 - GRIPPER_RIGHT_JOINT)
+positions:
+  open:
+  - 0.0
+  - 0.0
+  geometric_touch:
+  - 0.048
+  - -0.048
+  initial_grasp:
+  - 0.0488
+  - -0.0488
+motion:
+  close_duration_sec: 4.0
+
+===== EXECUTION CONFIG FILES =====
+src/drok_arm_control/config/cylinder_gripper_grasp.yaml
+src/drok_arm_control/config/cylinder_timed_path_executor.yaml
+src/drok_arm_control/config/cylinder_trajectory_timing.yaml
+src/drok_arm_control/config/pick_place_task.yaml.before_gripper_close_fix_20260723_232724
+
+===== TIMED EXECUTOR DEFAULT CONFIG =====
+32-
+33-    parser.add_argument(
+34-        "--timed-path",
+35-        default=str(
+36-            ROOT
+37-            / "cylinder_timed_joint_path_segmented.yaml"
+38-        ),
+39-    )
+40-
+41-    parser.add_argument(
+42:        "--config",
+43-        default=str(
+44-            ROOT
+45-            / "src/drok_arm_control/config"
+46-            / "cylinder_timed_path_executor.yaml"
+47-        ),
+48-    )
+49-
+50-    parser.add_argument(
+51-        "--stop-after-block",
+52-        type=int,
+53-        default=0,
+54-        help=(
+55-            "0=entry only, 1~5=해당 block까지 실행"
+56-        ),
+57-    )
+58-
+59-    parser.add_argument(
+60-        "--execute-arm-only",
+61-        action="store_true",
+62-    )

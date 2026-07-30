@@ -1,0 +1,45 @@
+========================================
+ DROK Upright 5-DoF IK Solver
+========================================
+IK mode: upright
+----------------------------------------
+Target position [m]
+x = 0.450000000
+y = -0.150000000
+z = 0.322000000
+----------------------------------------
+Constraint
+TCP local +Z = world +Z
+TCP yaw      = free
+----------------------------------------
+Initial joint positions [rad]
+q1 = -0.780979268
+q2 = 1.693329216
+q3 = 1.113364241
+q4 = 0.148335595
+q5 = -1.348914521
+q6 = 0.177639305
+----------------------------------------
+IK result joint positions [rad]
+q1 = -0.777794115
+q2 = 1.669148266
+q3 = 1.086318175
+q4 = 0.180872348
+q5 = -1.304378737
+q6 = 0.188246157
+----------------------------------------
+Solved TCP local +Z in world
+0.000014075 0.000002547 1.000000000
+----------------------------------------
+Success           : false
+Iterations        : 2000
+Position error    : 0.000009422 m
+Upright error     : 0.000014303 rad
+Orientation error : 0.000014303 rad
+Minimum margin    : 0.007605885 rad
+Message           : Upright IK reached the maximum iteration count.
+----------------------------------------
+Machine-readable joint result
+JOINT_RESULT=-0.777794115,1.669148266,1.086318175,0.180872348,-1.304378737,0.188246157
+========================================
+[ros2run]: Process exited with failure 2

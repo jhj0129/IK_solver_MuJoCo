@@ -1,0 +1,131 @@
+analysis_version: 1
+model_path: analysis_reports/drok_arm_kinematics_only.urdf
+trajectory_path: generated_known_object_paths/box_2_x0p391498_ym0p124411_z0p272000_to_box_1/timed_joint_path.yaml
+joint4:
+  joint_name: JOINT4
+  joint_id: 3
+  body_name: LINK4
+  body_id: 4
+tcp:
+  frame_type: body
+  frame_name: GRIPPER_LEFT
+  frame_id: 7
+  approach_axis_local: +X
+reference_grasp_z: 0.282
+sample_count: 937
+global:
+  link4_z_minimum: 0.30126252348695703
+  link4_z_maximum: 0.3516907238069642
+  tcp_tilt_from_horizontal_minimum_deg: 3.27057452011964e-07
+  tcp_tilt_from_horizontal_maximum_deg: 0.0009144462088198537
+phases:
+  MOTION_BLOCK_1_PICK_APPROACH:
+    sample_count: 183
+    link4_z:
+      first: 0.30126252348695703
+      last: 0.3051922451051849
+      minimum: 0.30126252348695703
+      maximum: 0.3051922451051849
+    link4_grasp_z_offset:
+      first: 0.01926252348695706
+      last: 0.023192245105184917
+      minimum: 0.01926252348695706
+      maximum: 0.023192245105184917
+    tcp_tilt_from_horizontal_deg:
+      first: 7.990076940405762e-07
+      last: 1.3898132733638974e-06
+      minimum: 3.27057452011964e-07
+      maximum: 0.0009144462088198537
+    tcp_approach_axis_z:
+      first: -1.3945315009775529e-08
+      last: -2.4256817608120013e-08
+      minimum: -4.609068937627532e-06
+      maximum: 1.5960097175608485e-05
+  MOTION_BLOCK_2_PICK_LIFT:
+    sample_count: 152
+    link4_z:
+      first: 0.30519224510518483
+      last: 0.3495505767622274
+      minimum: 0.30519224510518483
+      maximum: 0.3495505767622274
+    link4_grasp_z_offset:
+      first: 0.02319224510518486
+      last: 0.06755057676222742
+      minimum: 0.02319224510518486
+      maximum: 0.06755057676222742
+    tcp_tilt_from_horizontal_deg:
+      first: 1.389813282580437e-06
+      last: 1.6552736902458308e-05
+      minimum: 8.212050437940669e-07
+      maximum: 7.263832961936554e-05
+    tcp_approach_axis_z:
+      first: -2.4256817768978975e-08
+      last: 2.888997591642609e-07
+      minimum: -1.2677780150065083e-06
+      maximum: 6.659934087065183e-07
+  MOTION_BLOCK_3_TRANSFER:
+    sample_count: 306
+    link4_z:
+      first: 0.3495505767622274
+      last: 0.3516907238069642
+      minimum: 0.34936875414658153
+      maximum: 0.3516907238069642
+    link4_grasp_z_offset:
+      first: 0.06755057676222742
+      last: 0.06969072380696423
+      minimum: 0.06736875414658156
+      maximum: 0.06969072380696423
+    tcp_tilt_from_horizontal_deg:
+      first: 1.6552736902458308e-05
+      last: 9.157310581619896e-05
+      minimum: 8.649759155452018e-07
+      maximum: 0.0001520632052628572
+    tcp_approach_axis_z:
+      first: 2.888997591642609e-07
+      last: -1.5982522027691608e-06
+      minimum: -2.6540036029697118e-06
+      maximum: 2.888997591642609e-07
+  MOTION_BLOCK_4_PLACE_DESCEND:
+    sample_count: 139
+    link4_z:
+      first: 0.3516907238069642
+      last: 0.30684184592098496
+      minimum: 0.30684184592098496
+      maximum: 0.3516907238069642
+    link4_grasp_z_offset:
+      first: 0.06969072380696423
+      last: 0.024841845920984984
+      minimum: 0.024841845920984984
+      maximum: 0.06969072380696423
+    tcp_tilt_from_horizontal_deg:
+      first: 9.157310581540665e-05
+      last: 0.0005738765004338011
+      minimum: 4.250663325041169e-06
+      maximum: 0.0007021290856232165
+    tcp_approach_axis_z:
+      first: -1.5982522027553324e-06
+      last: 1.0016034432225026e-05
+      minimum: -1.5982522027553324e-06
+      maximum: 1.2254464317835599e-05
+  MOTION_BLOCK_5_PLACE_RETREAT:
+    sample_count: 157
+    link4_z:
+      first: 0.30684184592098496
+      last: 0.30544375619110653
+      minimum: 0.30544375619110653
+      maximum: 0.30684184592098496
+    link4_grasp_z_offset:
+      first: 0.024841845920984984
+      last: 0.023443756191106557
+      minimum: 0.023443756191106557
+      maximum: 0.024841845920984984
+    tcp_tilt_from_horizontal_deg:
+      first: 0.0005738765004338011
+      last: 7.100086510971829e-06
+      minimum: 5.471180839505797e-07
+      maximum: 0.0005738765004338011
+    tcp_approach_axis_z:
+      first: 1.0016034432225026e-05
+      last: 1.239198867928946e-07
+      minimum: -1.0829286080101257e-06
+      maximum: 1.0016034432225026e-05

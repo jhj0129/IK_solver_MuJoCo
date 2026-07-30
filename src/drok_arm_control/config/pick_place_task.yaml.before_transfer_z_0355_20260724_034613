@@ -1,0 +1,70 @@
+task:
+  name: cube_80mm_pick_place_v3_safe_transfer
+
+interfaces:
+  joint_state_topic: /joint_states
+  arm_action: /arm_controller/follow_joint_trajectory
+  gripper_action: /gripper_controller/follow_joint_trajectory
+
+# HOME is kept separate so it can be replaced later without touching the task code.
+home:
+  joint_positions:
+    - -0.000001628
+    - 0.297361544
+    - 0.296742637
+    - -0.000030712
+    - 0.000061231
+    - 0.000102331
+
+# PICKUP coordinates are expressed as the object-center pose.
+# The node computes PRE-GRASP from:
+#   pregrasp = object_center - approach_direction * approach_distance
+pickup:
+  object_center: [0.450, 0.180, 0.272]
+  orientation_rpy: [0.000, 0.000, 0.000]
+  approach_direction: [1.000, 0.000, 0.000]
+  approach_distance: 0.120
+  cartesian_step: 0.005
+  lift_height: 0.088
+
+# PLACE is intentionally independent from PICKUP.
+# For this first test it uses direct joint-space Poly5 motion.
+place:
+  # 최종 물체 중심 목표
+  position: [0.450, -0.180, 0.272]
+  orientation_rpy: [0.000, 0.000, 0.000]
+
+  # PICK/PLACE 운반 중 사용할 절대 TCP 안전 높이
+  safe_transfer_z: 0.360
+
+  # 받침대에 물체를 누르지 않고 중력으로 안착시키기 위한 간격
+  release_clearance: 0.002
+
+  # 물체를 놓은 뒤 HOME으로 가지 않고 먼저 빠지는 방향
+  retreat_direction: [-1.000, 0.000, 0.000]
+  retreat_distance: 0.120
+
+object:
+  size_xyz: [0.080, 0.080, 0.080]
+
+gripper:
+  open_positions: [0.000, 0.000]
+  close_positions: [0.0390, -0.0390]
+
+# Multi-seed IK cost:
+# wrist joints receive larger weights so branches with excessive
+# JOINT4~6 rotation are rejected.
+ik_search:
+  joint_weights: [1.0, 1.0, 1.0, 6.0, 4.0, 6.0]
+  limit_penalty_gain: 0.0025
+  minimum_limit_margin: 0.050
+
+motion:
+  arm_duration: 3.0
+  cartesian_duration: 2.4
+  gripper_duration: 2.0
+  point_rate: 100.0
+
+timing:
+  wait_after_arm: 1.0
+  wait_after_gripper: 3.0

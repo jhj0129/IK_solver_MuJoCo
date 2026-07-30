@@ -1,0 +1,433 @@
+============================================================
+GENERIC BOX EXECUTOR STRUCTURE CHECK
+============================================================
+
+===== GENERATED FULL PATH RUNTIME ENTRY =====
+Root keys:
+['version', 'joint_names', 'candidate_index', 'candidate_phi_deg', 'source_files', 'runtime_entry', 'events', 'segment_ranges', 'summary', 'path']
+
+runtime_entry:
+{'mode': 'joint_space_quintic',
+ 'start_source': '/joint_states',
+ 'goal_global_index': 0,
+ 'goal_joint_positions': [0.193624406,
+                          1.445018501,
+                          0.738272993,
+                          -0.344284592,
+                          1.194373808,
+                          -1.191825549],
+ 'dry_run_initial_joint_positions': [1.6010028251419505e-05,
+                                     0.2959641805914642,
+                                     0.29480684106484195,
+                                     -0.0012966938861920664,
+                                     -2.793504864007916e-05,
+                                     -0.005586177048037478],
+ 'dry_run_maximum_joint_change_rad': 1.19440174304864,
+ 'dry_run_maximum_joint_change_deg': 68.43417891975608}
+
+summary:
+{'cartesian_sample_count': 185,
+ 'maximum_joint_jump_rad': 0.010073863999999988,
+ 'maximum_joint_jump_deg': 0.5771898905887769,
+ 'minimum_joint_limit_margin_rad': 0.125096192,
+ 'minimum_joint_limit_margin_deg': 7.167483834758213,
+ 'place_connection_position_gap_m': 0.0,
+ 'place_connection_joint_gap_rad': 2.8307999999865885e-05,
+ 'place_connection_joint_gap_deg': 0.0016219289264486501}
+
+segment_ranges:
+{'PICK_PREGRASP': {'start_index': 0, 'end_index': 0},
+ 'PICK_APPROACH': {'start_index': 1, 'end_index': 27},
+ 'PICK_LIFT': {'start_index': 28, 'end_index': 44},
+ 'TRANSFER': {'start_index': 45, 'end_index': 140},
+ 'PLACE_DESCEND': {'start_index': 141, 'end_index': 157},
+ 'PLACE_RETREAT': {'start_index': 158, 'end_index': 184}}
+
+===== TIMED EXECUTOR ARGUMENTS =====
+usage: execute_cylinder_timed_arm_path.py [-h] [--timed-path TIMED_PATH]
+                                          [--config CONFIG]
+                                          [--stop-after-block STOP_AFTER_BLOCK]
+                                          [--execute-arm-only]
+                                          [--confirmation CONFIRMATION]
+
+options:
+  -h, --help            show this help message and exit
+  --timed-path TIMED_PATH
+  --config CONFIG
+  --stop-after-block STOP_AFTER_BLOCK
+                        0=entry only, 1~5=해당 block까지 실행
+  --execute-arm-only
+  --confirmation CONFIRMATION
+
+===== TIMED EXECUTOR ENTRY HANDLING =====
+139-        60.0 * tau
+140-        - 180.0 * tau**2
+141-        + 120.0 * tau**3
+142-    )
+143-
+144-    return s, ds, d2s
+145-
+146-
+147:def calculate_entry_duration(
+148-    start: list[float],
+149-    goal: list[float],
+150-    joint_names: list[str],
+151-    timed_document: dict[str, Any],
+152-    speed_scale: float,
+153-    duration_margin: float,
+154-    minimum_duration: float,
+155-) -> float:
+156-    duration = 0.0
+157-
+158-    for index, joint_name in enumerate(
+159-        joint_names
+160-    ):
+161-        limit = timed_document["limits"][
+162-            joint_name
+163-        ]
+164-
+165-        velocity_limit = float(
+--
+210-    duration /= speed_scale
+211-
+212-    return max(
+213-        duration,
+214-        minimum_duration,
+215-    )
+216-
+217-
+218:def create_entry_trajectory(
+219-    start: list[float],
+220-    goal: list[float],
+221-    joint_names: list[str],
+222-    controller_rate: float,
+223-    duration: float,
+224-) -> JointTrajectory:
+225-    trajectory = JointTrajectory()
+226-    trajectory.joint_names = list(
+227-        joint_names
+228-    )
+229-
+230-    interval_count = max(
+231-        2,
+232-        int(
+233-            math.ceil(
+234-                duration * controller_rate
+235-            )
+236-        ),
+--
+642-    execution_config = config[
+643-        "execution"
+644-    ]
+645-
+646-    validation_config = config[
+647-        "validation"
+648-    ]
+649-
+650:    entry_config = config[
+651:        "entry_motion"
+652-    ]
+653-
+654-    speed_scale = float(
+655-        execution_config["speed_scale"]
+656-    )
+657-
+658-    if not (
+659-        0.0 < speed_scale <= 1.0
+660-    ):
+661-        raise RuntimeError(
+662-            "speed_scale은 0보다 크고 "
+663-            "1 이하여야 합니다."
+664-        )
+665-
+666-    controller_rate = float(
+667-        timed_document[
+668-            "controller_rate_hz"
+669-        ]
+--
+802-                "maximum_goal_error_rad"
+803-            ]
+804-        )
+805-
+806-        current_q = node.wait_for_joint_state(
+807-            state_timeout
+808-        )
+809-
+810:        entry_duration = (
+811:            calculate_entry_duration(
+812-                current_q,
+813-                first_path_position,
+814-                joint_names,
+815-                timed_document,
+816-                speed_scale,
+817-                float(
+818:                    entry_config[
+819-                        "duration_margin"
+820-                    ]
+821-                ),
+822-                float(
+823:                    entry_config[
+824-                        "minimum_duration_sec"
+825-                    ]
+826-                ),
+827-            )
+828-        )
+829-
+830:        entry_trajectory = (
+831:            create_entry_trajectory(
+832-                current_q,
+833-                first_path_position,
+834-                joint_names,
+835-                controller_rate,
+836:                entry_duration,
+837-            )
+838-        )
+839-
+840-        print()
+841-        print(
+842-            "Current q        : "
+843-            + ", ".join(
+844-                f"{value:+.6f}"
+845-                for value in current_q
+846-            )
+847-        )
+848-
+849-        print(
+850:            "PICK_PREGRASP q  : "
+851-            + ", ".join(
+852-                f"{value:+.6f}"
+853-                for value in first_path_position
+854-            )
+855-        )
+856-
+857-        print(
+858-            "Entry max change : "
+859-            f"{math.degrees(maximum_difference(current_q, first_path_position)):.3f} deg"
+860-        )
+861-
+862-        print(
+863-            "Entry duration   : "
+864:            f"{trajectory_duration(entry_trajectory):.3f} s"
+865-        )
+866-
+867-        node.send_and_wait(
+868:            entry_trajectory,
+869:            "ENTRY_TO_PICK_PREGRASP",
+870-            server_timeout,
+871-            trajectory_duration(
+872:                entry_trajectory
+873-            ) + result_margin,
+874-        )
+875-
+876-        measured_q = node.current_positions()
+877-
+878:        entry_error = maximum_difference(
+879-            measured_q,
+880-            first_path_position,
+881-        )
+882-
+883-        print(
+884-            "Entry goal error : "
+885:            f"{math.degrees(entry_error):.6f} deg"
+886-        )
+887-
+888:        if entry_error > goal_tolerance:
+889-            raise RuntimeError(
+890-                "ENTRY 종료 관절 오차가 큽니다: "
+891:                f"{entry_error:.9f} rad"
+892-            )
+893-
+894-        if arguments.stop_after_block == 0:
+895-            print()
+896-            print(
+897-                "EXECUTION RESULT: PASS — ENTRY ONLY"
+898-            )
+899-            return 0
+900-
+901-        for block_number, block in enumerate(
+902-            blocks[
+903-                :arguments.stop_after_block
+904-            ],
+905-            start=1,
+906-        ):
+907-            block_start = [
+908-                float(value)
+909-                for value in block[
+
+===== FULL EXECUTOR PATH CALLS =====
+  echo "Timed path           : ${TIMED_PATH}"
+  echo "Gripper close target : ${CLOSE_LEFT}, ${CLOSE_RIGHT}"
+  echo "Log file             : ${LOG_FILE}"
+  echo
+  echo "실제 하드웨어가 아닌 MuJoCo 전용 실행입니다."
+} > "${LOG_FILE}"
+
+echo "[시작] MuJoCo 원기둥 Pick-and-Place"
+printf '[로그] %s\n' "${LOG_FILE}"
+
+run_step \
+  "STAGE 0 — CONTROLLER/ACTION PRECHECK" \
+  check_interfaces
+
+run_step \
+  "STAGE 1 — GRIPPER FULL OPEN" \
+  send_gripper_goal \
+  0.0 \
+  0.0 \
+  2
+
+run_step \
+  "STAGE 2 — HOME/OPEN STATE CHECK" \
+  check_joint_state \
+  home_open
+
+run_step \
+  "STAGE 3 — PICK APPROACH" \
+  python3 -u \
+  "${APPROACH_SCRIPT}" \
+  --timed-path "${TIMED_PATH}" \
+  --stop-after-block 1 \
+  --execute-arm-only \
+  --confirmation EXECUTE_ARM_ONLY
+
+run_step \
+  "STAGE 4 — CYLINDER GRASP" \
+  send_gripper_goal \
+  "${CLOSE_LEFT}" \
+  "${CLOSE_RIGHT}" \
+  4
+
+run_step \
+  "STAGE 5 — GRASP STATE CHECK" \
+  check_joint_state \
+  grasp
+
+run_step \
+  "STAGE 6 — PICK LIFT" \
+  python3 -u \
+  "${LIFT_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_PICK_LIFT_ONLY
+
+run_step \
+  "STAGE 7 — TRANSFER" \
+  python3 -u \
+  "${TRANSFER_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_TRANSFER_ONLY
+
+run_step \
+  "STAGE 8 — PLACE DESCEND" \
+  python3 -u \
+  "${DESCEND_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_PLACE_DESCEND_ONLY
+
+run_step \
+  "STAGE 9 — PARTIAL RELEASE" \
+  send_gripper_goal \
+  0.0400 \
+  -0.0400 \
+  2
+
+run_step \
+  "STAGE 10 — RELEASE SETTLE WAIT" \
+  sleep 1
+
+run_step \
+  "STAGE 11 — GRIPPER FULL OPEN" \
+  send_gripper_goal \
+  0.0 \
+  0.0 \
+  2
+
+run_step \
+  "STAGE 12 — PLACE RETREAT" \
+  python3 -u \
+  "${RETREAT_SCRIPT}" \
+  --execute \
+  --confirmation EXECUTE_PLACE_RETREAT_ONLY
+
+CURRENT_STAGE="COMPLETED"
+CURRENT_STAGE_DISPLAY="완료"
+
+SEQUENCE_END_EPOCH="$(date +%s)"
+SEQUENCE_ELAPSED_SEC=$((SEQUENCE_END_EPOCH - SEQUENCE_START_EPOCH))
+
+{
+  echo
+  echo "================================================================================"
+  echo "FULL PICK-AND-PLACE RESULT: PASS"
+  echo "================================================================================"
+  echo "End time     : $(date --iso-8601=seconds)"
+  echo "Elapsed time : ${SEQUENCE_ELAPSED_SEC} sec"
+  echo "Log file     : ${LOG_FILE}"
+  echo
+  echo "완료 위치: PLACE_RETREAT 종료점"
+  echo "최종 HOME 복귀는 아직 실행하지 않았습니다."
+} >> "${LOG_FILE}"
+
+===== RETURN HOME FIXED VALUES =====
+31-GRIPPER_JOINT_NAMES = [
+32-    "JOINT7",
+33-    "GRIPPER_RIGHT_JOINT",
+34-]
+35-
+36:EXPECTED_RETREAT_Q = [
+37-    -0.587524586,
+38-    +1.209627227,
+39-    +0.566751133,
+40-    +1.039245857,
+41-    -0.715373374,
+42-    +0.734186776,
+43-]
+44-
+45-HOME_Q = [
+46-    -0.000001628,
+47-    +0.297361544,
+48-    +0.296742637,
+49-    -0.000030712,
+50-    +0.000061231,
+51-    +0.000102331,
+52-]
+53-
+54-CONTROLLER_RATE_HZ = 100.0
+55-
+56-RETREAT_START_TOLERANCE_RAD = 0.060
+57-GRIPPER_OPEN_TOLERANCE_M = 0.003
+58-FINAL_HOME_TOLERANCE_RAD = math.radians(2.0)
+59-
+60-DEFAULT_FOLD_DURATION_SEC = 8.0
+61-DEFAULT_BASE_DURATION_SEC = 4.0
+--
+243-
+244-        maximum_retreat_error = max(
+245-            abs(current - expected)
+246-            for current, expected in zip(
+247-                current_q,
+248:                EXPECTED_RETREAT_Q,
+249-            )
+250-        )
+251-
+252-        gripper_open_error = max(
+253-            abs(
+254-                self.current_positions[name]
+255-            )
+256-            for name in GRIPPER_JOINT_NAMES
+257-        )
+258-
+259-        print(
+260-            "[상태 확인] RETREAT 시작 오차: "
+261-            f"{math.degrees(maximum_retreat_error):.3f}°"
+262-        )
+263-
+264-        print(
+265-            "[상태 확인] 그리퍼 개방 오차: "
+266-            f"{gripper_open_error * 1000.0:.3f} mm"
+267-        )
+268-
+269-        if (
+270-            maximum_retreat_error
+271-            > RETREAT_START_TOLERANCE_RAD
+272-        ):
+273-            raise RuntimeError(

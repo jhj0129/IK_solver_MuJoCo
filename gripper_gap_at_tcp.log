@@ -1,0 +1,49 @@
+========================================================================================
+GRIPPER GAP AT CYLINDER TCP
+========================================================================================
+Model             : /tmp/tmpw2esfdn8/mujoco_description.xml
+Candidate         : 21
+Grasp index       : 27
+TCP position      : +0.450000000, +0.180000000, +0.282000000
+Closing axis      : -0.500000000, +0.866025404, +0.000000000
+Cylinder diameter : 60.000 mm
+
+[FULLY_OPEN]
+  q                      : left=+0.000000000 m, right=+0.000000000 m
+  TCP -> +closing finger : 78.000 mm
+  TCP -> -closing finger : 78.000 mm
+  actual finger gap      : 156.000 mm
+  +closing hit           : geom_8 / GRIPPER_LEFT
+  -closing hit           : geom_9 / GRIPPER_RIGH
+
+[CURRENT]
+  q                      : left=+0.020032111 m, right=-0.019967891 m
+  TCP -> +closing finger : 57.968 mm
+  TCP -> -closing finger : 58.032 mm
+  actual finger gap      : 116.000 mm
+  +closing hit           : geom_8 / GRIPPER_LEFT
+  -closing hit           : geom_9 / GRIPPER_RIGH
+
+[SYMMETRIC_20MM]
+  q                      : left=+0.020000000 m, right=-0.020000000 m
+  TCP -> +closing finger : 58.000 mm
+  TCP -> -closing finger : 58.000 mm
+  actual finger gap      : 116.000 mm
+  +closing hit           : geom_8 / GRIPPER_LEFT
+  -closing hit           : geom_9 / GRIPPER_RIGH
+
+[URDF_MAX_CLOSE]
+  q                      : left=+0.040000000 m, right=-0.040000000 m
+  TCP -> +closing finger : 38.000 mm
+  TCP -> -closing finger : 38.000 mm
+  actual finger gap      : 76.000 mm
+  +closing hit           : geom_8 / GRIPPER_LEFT
+  -closing hit           : geom_9 / GRIPPER_RIGH
+
+========================================================================================
+60 mm CYLINDER CONTACT
+========================================================================================
+Measured gap model : gap=0.156000000 -2.000000000*q
+Calculated touch q  : left=+0.048000000 m, right=-0.048000000 m
+Within URDF limits  : NO
+Gap at q=±0.040 m   : 76.000 mm

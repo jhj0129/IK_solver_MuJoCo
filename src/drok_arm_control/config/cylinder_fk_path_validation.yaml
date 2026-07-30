@@ -1,0 +1,21 @@
+version: 1
+
+position:
+  # 원래 Cartesian 직선으로부터 허용하는 최대 횡방향 오차
+  maximum_cross_track_error_m: 0.001
+
+  # 각 motion block 시작·종료점의 FK 위치 오차
+  maximum_endpoint_error_m: 0.0002
+
+  # 구간 시작·종료점을 길이 방향으로 넘어가는 거리
+  maximum_longitudinal_overshoot_m: 0.001
+
+  # TCP가 진행 방향의 반대로 되돌아가는 거리
+  maximum_longitudinal_backtrack_m: 0.001
+
+orientation:
+  # full-pose 구간의 SO(3) 각도 오차
+  maximum_full_orientation_error_rad: 0.002
+
+  # upright 구간의 TCP local +Z 기울기 오차
+  maximum_upright_tilt_error_rad: 0.002

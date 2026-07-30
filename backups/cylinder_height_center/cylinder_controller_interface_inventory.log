@@ -1,0 +1,209 @@
+[92mgripper_controller     [0m joint_trajectory_controller/JointTrajectoryController  [92mactive[0m
+[92mjoint_state_broadcaster[0m joint_state_broadcaster/JointStateBroadcaster          [92mactive[0m
+[92marm_controller         [0m joint_trajectory_controller/JointTrajectoryController  [92mactive[0m
+
+command interfaces
+	[94mGRIPPER_RIGHT_JOINT/position [available] [claimed][0m
+	[94mJOINT1/position [available] [claimed][0m
+	[94mJOINT2/position [available] [claimed][0m
+	[94mJOINT3/position [available] [claimed][0m
+	[94mJOINT4/position [available] [claimed][0m
+	[94mJOINT5/position [available] [claimed][0m
+	[94mJOINT6/position [available] [claimed][0m
+	[94mJOINT7/position [available] [claimed][0m
+state interfaces
+	GRIPPER_RIGHT_JOINT/effort
+	GRIPPER_RIGHT_JOINT/position
+	GRIPPER_RIGHT_JOINT/torque
+	GRIPPER_RIGHT_JOINT/velocity
+	JOINT1/effort
+	JOINT1/position
+	JOINT1/torque
+	JOINT1/velocity
+	JOINT2/effort
+	JOINT2/position
+	JOINT2/torque
+	JOINT2/velocity
+	JOINT3/effort
+	JOINT3/position
+	JOINT3/torque
+	JOINT3/velocity
+	JOINT4/effort
+	JOINT4/position
+	JOINT4/torque
+	JOINT4/velocity
+	JOINT5/effort
+	JOINT5/position
+	JOINT5/torque
+	JOINT5/velocity
+	JOINT6/effort
+	JOINT6/position
+	JOINT6/torque
+	JOINT6/velocity
+	JOINT7/effort
+	JOINT7/position
+	JOINT7/torque
+	JOINT7/velocity
+
+/arm_controller/follow_joint_trajectory [control_msgs/action/FollowJointTrajectory]
+/gripper_controller/follow_joint_trajectory [control_msgs/action/FollowJointTrajectory]
+
+A message was lost!!!
+	total count change:1
+	total count: 1---
+header:
+  stamp:
+    sec: 25
+    nanosec: 83999999
+  frame_id: base_link
+name:
+- JOINT1
+- JOINT2
+- JOINT3
+- JOINT4
+- JOINT5
+- JOINT6
+- JOINT7
+- GRIPPER_RIGHT_JOINT
+position:
+- 7.265213005004797e-05
+- 0.2969657274255342
+- 0.2962787082803932
+- -6.887050535138549e-05
+- -0.0005007378371441928
+- 2.447957657879302e-05
+- -2.8592319660958524e-05
+- -0.00015967575820596166
+velocity:
+- 3.5481549038504524e-07
+- 6.033895105206237e-07
+- -2.4619447472719614e-07
+- 6.900532268532019e-08
+- -5.933024190937812e-06
+- 2.6734909881023697e-07
+- 4.2036171648207956e-07
+- -1.7842757913031747e-10
+effort:
+- -0.2088767012837882
+- 3.026467777398807
+- 3.7167107984297445
+- 0.009142475367686191
+- 0.0785662926547576
+- 0.00018226967769091325
+- 0.0857657807063305
+- 0.25329642932459484
+---
+
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+/**:
+  ros__parameters:
+    joints:
+      - JOINT1
+      - JOINT2
+      - JOINT3
+      - JOINT4
+      - JOINT5
+      - JOINT6
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+
+    allow_partial_joints_goal: false
+    open_loop_control: false
+    allow_integration_in_goal_trajectories: true
+    allow_nonzero_velocity_at_trajectory_end: false
+
+    constraints:
+      stopped_velocity_tolerance: 0.05
+      goal_time: 1.0
+
+      JOINT1:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT2:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT3:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT4:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT5:
+        trajectory: 10.0
+        goal: 10.0
+
+      JOINT6:
+        trajectory: 10.0
+        goal: 10.0
+
+src/drok_arm_mujoco/config/mujoco_inputs.xml:20:      <position name="JOINT7" joint="JOINT7"
+src/drok_arm_mujoco/config/mujoco_inputs.xml:23:      <position name="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml:24:                joint="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml:40:                    name="JOINT7"
+src/drok_arm_mujoco/config/mujoco_inputs.xml:44:                    name="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_195151:20:      <position name="JOINT7" joint="JOINT7"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_195151:23:      <position name="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_195151:24:                joint="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_195151:40:                    name="JOINT7"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_195151:44:                    name="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_194053:20:      <position name="JOINT7" joint="JOINT7"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_194053:23:      <position name="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_194053:24:                joint="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_194053:40:                    name="JOINT7"
+src/drok_arm_mujoco/config/mujoco_inputs.xml.before_gripper_kp_20260723_194053:44:                    name="GRIPPER_RIGHT_JOINT"
+src/drok_arm_mujoco/config/gripper_controller.yaml:4:      - JOINT7
+src/drok_arm_mujoco/config/gripper_controller.yaml:5:      - GRIPPER_RIGHT_JOINT
+src/drok_arm_mujoco/config/controllers.yaml:11:    gripper_controller:
+src/drok_arm_control/config/pick_place_task.yaml.before_v4_branch_switch_20260724_042756:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_v4_branch_switch_20260724_042756:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_margin_0045_outboard_20260724_040408:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_margin_0045_outboard_20260724_040408:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_preload_lift_20260724_030410:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_preload_lift_20260724_030410:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_transfer_z_0360_20260724_034239:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_transfer_z_0360_20260724_034239:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_close_0385_20260723_234055:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_close_0385_20260723_234055:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_transfer_corridor_20260724_035438:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_transfer_corridor_20260724_035438:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_gripper_close_fix_20260723_232724:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_gripper_close_fix_20260723_232724:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_margin_0045_20260724_035010:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_margin_0045_20260724_035010:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_safe_place_v3_20260724_033355:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_safe_place_v3_20260724_033355:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_transfer_z_0355_20260724_034613:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_transfer_z_0355_20260724_034613:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_close_0380_20260723_235631:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_close_0380_20260723_235631:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_outboard_corridor_20260724_040013:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_outboard_corridor_20260724_040013:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_v2_20260723_222917:6:  arm_action: /arm_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_v2_20260723_222917:7:  gripper_action: /gripper_controller/follow_joint_trajectory
+src/drok_arm_control/config/pick_place_task.yaml.before_v2_20260723_222917:29:# JOINT7 is the left slider and GRIPPER_RIGHT_JOINT is the right slider.

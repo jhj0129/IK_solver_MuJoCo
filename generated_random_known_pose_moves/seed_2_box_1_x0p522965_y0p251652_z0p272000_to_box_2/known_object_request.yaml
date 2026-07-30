@@ -1,0 +1,16 @@
+version: 1
+mode: known_object_pose_to_fixed_box_place
+source_box: 1
+known_object_center_world:
+  x: 0.522965
+  y: 0.251652
+  z: 0.272
+target_box: 2
+place_position_source: box_layout_fixed_place_position
+candidate_index_request: null
+generated_output_directory: /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2
+side_grasp_posture_config: /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/config/side_grasp_posture.yaml
+notes:
+- 현재 단계에서는 알려진 object 좌표를 planning scene에 주입합니다.
+- 목표 Place 좌표는 기존 BOX 고정 위치를 사용합니다.
+- LINK4 자세 검증은 생성 후 별도 분석으로 수행합니다.

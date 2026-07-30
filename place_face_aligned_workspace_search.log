@@ -1,0 +1,142 @@
+==============================================================================================================
+DROK ARM PLACE FACE-ALIGNED WORKSPACE SEARCH
+==============================================================================================================
+Robot execution : 비활성화
+IK mode         : full
+Target retreat  : 80 mm
+Maximum search  : 120 mm
+Step            : 5 mm
+Initial reference: [  -13.02°,   +79.30°,   +56.35°,   -41.09°,   +26.35°,    -0.00°]
+
+==============================================================================================================
+SIDE=NEGATIVE_X_SIDE  ROLL=+0.0°  YAW=+0.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 2
+PLACE_RELEASE q: [  -38.05°,   +88.63°,   +46.12°,   +40.81°,   -54.51°,   +32.09°]
+Initial alignment max Δ: 81.901°
+[01/24] x=+0.445  retreat=5 mm  maxΔ=0.652°
+[02/24] x=+0.440  retreat=10 mm  maxΔ=0.651°
+[03/24] x=+0.435  retreat=15 mm  maxΔ=0.667°
+[04/24] x=+0.430  retreat=20 mm  maxΔ=0.683°
+[05/24] x=+0.425  retreat=25 mm  maxΔ=0.699°
+[06/24] x=+0.420  retreat=30 mm  maxΔ=0.716°
+[07/24] x=+0.415  retreat=35 mm  maxΔ=0.732°
+[08/24] x=+0.410  retreat=40 mm  maxΔ=0.748°
+[09/24] x=+0.405  retreat=45 mm  maxΔ=0.764°
+[10/24] x=+0.400  retreat=50 mm  IK FAIL
+
+Last success x: 0.405 m
+Maximum retreat: 45.0 mm
+TCP clearance beyond cube face: 5.0 mm
+Largest path step: 0.764°
+RESULT: FAIL
+
+==============================================================================================================
+SIDE=NEGATIVE_X_SIDE  ROLL=+90.0°  YAW=+0.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 1
+PLACE_RELEASE q: [  -38.05°,   +88.63°,   +46.12°,   +40.81°,   -54.51°,   -57.91°]
+Initial alignment max Δ: 81.901°
+[01/24] x=+0.445  retreat=5 mm  maxΔ=0.652°
+[02/24] x=+0.440  retreat=10 mm  maxΔ=0.651°
+[03/24] x=+0.435  retreat=15 mm  maxΔ=0.667°
+[04/24] x=+0.430  retreat=20 mm  maxΔ=0.683°
+[05/24] x=+0.425  retreat=25 mm  maxΔ=0.699°
+[06/24] x=+0.420  retreat=30 mm  maxΔ=0.716°
+[07/24] x=+0.415  retreat=35 mm  maxΔ=0.732°
+[08/24] x=+0.410  retreat=40 mm  maxΔ=0.748°
+[09/24] x=+0.405  retreat=45 mm  maxΔ=0.764°
+[10/24] x=+0.400  retreat=50 mm  IK FAIL
+
+Last success x: 0.405 m
+Maximum retreat: 45.0 mm
+TCP clearance beyond cube face: 5.0 mm
+Largest path step: 0.764°
+RESULT: FAIL
+
+==============================================================================================================
+SIDE=NEGATIVE_X_SIDE  ROLL=-90.0°  YAW=+0.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 1
+PLACE_RELEASE q: [  -38.05°,   +88.63°,   +46.12°,  -139.19°,   +54.51°,   -57.91°]
+Initial alignment max Δ: 98.099°
+[01/24] x=+0.445  retreat=5 mm  maxΔ=0.652°
+[02/24] x=+0.440  retreat=10 mm  maxΔ=0.651°
+[03/24] x=+0.435  retreat=15 mm  maxΔ=0.667°
+[04/24] x=+0.430  retreat=20 mm  maxΔ=0.683°
+[05/24] x=+0.425  retreat=25 mm  maxΔ=0.699°
+[06/24] x=+0.420  retreat=30 mm  maxΔ=0.716°
+[07/24] x=+0.415  retreat=35 mm  maxΔ=0.732°
+[08/24] x=+0.410  retreat=40 mm  maxΔ=0.748°
+[09/24] x=+0.405  retreat=45 mm  maxΔ=0.764°
+[10/24] x=+0.400  retreat=50 mm  IK FAIL
+
+Last success x: 0.405 m
+Maximum retreat: 45.0 mm
+TCP clearance beyond cube face: 5.0 mm
+Largest path step: 0.764°
+RESULT: FAIL
+
+==============================================================================================================
+SIDE=NEGATIVE_X_SIDE  ROLL=+180.0°  YAW=+0.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 2
+PLACE_RELEASE q: [  -38.05°,   +88.63°,   +46.12°,  -139.19°,   +54.51°,   +32.09°]
+Initial alignment max Δ: 98.099°
+[01/24] x=+0.445  retreat=5 mm  maxΔ=0.652°
+[02/24] x=+0.440  retreat=10 mm  maxΔ=0.651°
+[03/24] x=+0.435  retreat=15 mm  maxΔ=0.667°
+[04/24] x=+0.430  retreat=20 mm  maxΔ=0.683°
+[05/24] x=+0.425  retreat=25 mm  maxΔ=0.699°
+[06/24] x=+0.420  retreat=30 mm  maxΔ=0.716°
+[07/24] x=+0.415  retreat=35 mm  maxΔ=0.732°
+[08/24] x=+0.410  retreat=40 mm  maxΔ=0.748°
+[09/24] x=+0.405  retreat=45 mm  maxΔ=0.764°
+[10/24] x=+0.400  retreat=50 mm  IK FAIL
+
+Last success x: 0.405 m
+Maximum retreat: 45.0 mm
+TCP clearance beyond cube face: 5.0 mm
+Largest path step: 0.764°
+RESULT: FAIL
+
+==============================================================================================================
+SIDE=POSITIVE_X_SIDE  ROLL=+0.0°  YAW=+180.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 0
+PLACE_RELEASE IK FAIL
+
+==============================================================================================================
+SIDE=POSITIVE_X_SIDE  ROLL=+90.0°  YAW=+180.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 0
+PLACE_RELEASE IK FAIL
+
+==============================================================================================================
+SIDE=POSITIVE_X_SIDE  ROLL=-90.0°  YAW=+180.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 0
+PLACE_RELEASE IK FAIL
+
+==============================================================================================================
+SIDE=POSITIVE_X_SIDE  ROLL=+180.0°  YAW=+180.0°
+==============================================================================================================
+PLACE_RELEASE candidates: 0
+PLACE_RELEASE IK FAIL
+
+==============================================================================================================
+FINAL RANKING
+==============================================================================================================
+1. side=NEGATIVE_X_SIDE   roll=   +0.0° yaw=   +0.0° result=FAIL retreat=  45.0 mm clearance=   5.0 mm path_max=  0.764°
+2. side=NEGATIVE_X_SIDE   roll=  +90.0° yaw=   +0.0° result=FAIL retreat=  45.0 mm clearance=   5.0 mm path_max=  0.764°
+3. side=NEGATIVE_X_SIDE   roll=  -90.0° yaw=   +0.0° result=FAIL retreat=  45.0 mm clearance=   5.0 mm path_max=  0.764°
+4. side=NEGATIVE_X_SIDE   roll= +180.0° yaw=   +0.0° result=FAIL retreat=  45.0 mm clearance=   5.0 mm path_max=  0.764°
+5. side=POSITIVE_X_SIDE   roll=   +0.0° yaw= +180.0° result=FAIL retreat=   0.0 mm clearance=   0.0 mm path_max=  0.000°
+6. side=POSITIVE_X_SIDE   roll=  +90.0° yaw= +180.0° result=FAIL retreat=   0.0 mm clearance=   0.0 mm path_max=  0.000°
+7. side=POSITIVE_X_SIDE   roll=  -90.0° yaw= +180.0° result=FAIL retreat=   0.0 mm clearance=   0.0 mm path_max=  0.000°
+8. side=POSITIVE_X_SIDE   roll= +180.0° yaw= +180.0° result=FAIL retreat=   0.0 mm clearance=   0.0 mm path_max=  0.000°
+
+Saved:
+/home/hgui/IK_solver_MuJoCo/place_face_aligned_workspace_search.yaml
+
+OVERALL FAIL — 목표한 80 mm 후퇴가 가능한 면 정렬 경로를 찾지 못했습니다.

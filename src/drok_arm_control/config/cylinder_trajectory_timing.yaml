@@ -1,0 +1,21 @@
+version: 1
+
+# MuJoCo 최초 검증용 임시 제한이다.
+# 실제 로봇 적용 전 모터 및 감속기 기준으로 다시 검증해야 한다.
+limits:
+  # URDF velocity limit 중 사용할 비율
+  velocity_scale: 0.35
+
+  # a_max = v_used / acceleration_rise_time
+  acceleration_rise_time: 0.50
+
+  # j_max = a_max / jerk_rise_time
+  jerk_rise_time: 0.20
+
+time_scaling:
+  # 수치 sampling 오차를 고려해 계산된 최소시간보다 2% 느리게 설정
+  duration_margin: 1.02
+
+validation:
+  minimum_dense_samples: 2000
+  dense_samples_per_waypoint: 50

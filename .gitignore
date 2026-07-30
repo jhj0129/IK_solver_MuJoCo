@@ -1,0 +1,14 @@
+build/
+install/
+log/
+run_logs/
+generated_box_paths/
+generated_vr_target_paths/
+runtime_state/*.yaml
+videos/
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
+*.zip
+*.tar.gz

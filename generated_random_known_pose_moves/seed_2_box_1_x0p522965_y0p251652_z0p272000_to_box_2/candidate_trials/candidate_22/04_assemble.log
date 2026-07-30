@@ -1,0 +1,24 @@
+$ /usr/bin/python3 /home/hgui/IK_solver_MuJoCo/src/drok_arm_control/scripts/assemble_cylinder_full_path.py --hybrid-path /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_22/hybrid_path.yaml --retreat-path /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_22/retreat_path.yaml --urdf /home/hgui/IK_solver_MuJoCo/src/drok_arm_mujoco/urdf/drok_arm_mujoco.urdf --output /home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_22/full_cartesian_path.yaml
+
+========================================================================================
+CYLINDER FULL CARTESIAN IK PATH
+========================================================================================
+Samples             : 235
+Maximum joint jump  : 0.601709 deg
+Minimum limit margin: 32.958308 deg
+PLACE joint gap     : 0.003572 deg
+
+Segment ranges
+  PICK_PREGRASP      0 ->   0
+  PICK_APPROACH      1 ->  27
+  PICK_LIFT         28 ->  44
+  TRANSFER          45 -> 190
+  PLACE_DESCEND    191 -> 207
+  PLACE_RETREAT    208 -> 234
+
+Gripper events
+  GRIPPER_CLOSE  after index 27
+  GRIPPER_OPEN   after index 207
+
+Saved:
+/home/hgui/IK_solver_MuJoCo/generated_random_known_pose_moves/seed_2_box_1_x0p522965_y0p251652_z0p272000_to_box_2/candidate_trials/candidate_22/full_cartesian_path.yaml
