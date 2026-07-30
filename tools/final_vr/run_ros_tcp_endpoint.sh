@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -Eeuo pipefail
+set -Eeo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
 ROS_IP_VALUE="${ROS_IP_OVERRIDE:-$(hostname -I | awk '{print $1}')}"
 ROS_TCP_PORT_VALUE="${ROS_TCP_PORT_OVERRIDE:-10000}"
